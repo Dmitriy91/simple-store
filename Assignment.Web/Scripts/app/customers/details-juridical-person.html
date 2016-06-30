@@ -1,0 +1,65 @@
+﻿<hr />
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">Details</div>
+        <div class="panel-body">
+            <form name="juridicalPersonDetailsForm" class="form-horizontal" role="form">
+                <div class="form-group has-feedback">
+                    <label class="control-label col-lg-2 col-md-2" for="name">First Name</label>
+                    <div class="col-lg-10 col-md-10">
+                        <span>{{juridicalPerson.legalName}}</span>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label col-lg-2 col-md-2" for="text">Last Name</label>
+                    <div class="col-lg-10 col-md-10">
+                        <span>{{juridicalPerson.tin}}</span>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label col-lg-2 col-md-2" for="text">Country</label>
+                    <div class="col-lg-10 col-md-10">
+                        <span>{{juridicalPerson.country}}</span>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label col-lg-2 col-md-2" for="text">Region</label>
+                    <div class="col-lg-10 col-md-10">
+                        <span>{{juridicalPerson.region}}</span>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label col-lg-2 col-md-2" for="text">City</label>
+                    <div class="col-lg-10 col-md-10">
+                        <span>{{juridicalPerson.city}}</span>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label col-lg-2 col-md-2" for="text">Street Address</label>
+                    <div class="col-lg-10 col-md-10">
+                        <span>{{juridicalPerson.streetAddress}}</span>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label col-lg-2 col-md-2" for="text">Postal Code</label>
+                    <div class="col-lg-10 col-md-10">
+                        <span>{{juridicalPerson.postalCode}}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-10 col-md-10 col-lg-offset-2 col-md-offset-2">
+                        <div class="btn-group btn-group-justified">
+                            <a href="#/customers" class="btn btn-default">
+                                <span class="glyphicon glyphicon-circle-arrow-left"></span> Back
+                            </a>
+                            <a href="#/customers/juridical-person/edit/{{juridicalPerson.id}}" class="btn btn-default">
+                                <span class="glyphicon glyphicon-edit"></span> Edit
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<hr />

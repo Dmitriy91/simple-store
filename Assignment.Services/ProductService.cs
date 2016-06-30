@@ -1,0 +1,94 @@
+﻿using Assignment.Data.Repositories;
+using Assignment.Entities;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Assignment.Data;
+
+namespace Assignment.Services
+{
+    public class ProductService : IProductService
+    {
+        #region Fields
+        private IRepository<Product> _productRepo;
+        private IUnitOfWork _unitOfWork;
+        #endregion
+
+        #region Constructors
+        public ProductService(IRepository<Product> productRepo, IUnitOfWork unitOfWork)
+        {
+            _productRepo = productRepo;
+            _unitOfWork = unitOfWork;
+        }
+        #endregion
+
+        #region Methods
+        public Product GetProductById(int productId)
+        {
+            return _productRepo.GetById(productId);
+        }
+
+        public IEnumerable<Product> GetAllProducts()
+        {
+            return _productRepo.GetAll();
+        }
+
+        public bool RemoveProductById(int productId)
+        {
+            bool productExists = _productRepo.Exists(p => p.Id == productId);
+
+            if (productExists)
+            {
+                _productRepo.Delete(new Product { Id = productId });
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool UpdateProduct(Product product)
+        {
+            bool productExists = _productRepo.Exists(p => p.Id == product.Id);
+
+            if (productExists)
+            {
+                _productRepo.Update(product);
+                return true;
+            }
+
+            return false;
+        }
+
+        public void AddProduct(Product product)
+        {
+            _productRepo.Add(product);
+        }
+
+        async public Task CommitAsync()
+        {
+            await _unitOfWork.CommitAsync();
+        }
+
+        public void Commit()
+        {
+            _unitOfWork.Commit();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_unitOfWork != null)
+                {
+                    _unitOfWork.Dispose();
+                    _unitOfWork = null;
+                }
+            }
+        }
+        #endregion
+    }
+}

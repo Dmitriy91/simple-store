@@ -1,0 +1,58 @@
+﻿<hr />
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">Add Product</div>
+        <div class="panel-body">
+            <form name="addProductForm" class="form-horizontal" autocomplete="off" novalidate role="form" onkeydown="event.which == 13 || event.keyCode == 13 ? document.querySelector('#submitBtn').click() : true">
+                <div class="form-group has-feedback required">
+                    <label class="control-label col-lg-2 col-md-2" for="productName">Product</label>
+                    <div class="col-lg-10 col-md-10">
+                        <div ng-class="{ 'has-error' : addProductForm.productName.$invalid && addProductForm.productName.$dirty }">
+                            <input id="productName" name="productName" type="text" required ng-maxlength="128" class="form-control" ng-model="product.productName" />
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="addProductForm.productName.$invalid && addProductForm.productName.$dirty"></span>
+                            <span class="text-danger" ng-show="addProductForm.productName.$error.required && addProductForm.productName.$dirty">The Product Name field is required.</span>
+                            <span class="text-danger" ng-show="addProductForm.productName.$error.maxlength">The Product Name field has the maximum length of 128 symbols.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group has-feedback required">
+                    <label class="control-label col-lg-2 col-md-2" for="unitPrice">Unit Price</label>
+                    <div class="col-lg-10 col-md-10">
+                        <div ng-class="{ 'has-error' : addProductForm.unitPrice.$invalid && addProductForm.unitPrice.$dirty }">
+                            <input id="unitPrice" name="unitPrice" type="number" required max="999999999999999" step="0.01" class="form-control" ng-model="product.unitPrice" ng-pattern="/^(?=.*[1-9])\d*(?:\.\d{1,2})?$/" />
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="addProductForm.unitPrice.$invalid && addProductForm.unitPrice.$dirty"></span>
+                            <span class="text-danger" ng-show="addProductForm.unitPrice.$error.required && addProductForm.unitPrice.$dirty">The Unit Price field is required.</span>
+                            <span class="text-danger" ng-show="addProductForm.unitPrice.$error.max">The Unit Price field has the maximum value of 999999999999999.</span>
+                            <span class="text-danger" ng-show="addProductForm.unitPrice.$error.pattern || addProductForm.unitPrice.$error.number">The Unit Price field must be a positive two-digit precision number.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group has-feedback required">
+                    <label class="control-label col-lg-2 col-md-2" for="unitPrice">Units In Stock</label>
+                    <div class="col-lg-10 col-md-10">
+                        <div ng-class="{ 'has-error' : addProductForm.unitsInStock.$invalid && addProductForm.unitsInStock.$dirty }">
+                            <input id="unitsInStock" name="unitsInStock" type="number" required min="0" max="2147483647" step="1" class="form-control" ng-model="product.unitsInStock" ng-pattern="/^([1-9]\d*|0)$/" />
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="addProductForm.unitsInStock.$invalid && addProductForm.unitsInStock.$dirty"></span>
+                            <span class="text-danger" ng-show="addProductForm.unitsInStock.$error.number || addProductForm.unitsInStock.$error.pattern || addProductForm.unitsInStock.$error.min">The Units In Stock field must be a positive integer or omitted.</span>
+                            <span class="text-danger" ng-show="addProductForm.unitsInStock.$error.max">The Units In Stock field must not be greater than 2147483647.</span>
+                            <span class="text-danger" ng-show="addProductForm.unitsInStock.$error.required && addProductForm.unitsInStock.$dirty">The Units In Stocks is required.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-10 col-md-10 col-lg-offset-2 col-md-offset-2">
+                        <div class="btn-group btn-group-justified">
+                            <a href="#/products" class="btn btn-default">
+                                <span class="glyphicon glyphicon-circle-arrow-left"></span> Back
+                            </a>
+                            <a id="submitBtn" class="btn btn-block btn-default" ng-disabled="addProductForm.$invalid" ng-click="addProductForm.$valid ? product.add() : null;">
+                                <span class="glyphicon glyphicon-plus"></span> Submit
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<hr />

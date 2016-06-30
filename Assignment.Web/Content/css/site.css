@@ -1,0 +1,46 @@
+﻿/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column */
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+textarea {
+   resize: vertical;
+}
+
+th, caption {
+    text-align: center;
+}
+
+li.selected-theme {
+    font-weight: bold;
+}
+
+.text-column {
+    max-width: 590px;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+
+.text {
+    overflow: hidden;
+    overflow-wrap:break-word;
+}
+
+/* Theme menu */
+#theme-menu {
+    color:black;
+    background-color:ghostwhite;
+    cursor:pointer;
+    list-style-type:none;
+}
+
+/* Add asterisks to all required fields */
+.form-group.required .control-label:after {
+   color: red;
+   content: "*";
+   position: absolute;
+   margin-left: 10px;
+}

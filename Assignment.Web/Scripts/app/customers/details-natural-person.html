@@ -1,0 +1,83 @@
+﻿<hr />
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">Details</div>
+        <div class="panel-body">
+            <form name="naturalPersonDetailsForm" class="form-horizontal" role="form">
+                <div class="form-group has-feedback">
+                    <label class="control-label col-lg-2 col-md-2" for="name">First Name</label>
+                    <div class="col-lg-10 col-md-10">
+                        <span>{{naturalPerson.firstName}}</span>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label col-lg-2 col-md-2" for="text">Last Name</label>
+                    <div class="col-lg-10 col-md-10">
+                        <span>{{naturalPerson.lastName}}</span>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label col-lg-2 col-md-2" for="text">Middle Name</label>
+                    <div class="col-lg-10 col-md-10">
+                        <span>{{naturalPerson.middleName}}</span>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label col-lg-2 col-md-2" for="text">Birthdate</label>
+                    <div class="col-lg-10 col-md-10">
+                        <span>{{naturalPerson.birthdate}}</span>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label col-lg-2 col-md-2" for="text">SSN</label>
+                    <div class="col-lg-10 col-md-10">
+                        <span>{{naturalPerson.ssn}}</span>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label col-lg-2 col-md-2" for="text">Country</label>
+                    <div class="col-lg-10 col-md-10">
+                        <span>{{naturalPerson.country}}</span>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label col-lg-2 col-md-2" for="text">Region</label>
+                    <div class="col-lg-10 col-md-10">
+                        <span>{{naturalPerson.region}}</span>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label col-lg-2 col-md-2" for="text">City</label>
+                    <div class="col-lg-10 col-md-10">
+                        <span>{{naturalPerson.city}}</span>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label col-lg-2 col-md-2" for="text">Street Address</label>
+                    <div class="col-lg-10 col-md-10">
+                        <span>{{naturalPerson.streetAddress}}</span>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label col-lg-2 col-md-2" for="text">Postal Code</label>
+                    <div class="col-lg-10 col-md-10">
+                        <span>{{naturalPerson.postalCode}}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-10 col-md-10 col-lg-offset-2 col-md-offset-2">
+                        <div class="btn-group btn-group-justified">
+                            <a href="#/customers" class="btn btn-default">
+                                <span class="glyphicon glyphicon-circle-arrow-left"></span> Back
+                            </a>
+                            <a href="#/customers/natural-person/edit/{{naturalPerson.id}}" class="btn btn-default">
+                                <span class="glyphicon glyphicon-edit"></span> Edit
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<hr />

@@ -1,0 +1,130 @@
+﻿<hr />
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">Update Customer - Natural Person</div>
+        <div class="panel-body">
+            <form name="updateNaturalPersonForm" class="form-horizontal" role="form" novalidate autocomplete="off" onkeydown="event.which == 13 || event.keyCode == 13 ? document.querySelector('#submitBtn').click() : true">
+                <div class="form-group has-feedback required">
+                    <label class="control-label col-lg-2 col-md-2" for="firstName">First Name</label>
+                    <div class="col-lg-10 col-md-10">
+                        <div ng-class="{ 'has-error' : updateNaturalPersonForm.firstName.$invalid && updateNaturalPersonForm.firstName.$dirty }">
+                            <input id="firstName" name="firstName" type="text" required ng-maxlength="32" class="form-control" ng-model="naturalPerson.firstName" />
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="updateNaturalPersonForm.firstName.$invalid && updateNaturalPersonForm.firstName.$dirty"></span>
+                            <span class="text-danger" ng-show="updateNaturalPersonForm.firstName.$error.required && updateNaturalPersonForm.firstName.$dirty">The First Name field is required.</span>
+                            <span class="text-danger" ng-show="updateNaturalPersonForm.firstName.$error.maxlength">The First Name field has the maximum length of 32 symbols.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group has-feedback required">
+                    <label class="control-label col-lg-2 col-md-2" for="lastName">Last Name</label>
+                    <div class="col-lg-10 col-md-10">
+                        <div ng-class="{ 'has-error' : updateNaturalPersonForm.lastName.$invalid && updateNaturalPersonForm.lastName.$dirty }">
+                            <input id="lastName" name="lastName" type="text" required ng-maxlength="32" class="form-control" ng-model="naturalPerson.lastName" />
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="updateNaturalPersonForm.lastName.$invalid && updateNaturalPersonForm.lastName.$dirty"></span>
+                            <span class="text-danger" ng-show="updateNaturalPersonForm.lastName.$error.required && updateNaturalPersonForm.lastName.$dirty">The Last Name field is required.</span>
+                            <span class="text-danger" ng-show="updateNaturalPersonForm.lastName.$error.maxlength">The Last Name field has the maximum length of 32 symbols.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group has-feedback required">
+                    <label class="control-label col-lg-2 col-md-2" for="middleName">Middle Name</label>
+                    <div class="col-lg-10 col-md-10">
+                        <div ng-class="{ 'has-error' : updateNaturalPersonForm.middleName.$invalid && updateNaturalPersonForm.middleName.$dirty }">
+                            <input id="middleName" name="middleName" type="text" required ng-maxlength="32" class="form-control" ng-model="naturalPerson.middleName" />
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="updateNaturalPersonForm.middleName.$invalid && updateNaturalPersonForm.middleName.$dirty"></span>
+                            <span class="text-danger" ng-show="updateNaturalPersonForm.middleName.$error.required && updateNaturalPersonForm.middleName.$dirty">The Middle Name field is required.</span>
+                            <span class="text-danger" ng-show="updateNaturalPersonForm.middleName.$error.maxlength">The Middle Name field has the maximum length of 32 symbols.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label col-lg-2 col-md-2" for="ssn">SSN</label>
+                    <div class="col-lg-10 col-md-10">
+                        <div ng-class="{ 'has-error' : updateNaturalPersonForm.ssn.$invalid && updateNaturalPersonForm.ssn.$dirty }">
+                            <input id="ssn" name="ssn" type="text" ng-maxlength="32" class="form-control" ng-model="naturalPerson.ssn" />
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="updateNaturalPersonForm.ssn.$invalid && updateNaturalPersonForm.ssn.$dirty"></span>
+                            <span class="text-danger" ng-show="updateNaturalPersonForm.ssn.$error.maxlength">The SSN field has the maximum length of 32 symbols.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label col-lg-2 col-md-2" for="birthdate">Birthdate</label>
+                    <div class="col-lg-10 col-md-10">
+                        <div ng-class="{ 'has-error' : updateNaturalPersonForm.birthdate.$invalid && updateNaturalPersonForm.birthdate.$dirty }">
+                            <input id="birthdate" name="birthdate" type="text" class="form-control datepicker" ng-model="naturalPerson.birthdate" ng-pattern="/^\d{4}-\d{2}-\d{2}?$/" />
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="updateNaturalPersonForm.birthdate.$invalid && updateNaturalPersonForm.birthdate.$dirty"></span>
+                            <span class="text-danger" ng-show="updateNaturalPersonForm.birthdate.$error.pattern">The Birthdate field must be a date or omitted.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group has-feedback required">
+                    <label class="control-label col-lg-2 col-md-2" for="country">Country</label>
+                    <div class="col-lg-10 col-md-10">
+                        <div ng-class="{ 'has-error' : updateNaturalPersonForm.country.$invalid && updateNaturalPersonForm.country.$dirty }">
+                            <input id="country" name="country" type="text" required ng-maxlength="32" class="form-control" ng-model="naturalPerson.country" />
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="updateNaturalPersonForm.country.$invalid && updateNaturalPersonForm.country.$dirty"></span>
+                            <span class="text-danger" ng-show="updateNaturalPersonForm.country.$error.required && updateNaturalPersonForm.country.$dirty">The Country field is required.</span>
+                            <span class="text-danger" ng-show="updateNaturalPersonForm.country.$error.maxlength">The Country field has the maximum length of 32 symbols.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group has-feedback required">
+                    <label class="control-label col-lg-2 col-md-2" for="country">Region</label>
+                    <div class="col-lg-10 col-md-10">
+                        <div ng-class="{ 'has-error' : updateNaturalPersonForm.region.$invalid && updateNaturalPersonForm.region.$dirty }">
+                            <input id="region" name="region" type="text" required ng-maxlength="32" class="form-control" ng-model="naturalPerson.region" />
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="updateNaturalPersonForm.region.$invalid && updateNaturalPersonForm.region.$dirty"></span>
+                            <span class="text-danger" ng-show="updateNaturalPersonForm.region.$error.required && updateNaturalPersonForm.region.$dirty">The Region field is required.</span>
+                            <span class="text-danger" ng-show="updateNaturalPersonForm.region.$error.maxlength">The Region field has the maximum length of 32 symbols.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group has-feedback required">
+                    <label class="control-label col-lg-2 col-md-2" for="city">City</label>
+                    <div class="col-lg-10 col-md-10">
+                        <div ng-class="{ 'has-error' : updateNaturalPersonForm.city.$invalid && updateNaturalPersonForm.city.$dirty }">
+                            <input id="city" name="city" type="text" required ng-maxlength="32" class="form-control" ng-model="naturalPerson.city" />
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="updateNaturalPersonForm.city.$invalid && updateNaturalPersonForm.city.$dirty"></span>
+                            <span class="text-danger" ng-show="updateNaturalPersonForm.city.$error.required && updateNaturalPersonForm.city.$dirty">The City field is required.</span>
+                            <span class="text-danger" ng-show="updateNaturalPersonForm.city.$error.maxlength">The City field has the maximum length of 32 symbols.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group has-feedback required">
+                    <label class="control-label col-lg-2 col-md-2" for="streetaddress">Street address</label>
+                    <div class="col-lg-10 col-md-10">
+                        <div ng-class="{ 'has-error' : updateNaturalPersonForm.streetaddress.$invalid && updateNaturalPersonForm.streetaddress.$dirty }">
+                            <input id="streetAddress" name="streetAddress" type="text" required ng-maxlength="32" class="form-control" ng-model="naturalPerson.streetAddress" />
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="addNaturalPersonForm.streetAddress.$invalid && updateNaturalPersonForm.streetAddress.$dirty"></span>
+                            <span class="text-danger" ng-show="updateNaturalPersonForm.streetAddress.$error.required && updateNaturalPersonForm.streetAddress.$dirty">The Street Address field is required.</span>
+                            <span class="text-danger" ng-show="updateNaturalPersonForm.streetAddress.$error.maxlength">The Street Address field has the maximum length of 32 symbols.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label col-lg-2 col-md-2" for="postalCode">Postal Code</label>
+                    <div class="col-lg-10 col-md-10">
+                        <div ng-class="{ 'has-error' : updateNaturalPersonForm.postalCode.$invalid && updateNaturalPersonForm.postalCode.$dirty }">
+                            <input id="postalCode" name="postalCode" type="text" ng-maxlength="32" class="form-control" ng-model="naturalPerson.postalCode" />
+                            <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="updateNaturalPersonForm.postalCode.$invalid && updateNaturalPersonForm.postalCode.$dirty"></span>
+                            <span class="text-danger" ng-show="updateNaturalPersonForm.postalCode.$error.maxlength">The Postal Code field has the maximum length of 32 symbols.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-10 col-md-10 col-lg-offset-2 col-md-offset-2">
+                        <div class="btn-group btn-group-justified">
+                            <a href="#/customers" class="btn btn-default">
+                                <span class="glyphicon glyphicon-circle-arrow-left"></span> Back
+                            </a>
+                            <a id="submitBtn" class="btn btn-block btn-default" ng-disabled="updateNaturalPersonForm.$invalid" ng-click="updateNaturalPersonForm.$valid ? naturalPerson.update() : null;">
+                                <span class="glyphicon glyphicon-edit"></span> Submit
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<hr />

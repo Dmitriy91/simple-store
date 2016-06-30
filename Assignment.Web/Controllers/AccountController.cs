@@ -1,4 +1,14 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.OAuth;
+using Assignment.Entities;
+using Assignment.Web.Infrastructure.ActionResults;
+using Assignment.Web.Infrastructure.AuthProviders;
+using Assignment.Web.Models;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
@@ -6,29 +16,18 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.ModelBinding;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.OAuth;
-using Assignment.Web.Models;
-using Assignment.Web.Providers;
-using Assignment.Web.Results;
+using Assignment.Web;
 
-namespace Assignment.Web.Controllers
+namespace SpaNotes.Web.Controllers
 {
     [Authorize]
-    [RoutePrefix("api/Account")]
+    [RoutePrefix("api/account")]
     public class AccountController : ApiController
     {
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
 
-        public AccountController()
-        {
-        }
+        public AccountController() { }
 
         public AccountController(ApplicationUserManager userManager,
             ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
@@ -54,11 +53,11 @@ namespace Assignment.Web.Controllers
         // GET api/Account/UserInfo
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("UserInfo")]
-        public UserInfoViewModel GetUserInfo()
+        public UserInfoDto GetUserInfo()
         {
             ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
 
-            return new UserInfoViewModel
+            return new UserInfoDto
             {
                 Email = User.Identity.GetUserName(),
                 HasRegistered = externalLogin == null,
@@ -76,7 +75,7 @@ namespace Assignment.Web.Controllers
 
         // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
         [Route("ManageInfo")]
-        public async Task<ManageInfoViewModel> GetManageInfo(string returnUrl, bool generateState = false)
+        public async Task<ManageInfoDto> GetManageInfo(string returnUrl, bool generateState = false)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
@@ -85,11 +84,11 @@ namespace Assignment.Web.Controllers
                 return null;
             }
 
-            List<UserLoginInfoViewModel> logins = new List<UserLoginInfoViewModel>();
+            List<UserLoginInfoDto> logins = new List<UserLoginInfoDto>();
 
             foreach (IdentityUserLogin linkedAccount in user.Logins)
             {
-                logins.Add(new UserLoginInfoViewModel
+                logins.Add(new UserLoginInfoDto
                 {
                     LoginProvider = linkedAccount.LoginProvider,
                     ProviderKey = linkedAccount.ProviderKey
@@ -98,14 +97,14 @@ namespace Assignment.Web.Controllers
 
             if (user.PasswordHash != null)
             {
-                logins.Add(new UserLoginInfoViewModel
+                logins.Add(new UserLoginInfoDto
                 {
                     LoginProvider = LocalLoginProvider,
                     ProviderKey = user.UserName,
                 });
             }
 
-            return new ManageInfoViewModel
+            return new ManageInfoDto
             {
                 LocalLoginProvider = LocalLoginProvider,
                 Email = user.UserName,
@@ -125,7 +124,7 @@ namespace Assignment.Web.Controllers
 
             IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
                 model.NewPassword);
-            
+
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -258,9 +257,9 @@ namespace Assignment.Web.Controllers
             if (hasRegistered)
             {
                 Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                
-                 ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
-                    OAuthDefaults.AuthenticationType);
+
+                ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
+                   OAuthDefaults.AuthenticationType);
                 ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     CookieAuthenticationDefaults.AuthenticationType);
 
@@ -280,10 +279,10 @@ namespace Assignment.Web.Controllers
         // GET api/Account/ExternalLogins?returnUrl=%2F&generateState=true
         [AllowAnonymous]
         [Route("ExternalLogins")]
-        public IEnumerable<ExternalLoginViewModel> GetExternalLogins(string returnUrl, bool generateState = false)
+        public IEnumerable<ExternalLoginDto> GetExternalLogins(string returnUrl, bool generateState = false)
         {
             IEnumerable<AuthenticationDescription> descriptions = Authentication.GetExternalAuthenticationTypes();
-            List<ExternalLoginViewModel> logins = new List<ExternalLoginViewModel>();
+            List<ExternalLoginDto> logins = new List<ExternalLoginDto>();
 
             string state;
 
@@ -299,7 +298,7 @@ namespace Assignment.Web.Controllers
 
             foreach (AuthenticationDescription description in descriptions)
             {
-                ExternalLoginViewModel login = new ExternalLoginViewModel
+                ExternalLoginDto login = new ExternalLoginDto
                 {
                     Name = description.Caption,
                     Url = Url.Route("ExternalLogin", new
@@ -368,7 +367,7 @@ namespace Assignment.Web.Controllers
             result = await UserManager.AddLoginAsync(user.Id, info.Login);
             if (!result.Succeeded)
             {
-                return GetErrorResult(result); 
+                return GetErrorResult(result);
             }
             return Ok();
         }
@@ -385,7 +384,6 @@ namespace Assignment.Web.Controllers
         }
 
         #region Helpers
-
         private IAuthenticationManager Authentication
         {
             get { return Request.GetOwinContext().Authentication; }
@@ -488,7 +486,6 @@ namespace Assignment.Web.Controllers
                 return HttpServerUtility.UrlTokenEncode(data);
             }
         }
-
         #endregion
     }
 }
