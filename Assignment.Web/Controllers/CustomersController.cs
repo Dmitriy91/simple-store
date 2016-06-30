@@ -54,12 +54,9 @@ namespace Assignment.Web.Controllers
 
         // GET: api/customers/juridical-person/1
         [Route("juridical-person/{id:int:min(1)}")]
-        public IHttpActionResult GetJuridicalPerson(int? id)
+        public IHttpActionResult GetJuridicalPerson(int id)
         {
-            if (id == null)
-                return BadRequest();
-
-            JuridicalPerson juridicalPerson = _customerService.GetJuridicalPersonById(id.Value);
+            JuridicalPerson juridicalPerson = _customerService.GetJuridicalPersonById(id);
 
             if (juridicalPerson == null)
                 return BadRequest();
@@ -71,12 +68,9 @@ namespace Assignment.Web.Controllers
 
         // GET: api/customers/natural-person/1
         [Route("natural-person/{id:int:min(1)}")]
-        public IHttpActionResult GetNaturalPerson(int? id)
+        public IHttpActionResult GetNaturalPerson(int id)
         {
-            if (id == null)
-                return BadRequest();
-
-            NaturalPerson naturalPerson = _customerService.GetNaturalPersonById(id.Value);
+            NaturalPerson naturalPerson = _customerService.GetNaturalPersonById(id);
 
             if (naturalPerson == null)
                 return BadRequest();
@@ -88,7 +82,7 @@ namespace Assignment.Web.Controllers
 
         // POST: api/customers/juridical-person/update/1
         [HttpPost]
-        [Route("juridical-person/update/{id:int:min(1)}")]
+        [Route("juridical-person/update")]
         public async Task<IHttpActionResult> UpdateJuridicalPerson([FromBody]JuridicalPersonBindingModel juridicalPersonBindingModel)
         {
             if (!ModelState.IsValid)
@@ -108,7 +102,7 @@ namespace Assignment.Web.Controllers
 
         // POST: api/customers/juridical-person/update/1
         [HttpPost]
-        [Route("natural-person/update/{id:int:min(1)}")]
+        [Route("natural-person/update")]
         public async Task<IHttpActionResult> UpdateNaturalPerson([FromBody]NaturalPersonBindingModel naturalPersonBindingModel)
         {
             if (!ModelState.IsValid)
@@ -161,12 +155,9 @@ namespace Assignment.Web.Controllers
         // POST: api/customers/delete/1
         [HttpPost]
         [Route("delete/{id:int:min(1)}")]
-        public async Task<IHttpActionResult> Delete(int? id)
+        public async Task<IHttpActionResult> Delete(int id)
         {
-            if (id == null)
-                return BadRequest();
-
-            if (_customerService.RemovePersonById(id.Value))
+            if (_customerService.RemovePersonById(id))
             {
                 await _customerService.CommitAsync();
 
@@ -176,5 +167,19 @@ namespace Assignment.Web.Controllers
             return BadRequest();
         }
         #endregion
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_customerService != null)
+                {
+                    _customerService.Dispose();
+                    _customerService = null;
+                }
+            }
+
+            base.Dispose(disposing);
+        }
     }
 }

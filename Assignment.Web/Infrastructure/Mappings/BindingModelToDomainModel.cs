@@ -16,7 +16,7 @@ namespace Assignment.Web.Infrastructure.Mappings
             // Product
             CreateMap<ProductBindingModel, Product>();
              
-            // JuridicapPerson
+            // JuridicalPerson
             CreateMap<JuridicalPersonBindingModel, Customer>();
             CreateMap<JuridicalPersonBindingModel, JuridicalPerson>()
                 .ForMember(dest => dest.CustomerId, opts => opts.MapFrom(src => src.Id))
@@ -40,11 +40,11 @@ namespace Assignment.Web.Infrastructure.Mappings
                 .ForMember(dest => dest.Customer, opts =>
                 {
                     opts.MapFrom(src => Mapper.Map<NaturalPersonBindingModel, Customer>(src));
-                })
-                .AfterMap((npbm, np) => 
-                {
-                    np.Customer.NaturalPerson = np;
                 });
+                //.AfterMap((npbm, np) => 
+                //{
+                //    np.Customer.NaturalPerson = np;
+                //});
 
             // Order
             CreateMap<OrderBindingModel.Details, OrderDetails>();

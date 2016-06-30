@@ -39,12 +39,10 @@ namespace Assignment.Web.Controllers
 
         // GET: api/products/details/1
         [Route("details/{id:int:min(1)}")]
-        public IHttpActionResult Get(int? id)
+        public IHttpActionResult Get(int id)
         {
-            if (id == null)
-                return BadRequest();
 
-            Product product = _productService.GetProductById(id.Value);
+            Product product = _productService.GetProductById(id);
 
             if (product == null)
                 return BadRequest();
@@ -56,7 +54,7 @@ namespace Assignment.Web.Controllers
 
         // POST: api/products/update/1
         [HttpPost]
-        [Route("update/{id:int:min(1)}")]
+        [Route("update")]
         public async Task<IHttpActionResult> Update([FromBody]ProductBindingModel productBindingModel)
         {
             if (!ModelState.IsValid)
@@ -93,12 +91,9 @@ namespace Assignment.Web.Controllers
         // POST: api/products/delete/1
         [HttpPost]
         [Route("delete/{id:int:min(1)}")]
-        public async Task<IHttpActionResult> Delete(int? id)
+        public async Task<IHttpActionResult> Delete(int id)
         {
-            if (id == null)
-                return BadRequest();
-
-            if (_productService.RemoveProductById(id.Value))
+            if (_productService.RemoveProductById(id))
             {
                 await _productService.CommitAsync();
 
@@ -108,5 +103,19 @@ namespace Assignment.Web.Controllers
             return BadRequest();
         }
         #endregion
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_productService != null)
+                {
+                    _productService.Dispose();
+                    _productService = null;
+                }
+            }
+
+            base.Dispose(disposing);
+        }
     }
 }

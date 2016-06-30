@@ -10,7 +10,6 @@ namespace Assignment.Data
     {
         protected override void Seed(ApplicationDbContext context)
         {
-
             //UserManager<ApplicationUser> manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             //ApplicationUser admin = new ApplicationUser
             //{

@@ -26,14 +26,11 @@ namespace Assignment.Web.Controllers
         #region Actions
         // GET: api/orders/customer/1
         [Route("orders/{id:int:min(1)}")]
-        public async Task<IHttpActionResult> GetOrdersByCustomer(int? id)
+        public async Task<IHttpActionResult> GetOrdersByCustomer(int id)
         {
-            if (id == null)
-                return BadRequest();
-
             IEnumerable<Order> orders = await Task<IEnumerable<Order>>.Run(() =>
             {
-                return _orderService.GetOrdersByCustomerId(id.Value);
+                return _orderService.GetOrdersByCustomerId(id);
             });
 
             IEnumerable<OrderDto> ordersDtos = Mapper.Map<IEnumerable<Order>, IEnumerable<OrderDto>>(orders);
@@ -43,12 +40,9 @@ namespace Assignment.Web.Controllers
 
         // GET: api/orders/details/1
         [Route("details/{id:int:min(1)}")]
-        public IHttpActionResult Get(int? id)
+        public IHttpActionResult Get(int id)
         {
-            if (id == null)
-                return BadRequest();
-
-            Order order = _orderService.GetOrderById(id.Value);
+            Order order = _orderService.GetOrderById(id);
 
             if (order == null)
                 return BadRequest();
@@ -60,7 +54,7 @@ namespace Assignment.Web.Controllers
 
         // POST: api/orders/update/1
         [HttpPost]
-        [Route("update/{id:int:min(1)}")]
+        [Route("update")]
         public async Task<IHttpActionResult> Update([FromBody]OrderBindingModel orderBindingModel)
         {
             if (!ModelState.IsValid)
@@ -97,12 +91,9 @@ namespace Assignment.Web.Controllers
         // POST: api/orders/delete/1
         [HttpPost]
         [Route("delete/{id:int:min(1)}")]
-        public async Task<IHttpActionResult> Delete(int? id)
+        public async Task<IHttpActionResult> Delete(int id)
         {
-            if (id == null)
-                return BadRequest();
-
-            if (_orderService.RemoveOrderById(id.Value))
+            if (_orderService.RemoveOrderById(id))
             {
                 await _orderService.CommitAsync();
 
@@ -112,5 +103,19 @@ namespace Assignment.Web.Controllers
             return BadRequest();
         }
         #endregion
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_orderService != null)
+                {
+                    _orderService.Dispose();
+                    _orderService = null;
+                }
+            }
+
+            base.Dispose(disposing);
+        }
     }
 }

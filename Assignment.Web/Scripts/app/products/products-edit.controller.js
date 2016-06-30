@@ -21,7 +21,7 @@
             productData.productName = $scope.product.productName;
             productData.unitPrice = $scope.product.unitPrice;
             productData.unitsInStock = $scope.product.unitsInStock;
-            dataService.post('/api/products/update/' + productData.id, productData, updateProductSucceeded, updateProductFaild);
+            dataService.post('/api/products/update/', productData, updateProductSucceeded, updateProductFaild);
         }
 
         function updateProductSucceeded(response) {
