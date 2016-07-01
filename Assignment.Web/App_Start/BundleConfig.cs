@@ -45,11 +45,11 @@ namespace Assignment.Web
                 "~/Scripts/app/config/note-date-picker-config.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                "~/Content/css/site.css",
-                "~/Content/css/bootstrap-themes/bootstrap.journal.css",
+                "~/Content/css/bootstrap-themes/bootstrap.flatly.css",
                 "~/Content/css/bootstrap-datepicker3.standalone.css",
                 "~/Content/css/toastr.css",
-                "~/Content/css/loading-bar.css"));
+                "~/Content/css/loading-bar.css",
+                "~/Content/css/site.css"));
 
             BundleTable.EnableOptimizations = false;
         }

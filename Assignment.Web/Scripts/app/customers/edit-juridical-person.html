@@ -8,10 +8,10 @@
                     <label class="control-label col-lg-2 col-md-2" for="legalName">Legal Name</label>
                     <div class="col-lg-10 col-md-10">
                         <div ng-class="{ 'has-error' : updateJuridicalPersonForm.legalName.$invalid && updateJuridicalPersonForm.legalName.$dirty }">
-                            <input id="legalName" name="legalName" type="text" required ng-maxlength="32" class="form-control" ng-model="juridicalPerson.legalName" />
+                            <input id="legalName" name="legalName" type="text" required ng-maxlength="64" class="form-control" ng-model="juridicalPerson.legalName" />
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="updateJuridicalPersonForm.legalName.$invalid && updateJuridicalPersonForm.legalName.$dirty"></span>
                             <span class="text-danger" ng-show="updateJuridicalPersonForm.legalName.$error.required && updateJuridicalPersonForm.legalName.$dirty">The Legal Name field is required.</span>
-                            <span class="text-danger" ng-show="updateJuridicalPersonForm.legalName.$error.maxlength">The Legal Name field has the maximum length of 32 symbols.</span>
+                            <span class="text-danger" ng-show="updateJuridicalPersonForm.legalName.$error.maxlength">The Legal Name field has the maximum length of 64 symbols.</span>
                         </div>
                     </div>
                 </div>
@@ -19,10 +19,10 @@
                     <label class="control-label col-lg-2 col-md-2" for="tin">TIN</label>
                     <div class="col-lg-10 col-md-10">
                         <div ng-class="{ 'has-error' : updateJuridicalPersonForm.tin.$invalid && updateJuridicalPersonForm.tin.$dirty }">
-                            <input id="tin" name="tin" type="text" required ng-maxlength="32" class="form-control" ng-model="juridicalPerson.tin" />
+                            <input id="tin" name="tin" type="text" required ng-maxlength="16" class="form-control" ng-model="juridicalPerson.tin" />
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="updateJuridicalPersonForm.tin.$invalid && updateJuridicalPersonForm.tin.$dirty"></span>
                             <span class="text-danger" ng-show="updateJuridicalPersonForm.tin.$error.required && updateJuridicalPersonForm.tin.$dirty">The TIN field is required.</span>
-                            <span class="text-danger" ng-show="updateJuridicalPersonForm.tin.$error.maxlength">The TIN field has the maximum length of 32 symbols.</span>
+                            <span class="text-danger" ng-show="updateJuridicalPersonForm.tin.$error.maxlength">The TIN field has the maximum length of 16 symbols.</span>
                         </div>
                     </div>
                 </div>

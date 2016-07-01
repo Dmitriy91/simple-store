@@ -6,14 +6,14 @@
             <form name="productDetailsForm" class="form-horizontal" autocomplete="off" novalidate role="form">
                 <div class="form-group has-feedback">
                     <label class="control-label col-lg-2 col-md-2" for="name">Product Name</label>
-                    <div class="col-lg-10 col-md-10">
+                    <div class="col-lg-10 col-md-10 text-column">
                         <span>{{product.productName}}</span>
                     </div>
                 </div>
                 <div class="form-group has-feedback">
-                    <label class="control-label col-lg-2 col-md-2" for="text">UnitP rice</label>
+                    <label class="control-label col-lg-2 col-md-2" for="text">Unit Price</label>
                     <div class="col-lg-10 col-md-10">
-                        <span>{{product.unitPrice}}</span>
+                        <span>{{product.unitPrice | currency:'$'}}</span>
                     </div>
                 </div>
                 <div class="form-group has-feedback">

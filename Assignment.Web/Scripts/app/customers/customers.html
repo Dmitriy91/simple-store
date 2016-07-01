@@ -1,53 +1,52 @@
 ﻿<hr />
-<div class="panel panel-primary note-panel">
+<div class="panel panel-primary">
     <div class="panel-heading">
-        <h3 class="panel-title">Customers</h3>
-
+        <h3 class="panel-title" style="margin-bottom:10px">Customers</h3>
         <label class="radio-inline">
-            <input type="radio" name="optradio" value="naturalPerson" ng-model="customerType">Natural Persons
+            <input type="radio" name="optradio" value="naturalPerson" ng-model="customerType">Natural
         </label>
         <label class="radio-inline">
-            <input type="radio" name="optradio" value="juridicalPerson" ng-model="customerType">Juridical Persons
+            <input type="radio" name="optradio" value="juridicalPerson" ng-model="customerType">Juridical
         </label>
     </div>
     <div class="table-responsive">
-        <table id="note-table" class="table table-condensed table-striped table-hover table-bordered" ng-show="customerType == 'naturalPerson'">
+        <table id="customer-table" class="table table-condensed table-striped table-hover table-bordered" ng-show="customerType == 'naturalPerson'">
             <thead>
-                <tr class="filters bg-primary">
-                    <th style="min-width:95px;text-align:center">
+                <tr>
+                    <th style="min-width:40px;width:10%;">
                         First Name
                     </th>
-                    <th style="min-width:98px;text-align:center">
+                    <th style="min-width:40px;width:10%;">
                         Middle Name
                     </th>
-                    <th style="min-width:98px;text-align:center">
+                    <th style="min-width:40px;width:10%;">
                         Last Name
                     </th>
-                    <th style="min-width:98px;text-align:center">
+                    <th style="min-width:40px;width:10%;">
                         SSN
                     </th>
-                    <th style="min-width:98px;text-align:center">
+                    <th style="min-width:120px;width:10%;">
                         Birthdate
                     </th>
-                    <th style="min-width:98px;text-align:center">
+                    <th style="min-width:40px;width:10%;">
                         Country
                     </th>
-                    <th style="min-width:98px;text-align:center">
+                    <th style="min-width:40px;width:10%;">
                         Region
                     </th>
-                    <th style="min-width:98px;text-align:center">
+                    <th style="min-width:40px;width:10%;">
                         City
                     </th>
-                    <th style="min-width:98px;text-align:center">
+                    <th style="min-width:40px;width:10%;">
                         Street Address
                     </th>
-                    <th style="min-width:98px;text-align:center">
+                    <th style="min-width:40px;width:10%;">
                         Postal Code
                     </th>
-                    <th>
-                        <div class="btn-group btn-group-justified">
-                            <a ng-href="#/customers/natural-person/add" class="btn btn-default">
-                                Add <span class="glyphicon glyphicon-plus"></span>
+                    <th style="min-width:115px;">
+                        <div class="btn-group btn-group-justified btn-group-sm">
+                            <a ng-href="#/customers/natural-person/add" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-plus"></span>
                             </a>
                         </div>
                     </th>
@@ -56,45 +55,45 @@
 
             <tbody>
                 <tr ng-repeat="naturalPerson in naturalPersons">
-                    <td>
+                    <td class="text-column" style="max-width:0px;">
                         {{naturalPerson.firstName}}
                     </td>
-                    <td>
+                    <td class="text-column" style="max-width:0px;">
                         {{naturalPerson.middleName}}
                     </td>
-                    <td>
+                    <td class="text-column" style="max-width:0px;">
                         {{naturalPerson.lastName}}
                     </td>
-                    <td>
+                    <td class="text-column" style="max-width:0px;">
                         {{naturalPerson.ssn}}
                     </td>
-                    <td>
+                    <td class="text-center" style="max-width:0px;">
                         {{naturalPerson.birthdate}}
                     </td>
-                    <td>
+                    <td class="text-column" style="max-width:0px;">
                         {{naturalPerson.country}}
                     </td>
-                    <td>
+                    <td class="text-column" style="max-width:0px;">
                         {{naturalPerson.region}}
                     </td>
-                    <td>
+                    <td class="text-column" style="max-width:0px;">
                         {{naturalPerson.city}}
                     </td>
-                    <td>
+                    <td class="text-column" style="max-width:0px;">
                         {{naturalPerson.streetAddress}}
                     </td>
-                    <td>
+                    <td class="text-column" style="max-width:0px;">
                         {{naturalPerson.postalCode}}
                     </td>
                     <td>
                         <div class="btn-group btn-group-justified btn-group-sm">
-                            <a ng-href="#/customers/natural-person/edit/{{naturalPerson.id}}" class="btn btn-default">
+                            <a ng-href="#/customers/natural-person/edit/{{naturalPerson.id}}" class="btn btn-primary">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
-                            <a ng-href="#/customers/natural-person/{{naturalPerson.id}}" class="btn btn-default">
+                            <a ng-href="#/customers/natural-person/{{naturalPerson.id}}" class="btn btn-primary">
                                 <span class="glyphicon glyphicon-info-sign"></span>
                             </a>
-                            <a class="btn btn-default" ng-click="removeNaturalPerson($index)">
+                            <a class="btn btn-primary" ng-click="removeNaturalPerson($index)">
                                 <span class="glyphicon glyphicon-remove"></span>
                             </a>
                         </div>
@@ -103,34 +102,34 @@
             </tbody>
         </table>
 
-        <table id="note-table" class="table table-condensed table-striped table-hover table-bordered" ng-show="customerType == 'juridicalPerson'">
+        <table class="table table-condensed table-striped table-hover table-bordered" ng-show="customerType == 'juridicalPerson'">
             <thead>
-                <tr class="filters bg-primary">
-                    <th style="min-width:130px;text-align:center">
+                <tr>
+                    <th style="min-width:60px;width:20%;">
                         Legal Name
                     </th>
-                    <th style="min-width:130px;text-align:center">
+                    <th style="min-width:60px;width:10%;">
                         TIN
                     </th>
-                    <th style="min-width:130px;text-align:center">
+                    <th style="min-width:60px;width:15%;">
                         Country
                     </th>
-                    <th style="min-width:130px;text-align:center">
+                    <th style="min-width:60px;width:15%;">
                         Region
                     </th>
-                    <th style="min-width:130px;text-align:center">
+                    <th style="min-width:60px;width:15%;">
                         City
                     </th>
-                    <th style="min-width:130px;text-align:center">
+                    <th style="min-width:60px;width:15%;">
                         Street Address
                     </th>
-                    <th style="min-width:130px;text-align:center">
+                    <th style="min-width:60px;width:10%;">
                         Postal Code
                     </th>
-                    <th style="">
-                        <div class="btn-group btn-group-justified">
-                            <a ng-href="#/customers/juridical-person/add" class="btn btn-default">
-                                Add <span class="glyphicon glyphicon-plus"></span>
+                    <th style="min-width:115px;">
+                        <div class="btn-group btn-group-justified btn-group-sm">
+                            <a ng-href="#/customers/juridical-person/add" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-plus"></span>
                             </a>
                         </div>
                     </th>
@@ -139,36 +138,36 @@
 
             <tbody>
                 <tr ng-repeat="juridicalPerson in juridicalPersons">
-                    <td>
+                    <td class="text-column" style="max-width:0px;">
                         {{juridicalPerson.legalName}}
                     </td>
-                    <td>
+                    <td class="text-column" style="max-width:0px;">
                         {{juridicalPerson.tin}}
                     </td>
-                    <td>
+                    <td class="text-column" style="max-width:0px;">
                         {{juridicalPerson.country}}
                     </td>
-                    <td>
+                    <td class="text-column" style="max-width:0px;">
                         {{juridicalPerson.region}}
                     </td>
-                    <td>
+                    <td class="text-column" style="max-width:0px;">
                         {{juridicalPerson.city}}
                     </td>
-                    <td>
+                    <td class="text-column" style="max-width:0px;">
                         {{juridicalPerson.streetAddress}}
                     </td>
-                    <td>
+                    <td class="text-column" style="max-width:0px;">
                         {{juridicalPerson.postalCode}}
                     </td>
                     <td>
                         <div class="btn-group btn-group-justified btn-group-sm">
-                            <a ng-href="#/customers/juridical-person/edit/{{juridicalPerson.id}}" class="btn btn-default">
+                            <a ng-href="#/customers/juridical-person/edit/{{juridicalPerson.id}}" class="btn btn-primary">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
-                            <a ng-href="#/customers/juridical-person/{{juridicalPerson.id}}" class="btn btn-default">
+                            <a ng-href="#/customers/juridical-person/{{juridicalPerson.id}}" class="btn btn-primary">
                                 <span class="glyphicon glyphicon-info-sign"></span>
                             </a>
-                            <a class="btn btn-default" ng-click="removeJuridicalPerson($index)">
+                            <a class="btn btn-primary" ng-click="removeJuridicalPerson($index)">
                                 <span class="glyphicon glyphicon-remove"></span>
                             </a>
                         </div>
