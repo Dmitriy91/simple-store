@@ -65,7 +65,6 @@ namespace Assignment.Web.Controllers
             if (_productService.UpdateProduct(product))
             {
                 await _productService.CommitAsync();
-
                 return Ok();
             }
 

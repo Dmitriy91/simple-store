@@ -12,11 +12,17 @@ namespace Assignment.Data
         { }
 
         public virtual IDbSet<Customer> Customers { get; set; }
+
         public virtual IDbSet<JuridicalPerson> JuridicalPersons { get; set; }
+
         public virtual IDbSet<NaturalPerson> NaturalPersons { get; set; }
+
         public virtual IDbSet<OrderDetails> OrderDetails { get; set; }
+
         public virtual IDbSet<Order> Orders { get; set; }
+
         public virtual IDbSet<Product> Products { get; set; }
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();

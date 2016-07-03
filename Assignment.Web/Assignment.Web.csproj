@@ -290,6 +290,12 @@
     <Content Include="Scripts\app\home\root.controller.js" />
     <Content Include="Scripts\app\modules\app.core.module.js" />
     <Content Include="Scripts\app\modules\app.layout.module.js" />
+    <Content Include="Scripts\app\orders\add.html" />
+    <Content Include="Scripts\app\orders\edit.html" />
+    <Content Include="Scripts\app\orders\orders-add.controller.js" />
+    <Content Include="Scripts\app\orders\orders-edit.controller.js" />
+    <Content Include="Scripts\app\orders\orders.controller.js" />
+    <Content Include="Scripts\app\orders\orders.html" />
     <Content Include="Scripts\app\products\add.html" />
     <Content Include="Scripts\app\products\details.html" />
     <Content Include="Scripts\app\products\edit.html" />
@@ -332,6 +338,7 @@
     <Content Include="Scripts\vendors\respond.src.js" />
     <Content Include="Scripts\vendors\toastr.js" />
     <None Include="Scripts\_references.js" />
+    <Content Include="Views\Index.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -341,7 +348,6 @@
     </Content>
     <Content Include="Content\css\site.css" />
     <Content Include="Views\Web.config" />
-    <Content Include="Views\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>

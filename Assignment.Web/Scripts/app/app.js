@@ -77,6 +77,21 @@
                 controller: 'CustomersEditNaturalPersonController',
                 resolve: { isLoggedIn: isLoggedIn }
             })
+            .when('/orders', {
+                templateUrl: '/scripts/app/orders/orders.html',
+                controller: 'OrdersController',
+                resolve: { isLoggedIn: isLoggedIn }
+            })
+            .when('/orders/add/:id', {
+                templateUrl: '/scripts/app/orders/add.html',
+                controller: 'OrdersAddController',
+                resolve: { isLoggedIn: isLoggedIn }
+            })
+            .when('/orders/edit/:orderId/customer/:customerId', {
+                templateUrl: '/scripts/app/orders/edit.html',
+                controller: 'OrdersEditController',
+                resolve: { isLoggedIn: isLoggedIn }
+            })
             .otherwise({ redirectTo: '/' });
     }
 

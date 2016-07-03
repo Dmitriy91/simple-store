@@ -21,9 +21,9 @@ namespace Assignment.Services
 
         bool UpdateNaturalPerson(NaturalPerson naturalPerson);
 
-        void AddJuridicalPerson(JuridicalPerson juridicalPerson);
+        bool AddJuridicalPerson(JuridicalPerson juridicalPerson);
 
-        void AddNaturalPerson(NaturalPerson naturalPerson);
+        bool AddNaturalPerson(NaturalPerson naturalPerson);
 
         Task CommitAsync();
 

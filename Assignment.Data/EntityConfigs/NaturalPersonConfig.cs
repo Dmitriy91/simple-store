@@ -19,6 +19,8 @@ namespace Assignment.Data.EntityConfigs
                 .HasMaxLength(32);
             Property(np => np.SSN)
                 .HasMaxLength(32);
+            Property(np => np.Birthdate)
+                .HasColumnType("date");
         }
     }
 }

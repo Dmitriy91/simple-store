@@ -74,40 +74,61 @@ namespace Assignment.Services
 
         public bool UpdateJuridicalPerson(JuridicalPerson juridicalPerson)
         {
-            bool jpExists = _juridicalPersonRepo.Exists(jp => jp.CustomerId == juridicalPerson.CustomerId);
+            bool jpExists = _juridicalPersonRepo.Exists(jp => 
+                jp.CustomerId != juridicalPerson.CustomerId &&
+                jp.TIN == juridicalPerson.TIN);
 
-            if (jpExists)
-            {
-                _customerRepo.Update(juridicalPerson.Customer);
-                _juridicalPersonRepo.Update(juridicalPerson);
-                return true;
-            }
+            if (jpExists) // TIN is occupied
+                return false;
 
-            return false;
+            _customerRepo.Update(juridicalPerson.Customer);
+            _juridicalPersonRepo.Update(juridicalPerson);
+
+            return true;
         }
 
         public bool UpdateNaturalPerson(NaturalPerson naturalPerson)
         {
-            bool npExists = _naturalPersonRepo.Exists(np => np.CustomerId == naturalPerson.CustomerId);
+            bool npExists = _naturalPersonRepo.Exists(np =>
+                np.CustomerId != naturalPerson.CustomerId &&
+                np.FirstName == naturalPerson.FirstName &&
+                np.LastName == naturalPerson.LastName &&
+                np.MiddleName == naturalPerson.MiddleName);
 
             if (npExists)
-            {
-                _customerRepo.Update(naturalPerson.Customer);
-                _naturalPersonRepo.Update(naturalPerson);
-                return true;
-            }
+                return false;
 
-            return false;
+            _customerRepo.Update(naturalPerson.Customer);
+            _naturalPersonRepo.Update(naturalPerson);
+
+            return true;
         }
 
-        public void AddJuridicalPerson(JuridicalPerson juridicalPerson)
+        public bool AddJuridicalPerson(JuridicalPerson juridicalPerson)
         {
+            bool jpExists = _juridicalPersonRepo.Exists(jp => jp.TIN == juridicalPerson.TIN);
+
+            if (jpExists)
+                return false;
+
             _juridicalPersonRepo.Add(juridicalPerson);
+
+            return true;
         }
 
-        public void AddNaturalPerson(NaturalPerson naturalPerson)
+        public bool AddNaturalPerson(NaturalPerson naturalPerson)
         {
+            bool npExists = _naturalPersonRepo.Exists(np => 
+                np.FirstName == naturalPerson.FirstName &&
+                np.LastName == naturalPerson.LastName &&
+                np.MiddleName == naturalPerson.MiddleName);
+
+            if (npExists)
+                return false;
+
             _naturalPersonRepo.Add(naturalPerson);
+
+            return true;
         }
 
         async public Task CommitAsync()

@@ -15,7 +15,7 @@ namespace Assignment.Services
 
         bool UpdateOrder(Order order);
 
-        void AddOrder(Order order);
+        bool AddOrder(Order order);
 
         Task CommitAsync();
 

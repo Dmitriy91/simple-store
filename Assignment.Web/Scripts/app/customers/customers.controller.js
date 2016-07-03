@@ -13,8 +13,11 @@
         $scope.removeJuridicalPerson = removeJuridicalPerson;
         activate();
 
-        function loadCustomers() {
+        function loadJuridicalPersons() {
             dataService.get('/api/customers/juridical-persons', null, loadJuridicalPersonsSucceeded, loadJuridicalPersonsFailed);
+        }
+
+        function loadNaturalPersons() {
             dataService.get('/api/customers/natural-persons', null, loadNaturalPersonsSucceeded, loadNaturalPersonsFailed);
         }
 
@@ -37,28 +40,38 @@
         }
 
         function removeJuridicalPerson(inx) {
-            var PersonId = $scope.juridicalPersons[inx].id;
+            var personId = $scope.juridicalPersons[inx].id;
 
-            dataService.post('/api/customers/delete/' + PersonId, null, removePersonSucceeded, removePersonFailed);
+            dataService.post('/api/customers/delete/' + personId, null, removeJuridicalPersonSucceeded, removeJuridicalPersonFailed);
         }
 
-        function removeNaturalPerson(inx) {
-            var PersonId = $scope.naturalPersons[inx].id;
-
-            dataService.post('/api/customers/delete/' + PersonId, null, removePersonSucceeded, removePersonFailed);
-        }
-
-        function removePersonFailed(response) {
+        function removeJuridicalPersonFailed(response) {
             notificationService.displayError('Unauthorised action detected.');
         }
 
-        function removePersonSucceeded(response) {
-            $route.reload();
+        function removeJuridicalPersonSucceeded(response) {
+            loadJuridicalPersons();
+            notificationService.displaySuccess('Customer has been successfuly removed.');
+        }
+
+        function removeNaturalPerson(inx) {
+            var personId = $scope.naturalPersons[inx].id;
+
+            dataService.post('/api/customers/delete/' + personId, null, removeNaturalPersonSucceeded, removeNaturalPersonFailed);
+        }
+
+        function removeNaturalPersonFailed(response) {
+            notificationService.displayError('Unauthorised action detected.');
+        }
+
+        function removeNaturalPersonSucceeded(response) {
+            loadNaturalPersons();
             notificationService.displaySuccess('Customer has been successfuly removed.');
         }
 
         function activate() {
-            loadCustomers();
+            loadJuridicalPersons();
+            loadNaturalPersons();
         }
     }
 })(angular.module('app.core'));

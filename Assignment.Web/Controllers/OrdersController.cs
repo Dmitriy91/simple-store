@@ -2,6 +2,7 @@
 using Assignment.Services;
 using Assignment.Web.Models;
 using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -24,13 +25,13 @@ namespace Assignment.Web.Controllers
         #endregion
 
         #region Actions
-        // GET: api/orders/customer/1
-        [Route("orders/{id:int:min(1)}")]
-        public async Task<IHttpActionResult> GetOrdersByCustomer(int id)
+        // GET: api/orders/1
+        [Route("{customerId:int:min(1)}")]
+        public async Task<IHttpActionResult> GetOrdersByCustomer(int customerId)
         {
             IEnumerable<Order> orders = await Task<IEnumerable<Order>>.Run(() =>
             {
-                return _orderService.GetOrdersByCustomerId(id);
+                return _orderService.GetOrdersByCustomerId(customerId);
             });
 
             IEnumerable<OrderDto> ordersDtos = Mapper.Map<IEnumerable<Order>, IEnumerable<OrderDto>>(orders);
@@ -52,7 +53,7 @@ namespace Assignment.Web.Controllers
             return Ok(orderDto);
         }
 
-        // POST: api/orders/update/1
+        // POST: api/orders/update
         [HttpPost]
         [Route("update")]
         public async Task<IHttpActionResult> Update([FromBody]OrderBindingModel orderBindingModel)
@@ -65,7 +66,6 @@ namespace Assignment.Web.Controllers
             if (_orderService.UpdateOrder(order))
             {
                 await _orderService.CommitAsync();
-
                 return Ok();
             }
 
@@ -82,10 +82,13 @@ namespace Assignment.Web.Controllers
 
             Order order = Mapper.Map<OrderBindingModel, Order>(orderBindingModel);
 
-            _orderService.AddOrder(order);
-            await _orderService.CommitAsync();
+            if (_orderService.AddOrder(order))
+            {
+                await _orderService.CommitAsync();
+                return Ok();
+            }
 
-            return Ok();
+            return BadRequest();
         }
 
         // POST: api/orders/delete/1
@@ -96,11 +99,10 @@ namespace Assignment.Web.Controllers
             if (_orderService.RemoveOrderById(id))
             {
                 await _orderService.CommitAsync();
-
                 return Ok();
             }
 
-            return BadRequest();
+            return BadRequest("Ordered product can not be deleted!");
         }
         #endregion
 

@@ -10,13 +10,17 @@ namespace Assignment.Services
     {
         #region Fields
         private IRepository<Product> _productRepo;
+        private IRepository<OrderDetails> _orderDetailsRepo;
         private IUnitOfWork _unitOfWork;
         #endregion
 
         #region Constructors
-        public ProductService(IRepository<Product> productRepo, IUnitOfWork unitOfWork)
+        public ProductService(IRepository<Product> productRepo,
+            IRepository<OrderDetails> orderDetailsRepo,
+            IUnitOfWork unitOfWork)
         {
             _productRepo = productRepo;
+            _orderDetailsRepo = orderDetailsRepo;
             _unitOfWork = unitOfWork;
         }
         #endregion
@@ -35,8 +39,9 @@ namespace Assignment.Services
         public bool RemoveProductById(int productId)
         {
             bool productExists = _productRepo.Exists(p => p.Id == productId);
+            bool productIsOrdered = _orderDetailsRepo.Exists(od => od.ProductId == productId);
 
-            if (productExists)
+            if (productExists && !productIsOrdered)
             {
                 _productRepo.Delete(new Product { Id = productId });
                 return true;

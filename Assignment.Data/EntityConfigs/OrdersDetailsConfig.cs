@@ -8,6 +8,8 @@ namespace Assignment.Data.EntityConfigs
         public OrdersDetailsConfig()
         {
             HasKey(od => new { od.OrderId, od.ProductId });
+            HasRequired(od => od.Order)
+                .WithMany(o => o.OrderDetails);
         }
     }
 }

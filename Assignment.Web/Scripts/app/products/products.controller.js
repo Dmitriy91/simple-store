@@ -11,7 +11,7 @@
         activate();
 
         function loadProducts() {
-            dataService.get('/api/products', null, loadProductsSucceeded, loadProductsFailed)
+            dataService.get('/api/products', null, loadProductsSucceeded, loadProductsFailed);
         }
 
         function loadProductsSucceeded(response) {
@@ -26,7 +26,7 @@
         function removeProduct(inx) {
             var productId = $scope.products[inx].id;
 
-            dataService.post('/api/products/delete/' + productId, null, removeProductSucceeded, removeProductFailed)
+            dataService.post('/api/products/delete/' + productId, null, removeProductSucceeded, removeProductFailed);
         }
 
         function removeProductFailed(response) {

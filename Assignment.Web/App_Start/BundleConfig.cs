@@ -41,8 +41,10 @@ namespace Assignment.Web
                 "~/Scripts/app/customers/customers-details-natural-person.controller.js",
                 "~/Scripts/app/customers/customers-edit-juridical-person.controller.js",
                 "~/Scripts/app/customers/customers-edit-natural-person.controller.js",
-                "~/Scripts/app/components/compare-to.directive.js",
-                "~/Scripts/app/config/note-date-picker-config.js"));
+                "~/Scripts/app/orders/orders.controller.js",
+                "~/Scripts/app/orders/orders-add.controller.js",
+                "~/Scripts/app/orders/orders-edit.controller.js",
+                "~/Scripts/app/components/compare-to.directive.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/css/bootstrap-themes/bootstrap.flatly.css",

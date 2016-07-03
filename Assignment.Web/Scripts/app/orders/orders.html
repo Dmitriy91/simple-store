@@ -1,0 +1,166 @@
+﻿<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading"> 
+                <h3 class="panel-title" style="margin-bottom:10px">Customers</h3>
+                <label class="radio-inline">
+                    <input type="radio" name="optradio" ng-click="selectCustomerType('naturalPerson')" checked="checked">Natural
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="optradio" ng-click="selectCustomerType('juridicalPerson')">Juridical
+                </label>
+            </div>
+            <div class="table-responsive">
+                <table id="customer-table" class="table table-condensed table-striped table-hover table-bordered" ng-show="customerType == 'naturalPerson'">
+                    <thead>
+                        <tr>
+                            <th style="min-width:40px;width:33%;">
+                                First Name
+                            </th>
+                            <th style="min-width:40px;width:33%;">
+                                Last Name
+                            </th>
+                            <th style="min-width:40px;width:33%;">
+                                Middle Name
+                            </th>
+                        </tr>
+                    </thead> 
+
+                    <tbody>
+                        <tr ng-repeat="naturalPerson in naturalPersons" ng-click="selectCustomer(naturalPerson.id)" ng-class="{success: naturalPerson.id === selectedCustomerId}">
+                            <td class="text-column" style="max-width:0px;">
+                                {{naturalPerson.firstName}}
+                            </td>
+                            <td class="text-column" style="max-width:0px;">
+                                {{naturalPerson.lastName}}
+                            </td>
+                            <td class="text-column" style="max-width:0px;">
+                                {{naturalPerson.middleName}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="table table-condensed table-striped table-hover table-bordered" ng-show="customerType == 'juridicalPerson'">
+                    <thead>
+                        <tr>
+                            <th style="min-width:60px;width:50%;">
+                                Legal Name
+                            </th>
+                            <th style="min-width:60px;width:50%;">
+                                TIN
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="juridicalPerson in juridicalPersons" ng-click="selectCustomer(juridicalPerson.id)" ng-class="{success: juridicalPerson.id === selectedCustomerId}">
+                            <td class="text-column" style="max-width:0px;">
+                                {{juridicalPerson.legalName}}
+                            </td>
+                            <td class="text-column" style="max-width:0px;">
+                                {{juridicalPerson.tin}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Orders</h3>
+            </div>
+            <div class="table-responsive">
+                <table id="order-table" class="table table-condensed table-striped table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="min-width:40px;width:50%;">
+                                #
+                            </th>
+                            <th style="min-width:40px;width:50%;">
+                                Order Date
+                            </th>
+                            <th style="min-width:100px;">
+                                <div class="btn-group btn-group-justified btn-group-sm">
+                                    <a ng-href="#/orders/add/{{selectedCustomerId}}" ng-show="selectedCustomerId !== 0" class="btn btn-primary">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </a>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="order in orders" ng-click="selectOrder(order.id, order.orderDetails)" ng-class="{success: order.id === selectedOrderId}">
+                            <td class="text-column text-center" style="max-width:0px;">
+                                {{order.id}}
+                            </td>
+                            <td class="text-column text-center" style="max-width:0px;">
+                                {{order.orderDate}}
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-justified btn-group-sm">
+                                    <a ng-href="#/orders/edit/{{order.id}}/customer/{{selectedCustomerId}}" class="btn btn-primary">
+                                        <span class="glyphicon glyphicon-edit"></span>
+                                    </a>
+                                    <a class="btn btn-primary" ng-click="removeOrder($index)">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-lg-offset-6 col-md-offset-6 col-sm-offset-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Order Details</h3>
+            </div>
+            <div class="table-responsive">
+                <table id="order-details-table" class="table table-condensed table-striped table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="min-width:40px;width:40%;">
+                                Product Name
+                            </th>
+                            <th style="min-width:40px;width:20%;">
+                                Quantity
+                            </th>
+                            <th style="min-width:40px;width:20%;">
+                                Unit Price
+                            </th>
+                            <th style="min-width:40px;width:20%;">
+                                Total Cost
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="orderItem in orderItems">
+                            <td class="text-column text-center" style="max-width:0px;">
+                                {{orderItem.productName}}
+                            </td>
+                            <td class="text-column text-center" style="max-width:0px;">
+                                {{orderItem.quantity}}
+                            </td>
+                            <td class="text-column text-center" style="max-width:0px;">
+                                {{orderItem.unitPrice | currency:'$'}}
+                            </td>
+                            <td class="text-column text-center" style="max-width:0px;">
+                                {{orderItem.unitPrice * orderItem.quantity | currency:'$'}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

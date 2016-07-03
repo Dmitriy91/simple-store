@@ -26,10 +26,6 @@ namespace Assignment.Web.Infrastructure.Mappings
                 {
                     opts.MapFrom(src => Mapper.Map<JuridicalPersonBindingModel, Customer>(src));
                 });
-                //.AfterMap((jpbm, jp) =>
-                //{
-                //    jp.Customer.JuridicalPerson = jp;
-                //});
 
             // NaturalPerson
             CreateMap<NaturalPersonBindingModel, Customer>();
@@ -41,17 +37,13 @@ namespace Assignment.Web.Infrastructure.Mappings
                 {
                     opts.MapFrom(src => Mapper.Map<NaturalPersonBindingModel, Customer>(src));
                 });
-                //.AfterMap((npbm, np) => 
-                //{
-                //    np.Customer.NaturalPerson = np;
-                //});
 
             // Order
             CreateMap<OrderBindingModel.Details, OrderDetails>();
             CreateMap<OrderBindingModel, Order>()
                 .ForMember(dest => dest.OrderDetails, opts =>
                 {
-                    opts.MapFrom(src => Mapper.Map<IList<OrderBindingModel.Details>, IList<OrderDetails>>(src.OrderDetails));
+                    opts.MapFrom(src => Mapper.Map<IEnumerable<OrderBindingModel.Details>, IEnumerable<OrderDetails>>(src.OrderDetails));
                 });
         }
     }

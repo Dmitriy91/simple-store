@@ -68,6 +68,10 @@ namespace Assignment.Web
                 .As<IProductService>()
                 .InstancePerRequest();
 
+            builder.RegisterType<OrderService>()
+                .As<IOrderService>()
+                .InstancePerRequest();
+
             Container = builder.Build();
 
             return Container;

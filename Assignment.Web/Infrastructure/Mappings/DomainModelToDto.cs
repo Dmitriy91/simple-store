@@ -38,11 +38,13 @@ namespace Assignment.Web.Infrastructure.Mappings
             CreateMap<Product, ProductDto>();
 
             // Order
-            CreateMap<OrderDetails, OrderDto.Details>();
+            CreateMap<OrderDetails, OrderDto.Details>()
+                .ForMember(dest => dest.ProductName, opts => opts.MapFrom(src => (src.Product == null) ? "Product has been removed." : src.Product.ProductName));
             CreateMap<Order, OrderDto>()
+                .ForMember(dest => dest.OrderDate, opts => opts.MapFrom(src => (src.OrderDate.ToString("yyyy-MM-dd"))))
                 .ForMember(dest => dest.OrderDetails, opts =>
                 {
-                    opts.MapFrom(src => Mapper.Map<IList<OrderDetails>, IList<OrderDto.Details>>(src.OrderDetails));
+                    opts.MapFrom(src => Mapper.Map<IEnumerable<OrderDetails>, IEnumerable<OrderDto.Details>>(src.OrderDetails));
                 });
         }
     }

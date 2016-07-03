@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Assignment.Data;
 using System.Data.Entity;
 using System.Linq;
+using System;
 
 namespace Assignment.Services
 {
@@ -13,14 +14,22 @@ namespace Assignment.Services
         #region Fields
         private IRepository<Order> _orderRepo;
         private IRepository<OrderDetails> _orderDetailsRepo;
+        private IRepository<Product> _productRepo;
+        private IRepository<Customer> _customerRepo;
         private IUnitOfWork _unitOfWork;
         #endregion
 
         #region Constructors
-        public OrderService(IRepository<Order> orderRepo, IRepository<OrderDetails> orderDetailsRepo, IUnitOfWork unitOfWork)
+        public OrderService(IRepository<Order> orderRepo,
+            IRepository<OrderDetails> orderDetailsRepo,
+            IRepository<Product> productRepo,
+            IRepository<Customer> customerRepo,
+            IUnitOfWork unitOfWork)
         {
             _orderDetailsRepo = orderDetailsRepo;
             _orderRepo = orderRepo;
+            _productRepo = productRepo;
+            _customerRepo = customerRepo;
             _unitOfWork = unitOfWork;
         }
         #endregion
@@ -35,9 +44,12 @@ namespace Assignment.Services
 
         public IEnumerable<Order> GetOrdersByCustomerId(int customerId)
         {
-            return _orderRepo.GetAll()
-                .Include(o => o.OrderDetails)
-                .Where(o => o.CustomerId == customerId);
+            IEnumerable<Order> orders = _orderRepo.GetAll()
+                .Include(o => o.OrderDetails.Select(od => od.Product)) // Note: Should be optimized
+                .Where(o => o.CustomerId == customerId)
+                .ToList();
+
+            return orders;
         }
 
         public bool RemoveOrderById(int orderId)
@@ -55,22 +67,63 @@ namespace Assignment.Services
 
         public bool UpdateOrder(Order order)
         {
-            bool orderExists = _orderRepo.Exists(o => o.Id == order.Id);
+            if (order.OrderDetails == null || order.OrderDetails.Count == 0)
+                return false;
+
+            bool orderExists = _orderRepo.Exists(o =>
+                o.Id == order.Id &&
+                o.CustomerId == order.CustomerId);
 
             if (!orderExists)
                 return false;
 
-            if (order.OrderDetails != null)
-                _orderDetailsRepo.Update(order.OrderDetails.ToArray());
+            _orderDetailsRepo.Delete(od => od.OrderId == order.Id);
+            _unitOfWork.Commit();
 
-            _orderRepo.Update(order);
+            foreach (OrderDetails orderItem in order.OrderDetails)
+            {
+                Product product = _productRepo.GetById(orderItem.ProductId);
+
+                if (product != null)
+                {
+                    orderItem.ProductId = product.Id;
+                    orderItem.OrderId = order.Id;
+                    orderItem.UnitPrice = product.UnitPrice;
+                }
+            }
+
+            _orderDetailsRepo.Add(order.OrderDetails.ToArray());
 
             return true;
         }
 
-        public void AddOrder(Order order)
+        public bool AddOrder(Order order)
         {
+            if (order.OrderDetails == null || order.OrderDetails.Count == 0)
+                return false;
+
+            bool customerExists = _customerRepo.Exists(c => c.Id == order.CustomerId);
+
+            if (!customerExists)
+                return false;
+
+            order.OrderDate = DateTime.Now;
+
+            foreach (OrderDetails orderItem in order.OrderDetails)
+            {
+                Product product = _productRepo.GetById(orderItem.ProductId);
+
+                if (product != null)
+                {
+                    orderItem.UnitPrice = product.UnitPrice;
+                    orderItem.Order = order;
+                    orderItem.Product = product;
+                }
+            }
+
             _orderRepo.Add(order);
+
+            return true;
         }
 
         async public Task CommitAsync()

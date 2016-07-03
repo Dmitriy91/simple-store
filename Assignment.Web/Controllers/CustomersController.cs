@@ -93,7 +93,6 @@ namespace Assignment.Web.Controllers
             if (_customerService.UpdateJuridicalPerson(juridicalPerson))
             {
                 await _customerService.CommitAsync();
-
                 return Ok();
             }
 
@@ -113,7 +112,6 @@ namespace Assignment.Web.Controllers
             if (_customerService.UpdateNaturalPerson(naturalPerson))
             {
                 await _customerService.CommitAsync();
-
                 return Ok();
             }
 
@@ -130,10 +128,13 @@ namespace Assignment.Web.Controllers
 
             JuridicalPerson juridicalPerson = Mapper.Map<JuridicalPersonBindingModel, JuridicalPerson>(juridicalPersonBindingModel);
 
-            _customerService.AddJuridicalPerson(juridicalPerson);
-            await _customerService.CommitAsync();
+            if (_customerService.AddJuridicalPerson(juridicalPerson))
+            {
+                await _customerService.CommitAsync();
+                return Ok();
+            }
 
-            return Ok();
+            return BadRequest();
         }
 
         // POST: api/customers/natural-person/add
@@ -146,10 +147,13 @@ namespace Assignment.Web.Controllers
 
             NaturalPerson naturalPerson = Mapper.Map<NaturalPersonBindingModel, NaturalPerson>(naturalPersonBindingModel);
 
-            _customerService.AddNaturalPerson(naturalPerson);
-            await _customerService.CommitAsync();
+            if (_customerService.AddNaturalPerson(naturalPerson))
+            {
+                await _customerService.CommitAsync();
+                return Ok();
+            }
 
-            return Ok();
+            return BadRequest();
         }
 
         // POST: api/customers/delete/1
