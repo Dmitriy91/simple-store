@@ -86,13 +86,12 @@ namespace Assignment.Services
 
                 if (product != null)
                 {
-                    orderItem.ProductId = product.Id;
                     orderItem.OrderId = order.Id;
+                    orderItem.Product = product;
                     orderItem.UnitPrice = product.UnitPrice;
+                    _orderDetailsRepo.Add(orderItem);
                 }
             }
-
-            _orderDetailsRepo.Add(order.OrderDetails.ToArray());
 
             return true;
         }
