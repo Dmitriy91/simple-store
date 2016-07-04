@@ -5,6 +5,7 @@ namespace Assignment.Web.Models
 {
     public class OrderBindingModel
     {
+        [Range(0, int.MaxValue)]
         public int Id { get; set; }
 
         [Required, Range(0, int.MaxValue)]

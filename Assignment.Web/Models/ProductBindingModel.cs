@@ -14,6 +14,6 @@ namespace Assignment.Web.Models
         public decimal UnitPrice { get; set; }
 
         [Range(0, int.MaxValue)]
-        public int? UnitsInStock { get; set; }
+        public int UnitsInStock { get; set; }
     }
 }
