@@ -34,9 +34,9 @@ namespace Assignment.Web.Controllers
                 return _orderService.GetOrdersByCustomerId(customerId);
             });
 
-            IEnumerable<OrderDto> ordersDtos = Mapper.Map<IEnumerable<Order>, IEnumerable<OrderDto>>(orders);
+            IEnumerable<OrderDto> orderDtos = Mapper.Map<IEnumerable<Order>, IEnumerable<OrderDto>>(orders);
 
-            return Ok(ordersDtos);
+            return Ok(orderDtos);
         }
 
         // GET: api/orders/details/1

@@ -95,7 +95,6 @@ namespace Assignment.Web.Controllers
             if (_productService.RemoveProductById(id))
             {
                 await _productService.CommitAsync();
-
                 return Ok();
             }
 

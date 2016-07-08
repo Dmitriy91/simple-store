@@ -64,7 +64,7 @@
     <Compile Include="EntityConfigs\JuridicalPersonConfig.cs" />
     <Compile Include="EntityConfigs\NaturalPersonConfig.cs" />
     <Compile Include="EntityConfigs\OrderConfig.cs" />
-    <Compile Include="EntityConfigs\OrdersDetailsConfig.cs" />
+    <Compile Include="EntityConfigs\OrderDetailsConfig.cs" />
     <Compile Include="EntityConfigs\ProductConfig.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

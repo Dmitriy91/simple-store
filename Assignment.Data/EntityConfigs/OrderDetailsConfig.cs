@@ -3,9 +3,9 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Assignment.Data.EntityConfigs
 {
-    public class OrdersDetailsConfig : EntityTypeConfiguration<OrderDetails>
+    public class OrderDetailsConfig : EntityTypeConfiguration<OrderDetails>
     {
-        public OrdersDetailsConfig()
+        public OrderDetailsConfig()
         {
             HasKey(od => new { od.OrderId, od.ProductId });
             HasRequired(od => od.Order)

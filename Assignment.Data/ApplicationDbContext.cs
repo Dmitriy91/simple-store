@@ -8,7 +8,7 @@ namespace Assignment.Data
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("AssignmentDbConnection1", throwIfV1Schema: false)
+            : base("AssignmentDbConnection", throwIfV1Schema: false)
         { }
 
         public virtual IDbSet<Customer> Customers { get; set; }
@@ -33,7 +33,7 @@ namespace Assignment.Data
             modelBuilder.Configurations.Add(new JuridicalPersonConfig());
             modelBuilder.Configurations.Add(new NaturalPersonConfig());
             modelBuilder.Configurations.Add(new CustomerConfig());
-            modelBuilder.Configurations.Add(new OrdersDetailsConfig());
+            modelBuilder.Configurations.Add(new OrderDetailsConfig());
             modelBuilder.Configurations.Add(new OrderConfig());
             modelBuilder.Configurations.Add(new ProductConfig());
             base.OnModelCreating(modelBuilder);

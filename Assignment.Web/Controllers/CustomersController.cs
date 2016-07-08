@@ -164,7 +164,6 @@ namespace Assignment.Web.Controllers
             if (_customerService.RemovePersonById(id))
             {
                 await _customerService.CommitAsync();
-
                 return Ok();
             }
 

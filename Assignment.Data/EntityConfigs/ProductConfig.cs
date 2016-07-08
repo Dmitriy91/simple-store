@@ -10,10 +10,10 @@ namespace Assignment.Data.EntityConfigs
             Property(p => p.ProductName)
                 .IsRequired()
                 .HasMaxLength(128);
-
             HasMany(o => o.OrderDetails)
                 .WithRequired()
-                .HasForeignKey(od => od.ProductId).WillCascadeOnDelete(false);
+                .HasForeignKey(od => od.ProductId)
+                .WillCascadeOnDelete(false);
         }
     }
 }
