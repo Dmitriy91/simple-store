@@ -7,13 +7,13 @@
 
     function RegisterController($scope, $rootScope, $location, membershipService, notificationService) {
         $scope.user = {};
-        $scope.user.email = 'admin@gmail.com';
-        $scope.user.password = 'Admin123!';
-        $scope.user.confirmPassword = 'Admin123!';
+        $scope.user.email = '';
+        $scope.user.password = '';
+        $scope.user.confirmPassword = '';
         $scope.user.register = register;
 
         function register() {
-            membershipService.register($scope.user, registerSucceeded, register)
+            membershipService.register($scope.user, registerSucceeded, registerFailed)
         }
 
         function registerSucceeded(response) {

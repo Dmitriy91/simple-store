@@ -18,7 +18,7 @@ namespace Assignment.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AutoMapperWebConfig.RegisterMappingProfiles();
             AutofacWebConfig.Initialize(GlobalConfiguration.Configuration);
-            //Database.SetInitializer(new DropCreateDatabaseAlways<ApplicationDbContext>());
+            Database.SetInitializer(new AppDbContextInitializer());
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Web.Http;
 
 namespace Assignment.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [RoutePrefix("api/products")]
     public class ProductsController : ApiController
     {
