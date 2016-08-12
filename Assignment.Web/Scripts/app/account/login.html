@@ -8,7 +8,7 @@
                     <label class="control-label col-lg-1 col-md-1" for="username">Email</label>
                     <div class="col-lg-11 col-md-11">
                         <div ng-class="{ 'has-error' : loginForm.email.$invalid && loginForm.email.$dirty, 'has-success' : loginForm.email.$valid }">
-                            <input id="email" name="email" type="email" required class="form-control" ng-model="user.email" />
+                            <input id="email" name="email" type="email" required class="form-control" ng-model="user.email" ng-model-options="{ updateOn: 'blur' }" />
                             <span class="glyphicon glyphicon-ok form-control-feedback" ng-if="loginForm.email.$valid"></span>
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="loginForm.email.$invalid && loginForm.email.$dirty"></span>
                             <span class="text-danger" ng-show="loginForm.email.$error.required && loginForm.email.$dirty">The username field is required.</span>
@@ -20,7 +20,7 @@
                     <label class="control-label col-lg-1 col-md-1" for="Password">Password</label>
                     <div class="col-lg-11 col-md-11">
                         <div ng-class="{ 'has-error' : loginForm.password.$invalid && loginForm.password.$dirty, 'has-success' : loginForm.password.$valid }">
-                            <input id="password" name="password" type="password" required class="form-control" ng-model="user.password" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,}$/" />
+                            <input id="password" name="password" type="password" required class="form-control" ng-model="user.password" ng-model-options="{ updateOn: 'blur' }" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,}$/" />
                             <span class="glyphicon glyphicon-ok form-control-feedback" ng-if="loginForm.password.$valid"></span>
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="loginForm.password.$invalid && loginForm.password.$dirty"></span>
                             <span class="text-danger" ng-show="loginForm.password.$error.required && loginForm.password.$dirty">The Password field is required.</span>

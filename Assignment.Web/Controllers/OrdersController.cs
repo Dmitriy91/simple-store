@@ -2,7 +2,6 @@
 using Assignment.Services;
 using Assignment.Web.Models;
 using AutoMapper;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -29,11 +28,7 @@ namespace Assignment.Web.Controllers
         [Route("{customerId:int:min(1)}")]
         public async Task<IHttpActionResult> GetOrdersByCustomer(int customerId)
         {
-            IEnumerable<Order> orders = await Task<IEnumerable<Order>>.Run(() =>
-            {
-                return _orderService.GetOrdersByCustomerId(customerId);
-            });
-
+            IEnumerable<Order> orders = await Task.Run(() => _orderService.GetOrdersByCustomerId(customerId));
             IEnumerable<OrderDto> orderDtos = Mapper.Map<IEnumerable<Order>, IEnumerable<OrderDto>>(orders);
 
             return Ok(orderDtos);

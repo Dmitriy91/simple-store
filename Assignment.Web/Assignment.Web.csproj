@@ -33,7 +33,7 @@
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>2</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -218,7 +218,6 @@
   <ItemGroup>
     <Compile Include="App_Start\AutofacWebConfig.cs" />
     <Compile Include="App_Start\AutoMapperWebConfig.cs" />
-    <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -250,21 +249,13 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\css\bootstrap-datepicker3.standalone.css" />
-    <Content Include="Content\css\bootstrap-datepicker3.standalone.min.css" />
-    <Content Include="Content\css\bootstrap-themes\bootstrap.css" />
-    <Content Include="Content\css\bootstrap-themes\bootstrap.flatly.css" />
-    <Content Include="Content\css\bootstrap-themes\bootstrap.flatly.min.css" />
-    <Content Include="Content\css\bootstrap-themes\bootstrap.min.css" />
-    <Content Include="Content\css\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Content\css\loading-bar.css" />
-    <Content Include="Content\css\loading-bar.min.css" />
-    <Content Include="Content\css\toastr.css" />
-    <Content Include="Content\css\toastr.min.css" />
+    <Content Include="Content\css\app.css" />
+    <Content Include="Content\css\common.css" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\img\store.jpg" />
     <Content Include="Global.asax" />
-    <Content Include="Content\css\toastr.scss" />
-    <Content Include="Content\css\toastr.less" />
+    <Content Include="gulpfile.js" />
+    <Content Include="Scripts\app.js" />
     <Content Include="Scripts\app\account\login.controller.js" />
     <Content Include="Scripts\app\account\login.html" />
     <Content Include="Scripts\app\account\register.controller.js" />
@@ -307,36 +298,12 @@
     <Content Include="Scripts\app\services\data.service.js" />
     <Content Include="Scripts\app\services\membership.service.js" />
     <Content Include="Scripts\app\services\notification.service.js" />
-    <Content Include="Scripts\vendors\angucomplete-alt.min.js" />
-    <Content Include="Scripts\vendors\angular-animate.js" />
-    <Content Include="Scripts\vendors\angular-base64.js" />
-    <Content Include="Scripts\vendors\angular-cookies.js" />
-    <Content Include="Scripts\vendors\angular-cookies.min.js" />
-    <Content Include="Scripts\vendors\angular-file-upload.js" />
-    <Content Include="Scripts\vendors\angular-loader.js" />
-    <Content Include="Scripts\vendors\angular-resource.js" />
-    <Content Include="Scripts\vendors\angular-route.js" />
-    <Content Include="Scripts\vendors\angular-route.min.js" />
-    <Content Include="Scripts\vendors\angular-sanitize.js" />
-    <Content Include="Scripts\vendors\angular-scenario.js" />
-    <Content Include="Scripts\vendors\angular-validator.js" />
-    <Content Include="Scripts\vendors\angular.js" />
-    <Content Include="Scripts\vendors\angular.min.js" />
-    <Content Include="Scripts\vendors\bootstrap-datepicker.js" />
-    <Content Include="Scripts\vendors\bootstrap-datepicker.min.js" />
-    <Content Include="Scripts\vendors\bootstrap.js" />
-    <Content Include="Content\css\bootstrap-themes\bootstrap.css.map" />
-    <Content Include="Content\css\bootstrap-themes\bootstrap.min.css.map" />
-    <None Include="Scripts\vendors\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\vendors\jquery-1.10.2.min.js" />
-    <None Include="Scripts\vendors\jquery-2.2.3.intellisense.js" />
-    <Content Include="Scripts\vendors\jquery-2.2.3.js" />
-    <Content Include="Scripts\vendors\jquery-2.2.3.min.js" />
-    <Content Include="Scripts\vendors\loading-bar.js" />
-    <Content Include="Scripts\vendors\loading-bar.min.js" />
-    <Content Include="Scripts\vendors\raphael.js" />
-    <Content Include="Scripts\vendors\respond.src.js" />
-    <Content Include="Scripts\vendors\toastr.js" />
+    <Content Include="bower.json" />
+    <Content Include="package.json" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Scripts\_references.js" />
     <Content Include="Views\Index.cshtml" />
     <Content Include="Web.config" />
@@ -346,7 +313,6 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Content\css\site.css" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\Error.cshtml" />
   </ItemGroup>
@@ -355,9 +321,6 @@
     <Folder Include="Scripts\app\layout\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\css\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="Content\css\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="Content\css\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -373,12 +336,6 @@
       <Project>{28A876B0-E610-40EB-A1CC-6D84DF5B6D2B}</Project>
       <Name>Assignment.Services</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Scripts\vendors\angular-cookies.min.js.map" />
-    <Content Include="Scripts\vendors\angular-route.min.js.map" />
-    <Content Include="Scripts\vendors\jquery-1.10.2.min.map" />
-    <Content Include="Scripts\vendors\jquery-2.2.3.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

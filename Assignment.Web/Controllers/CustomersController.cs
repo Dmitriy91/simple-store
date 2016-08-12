@@ -8,7 +8,7 @@ using System.Web.Http;
 
 namespace Assignment.Web.Controllers
 {
-    [Authorize(Roles="Admin")]
+    [Authorize(Roles = "Admin")]
     [RoutePrefix("api/customers")]
     public class CustomersController : ApiController
     {
@@ -28,12 +28,9 @@ namespace Assignment.Web.Controllers
         [Route("juridical-persons")]
         public async Task<IHttpActionResult> GetAllJuridicalPersons()
         {
-            IEnumerable<JuridicalPerson> juridcalPersons = await Task<IEnumerable<JuridicalPerson>>.Run(() =>
-            {
-                return _customerService.GetAllJuridicalPersons();
-            });
-
-            IEnumerable<JuridicalPersonDto> juridicalPersonDtos = Mapper.Map<IEnumerable<JuridicalPerson>, IEnumerable<JuridicalPersonDto>>(juridcalPersons);
+            IEnumerable<JuridicalPerson> juridcalPersons = await Task.Run(() => _customerService.GetAllJuridicalPersons());
+            IEnumerable<JuridicalPersonDto> juridicalPersonDtos
+                = Mapper.Map<IEnumerable<JuridicalPerson>, IEnumerable<JuridicalPersonDto>>(juridcalPersons);
 
             return Ok(juridicalPersonDtos);
         }
@@ -42,12 +39,9 @@ namespace Assignment.Web.Controllers
         [Route("natural-persons")]
         public async Task<IHttpActionResult> GetAllNaturalPersons()
         {
-            IEnumerable<NaturalPerson> naturalPersons = await Task<IEnumerable<JuridicalPerson>>.Run(() =>
-            {
-                return _customerService.GetAllNaturalPersons();
-            });
-
-            IEnumerable<NaturalPersonDto> naturalPersonDtos = Mapper.Map<IEnumerable<NaturalPerson>, IEnumerable<NaturalPersonDto>>(naturalPersons);
+            IEnumerable<NaturalPerson> naturalPersons = await Task.Run(() => _customerService.GetAllNaturalPersons());
+            IEnumerable<NaturalPersonDto> naturalPersonDtos
+                = Mapper.Map<IEnumerable<NaturalPerson>, IEnumerable<NaturalPersonDto>>(naturalPersons);
 
             return Ok(naturalPersonDtos);
         }
@@ -80,7 +74,7 @@ namespace Assignment.Web.Controllers
             return Ok(naturalPersonDto);
         }
 
-        // POST: api/customers/juridical-person/update/1
+        // POST: api/customers/juridical-person/update
         [HttpPost]
         [Route("juridical-person/update")]
         public async Task<IHttpActionResult> UpdateJuridicalPerson([FromBody]JuridicalPersonBindingModel juridicalPersonBindingModel)
@@ -99,7 +93,7 @@ namespace Assignment.Web.Controllers
             return BadRequest();
         }
 
-        // POST: api/customers/juridical-person/update/1
+        // POST: api/customers/juridical-person/update
         [HttpPost]
         [Route("natural-person/update")]
         public async Task<IHttpActionResult> UpdateNaturalPerson([FromBody]NaturalPersonBindingModel naturalPersonBindingModel)

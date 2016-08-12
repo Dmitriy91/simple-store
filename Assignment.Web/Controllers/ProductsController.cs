@@ -27,11 +27,7 @@ namespace Assignment.Web.Controllers
         // GET: api/products/
         public async Task<IHttpActionResult> Get()
         {
-            IEnumerable<Product> products = await Task<IEnumerable<Product>>.Run(() =>
-            {
-                return _productService.GetAllProducts();
-            });
-
+            IEnumerable<Product> products = await Task.Run(() => _productService.GetAllProducts());
             IEnumerable<ProductDto> productsDtos = Mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products);
 
             return Ok(productsDtos);
@@ -41,7 +37,6 @@ namespace Assignment.Web.Controllers
         [Route("details/{id:int:min(1)}")]
         public IHttpActionResult Get(int id)
         {
-
             Product product = _productService.GetProductById(id);
 
             if (product == null)
@@ -52,7 +47,7 @@ namespace Assignment.Web.Controllers
             return Ok(productDto);
         }
 
-        // POST: api/products/update/1
+        // POST: api/products/update
         [HttpPost]
         [Route("update")]
         public async Task<IHttpActionResult> Update([FromBody]ProductBindingModel productBindingModel)
