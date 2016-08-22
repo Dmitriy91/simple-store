@@ -1,0 +1,54 @@
+﻿<nav class="navbar navbar-inverse navbar-primary">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" ng-href="#/customers/">Customers</a>
+        </div>
+        <div class="navbar-header">
+            <a class="navbar-brand" ng-href="#/products/">Products</a>
+        </div>
+        <div class="navbar-header">
+            <a class="navbar-brand" ng-href="#/orders/">Orders</a>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li><a ng-href="#/">Home</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="return false">Themes<span class="caret"></span></a>
+                    <ul id="theme-menu" class="dropdown-menu">
+                        <li class="text-center">Readable</li>
+                        <li class="text-center">Sandstone</li>
+                        <li class="text-center">Super hero</li>
+                        <li class="text-center">Darkly</li>
+                        <li class="text-center">Yeti</li>
+                        <li class="text-center">Cosmo</li>
+                        <li class="text-center">Simplex</li>
+                        <li class="text-center">Flatly</li>
+                        <li class="text-center">Lumen</li>
+                        <li class="text-center">Space lab</li>
+                        <li class="text-center">Cerulean</li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li ng-if="!user.loggedIn">
+                    <a ng-href="#/register/">
+                        <span class="glyphicon glyphicon-user"></span> Sign Up
+                    </a>
+                </li>
+                <li ng-if="!user.loggedIn">
+                    <a ng-href="#/login/">
+                        <span class="glyphicon glyphicon-log-in"></span> Log In
+                    </a>
+                </li>
+                <li ng-if="user.loggedIn">
+                    <a>
+                        <span class="glyphicon glyphicon-user"></span> Hello {{user.login}}!
+                    </a>
+                </li>
+                <li ng-if="user.loggedIn">
+                    <a ng-click="user.logOut()"><span class="glyphicon glyphicon-log-out"></span> Log Off</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

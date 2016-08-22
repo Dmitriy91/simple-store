@@ -13,7 +13,7 @@ gulp.task('process-styles', function () {
         'bower_components/bootstrap/dist/css/bootstrap-datepicker3.standalone.css',
         'bower_components/toastr/toastr.css',
         'bower_components/angular-loading-bar/srs/loading-bar.css',
-        'bower_components/bootstrap/dist/css/bootstrap.css',
+        //'bower_components/bootstrap/dist/css/bootstrap.css',
         'Content/css/common.css'])
         .pipe(concat('app.css'))
         .pipe(minifyCss())

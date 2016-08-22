@@ -279,6 +279,8 @@
     <Content Include="Scripts\app\home\index.controller.js" />
     <Content Include="Scripts\app\home\index.html" />
     <Content Include="Scripts\app\home\root.controller.js" />
+    <Content Include="Scripts\app\layout\top-bar.directive.js" />
+    <Content Include="Scripts\app\layout\top-bar.html" />
     <Content Include="Scripts\app\modules\app.core.module.js" />
     <Content Include="Scripts\app\modules\app.layout.module.js" />
     <Content Include="Scripts\app\orders\add.html" />
@@ -318,7 +320,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Scripts\app\layout\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
