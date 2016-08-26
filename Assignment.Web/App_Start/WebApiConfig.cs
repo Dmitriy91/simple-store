@@ -1,4 +1,6 @@
 ﻿using System.Web.Http;
+using System.Web.Http.ExceptionHandling;
+using Assignment.Web.Infrastructure.ExceptionHandling;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 
@@ -10,6 +12,9 @@ namespace Assignment.Web
         {
             // Use camel case for JSON data.
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+            // Replace a default exception handler.
+            config.Services.Replace(typeof(IExceptionHandler), new GlobalExceptionHandler());
 
             // Web API configuration and services
             // Configure Web API to use only bearer token authentication.

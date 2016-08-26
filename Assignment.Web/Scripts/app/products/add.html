@@ -8,7 +8,7 @@
                     <label class="control-label col-lg-2 col-md-2" for="productName">Product</label>
                     <div class="col-lg-10 col-md-10">
                         <div ng-class="{ 'has-error' : addProductForm.productName.$invalid && addProductForm.productName.$dirty }">
-                            <input id="productName" name="productName" type="text" required ng-maxlength="128" class="form-control" ng-model="product.productName" />
+                            <input id="productName" name="productName" type="text" required ng-maxlength="228" class="form-control" ng-model="product.productName" />
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="addProductForm.productName.$invalid && addProductForm.productName.$dirty"></span>
                             <span class="text-danger" ng-show="addProductForm.productName.$error.required && addProductForm.productName.$dirty">The Product Name field is required.</span>
                             <span class="text-danger" ng-show="addProductForm.productName.$error.maxlength">The Product Name field has the maximum length of 128 symbols.</span>

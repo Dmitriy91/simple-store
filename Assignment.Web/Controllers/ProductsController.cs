@@ -5,6 +5,8 @@ using AutoMapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Assignment.Web.Infrastructure.ExceptionHandling;
+using Assignment.Web.Infrastructure;
 
 namespace Assignment.Web.Controllers
 {
@@ -28,9 +30,9 @@ namespace Assignment.Web.Controllers
         public async Task<IHttpActionResult> Get()
         {
             IEnumerable<Product> products = await Task.Run(() => _productService.GetAllProducts());
-            IEnumerable<ProductDto> productsDtos = Mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products);
+            IEnumerable<ProductDto> productDtos = Mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products);
 
-            return Ok(productsDtos);
+            return Ok(productDtos);
         }
 
         // GET: api/products/details/1
@@ -40,7 +42,7 @@ namespace Assignment.Web.Controllers
             Product product = _productService.GetProductById(id);
 
             if (product == null)
-                return BadRequest();
+                throw new BindingModelValidationException("Invalid product id.");
 
             ProductDto productDto = Mapper.Map<Product, ProductDto>(product);
 
@@ -53,17 +55,14 @@ namespace Assignment.Web.Controllers
         public async Task<IHttpActionResult> Update([FromBody]ProductBindingModel productBindingModel)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                throw new BindingModelValidationException(this.GetModelStateErrorMessage());
 
             Product product = Mapper.Map<ProductBindingModel, Product>(productBindingModel);
 
             if (_productService.UpdateProduct(product))
-            {
                 await _productService.CommitAsync();
-                return Ok();
-            }
 
-            return BadRequest();
+            return Ok();
         }
 
         // POST: api/products/add
@@ -72,7 +71,7 @@ namespace Assignment.Web.Controllers
         public async Task<IHttpActionResult> Add([FromBody]ProductBindingModel productBindingModel)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                throw new BindingModelValidationException(this.GetModelStateErrorMessage());
 
             Product product = Mapper.Map<ProductBindingModel, Product>(productBindingModel);
 
@@ -88,12 +87,9 @@ namespace Assignment.Web.Controllers
         public async Task<IHttpActionResult> Delete(int id)
         {
             if (_productService.RemoveProductById(id))
-            {
                 await _productService.CommitAsync();
-                return Ok();
-            }
 
-            return BadRequest();
+            return Ok();
         }
         #endregion
 

@@ -5,6 +5,8 @@ using AutoMapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Assignment.Web.Infrastructure;
+using Assignment.Web.Infrastructure.ExceptionHandling;
 
 namespace Assignment.Web.Controllers
 {
@@ -41,7 +43,7 @@ namespace Assignment.Web.Controllers
             Order order = _orderService.GetOrderById(id);
 
             if (order == null)
-                return BadRequest();
+                throw new BindingModelValidationException("Invalid order id.");
 
             OrderDto orderDto = Mapper.Map<Order, OrderDto>(order);
 
@@ -54,17 +56,14 @@ namespace Assignment.Web.Controllers
         public async Task<IHttpActionResult> Update([FromBody]OrderBindingModel orderBindingModel)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                throw new BindingModelValidationException(this.GetModelStateErrorMessage());
 
             Order order = Mapper.Map<OrderBindingModel, Order>(orderBindingModel);
 
             if (_orderService.UpdateOrder(order))
-            {
                 await _orderService.CommitAsync();
-                return Ok();
-            }
 
-            return BadRequest();
+            return Ok();
         }
 
         // POST: api/orders/add
@@ -73,17 +72,14 @@ namespace Assignment.Web.Controllers
         public async Task<IHttpActionResult> Add([FromBody]OrderBindingModel orderBindingModel)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                throw new BindingModelValidationException(this.GetModelStateErrorMessage());
 
             Order order = Mapper.Map<OrderBindingModel, Order>(orderBindingModel);
 
             if (_orderService.AddOrder(order))
-            {
                 await _orderService.CommitAsync();
-                return Ok();
-            }
 
-            return BadRequest();
+            return Ok();
         }
 
         // POST: api/orders/delete/1
@@ -92,12 +88,9 @@ namespace Assignment.Web.Controllers
         public async Task<IHttpActionResult> Delete(int id)
         {
             if (_orderService.RemoveOrderById(id))
-            {
                 await _orderService.CommitAsync();
-                return Ok();
-            }
 
-            return BadRequest("Ordered product can not be deleted!");
+            return Ok();
         }
         #endregion
 

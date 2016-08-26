@@ -5,6 +5,8 @@ using AutoMapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Assignment.Web.Infrastructure.ExceptionHandling;
+using Assignment.Web.Infrastructure;
 
 namespace Assignment.Web.Controllers
 {
@@ -53,7 +55,7 @@ namespace Assignment.Web.Controllers
             JuridicalPerson juridicalPerson = _customerService.GetJuridicalPersonById(id);
 
             if (juridicalPerson == null)
-                return BadRequest();
+                throw new BindingModelValidationException("Invalid juridical person id.");
 
             JuridicalPersonDto juridicalPersonDto = Mapper.Map<JuridicalPerson, JuridicalPersonDto>(juridicalPerson);
 
@@ -67,7 +69,7 @@ namespace Assignment.Web.Controllers
             NaturalPerson naturalPerson = _customerService.GetNaturalPersonById(id);
 
             if (naturalPerson == null)
-                return BadRequest();
+                throw new BindingModelValidationException("Invalid natural person id.");
 
             NaturalPersonDto naturalPersonDto = Mapper.Map<NaturalPerson, NaturalPersonDto>(naturalPerson);
 
@@ -80,17 +82,14 @@ namespace Assignment.Web.Controllers
         public async Task<IHttpActionResult> UpdateJuridicalPerson([FromBody]JuridicalPersonBindingModel juridicalPersonBindingModel)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                throw new BindingModelValidationException(this.GetModelStateErrorMessage());
 
             JuridicalPerson juridicalPerson = Mapper.Map<JuridicalPersonBindingModel, JuridicalPerson>(juridicalPersonBindingModel);
 
             if (_customerService.UpdateJuridicalPerson(juridicalPerson))
-            {
                 await _customerService.CommitAsync();
-                return Ok();
-            }
 
-            return BadRequest();
+            return Ok();
         }
 
         // POST: api/customers/juridical-person/update
@@ -99,17 +98,14 @@ namespace Assignment.Web.Controllers
         public async Task<IHttpActionResult> UpdateNaturalPerson([FromBody]NaturalPersonBindingModel naturalPersonBindingModel)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                throw new BindingModelValidationException(this.GetModelStateErrorMessage());
 
             NaturalPerson naturalPerson = Mapper.Map<NaturalPersonBindingModel, NaturalPerson>(naturalPersonBindingModel);
 
             if (_customerService.UpdateNaturalPerson(naturalPerson))
-            {
                 await _customerService.CommitAsync();
-                return Ok();
-            }
 
-            return BadRequest();
+            return Ok();
         }
 
         // POST: api/customers/juridical-person/add
@@ -118,17 +114,14 @@ namespace Assignment.Web.Controllers
         public async Task<IHttpActionResult> AddJuridicalPerson([FromBody]JuridicalPersonBindingModel juridicalPersonBindingModel)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                throw new BindingModelValidationException(this.GetModelStateErrorMessage());
 
             JuridicalPerson juridicalPerson = Mapper.Map<JuridicalPersonBindingModel, JuridicalPerson>(juridicalPersonBindingModel);
 
             if (_customerService.AddJuridicalPerson(juridicalPerson))
-            {
                 await _customerService.CommitAsync();
-                return Ok();
-            }
 
-            return BadRequest();
+            return Ok();
         }
 
         // POST: api/customers/natural-person/add
@@ -137,17 +130,14 @@ namespace Assignment.Web.Controllers
         public async Task<IHttpActionResult> AddNaturalPerson([FromBody]NaturalPersonBindingModel naturalPersonBindingModel)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                throw new BindingModelValidationException(this.GetModelStateErrorMessage());
 
             NaturalPerson naturalPerson = Mapper.Map<NaturalPersonBindingModel, NaturalPerson>(naturalPersonBindingModel);
 
             if (_customerService.AddNaturalPerson(naturalPerson))
-            {
                 await _customerService.CommitAsync();
-                return Ok();
-            }
 
-            return BadRequest();
+            return Ok();
         }
 
         // POST: api/customers/delete/1
@@ -156,12 +146,9 @@ namespace Assignment.Web.Controllers
         public async Task<IHttpActionResult> Delete(int id)
         {
             if (_customerService.RemovePersonById(id))
-            {
                 await _customerService.CommitAsync();
-                return Ok();
-            }
 
-            return BadRequest();
+            return Ok();
         }
         #endregion
 

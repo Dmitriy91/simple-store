@@ -235,6 +235,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\ApiControllerHelpers.cs" />
+    <Compile Include="Infrastructure\ExceptionHandling\BindingModelValidationException.cs" />
+    <Compile Include="Infrastructure\ExceptionHandling\ErrorResult.cs" />
+    <Compile Include="Infrastructure\ExceptionHandling\GlobalExceptionHandler.cs" />
     <Compile Include="Infrastructure\Mappings\BindingModelToDomainModel.cs" />
     <Compile Include="Infrastructure\Mappings\DomainModelToDto.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -253,6 +257,10 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Store.mdf" />
+    <Content Include="App_Data\Store_log.ldf">
+      <DependentUpon>Store.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\css\app.css" />
     <Content Include="Content\css\common.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
@@ -312,6 +320,10 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Configs\ConnectionStrings.config" />
     <Content Include="Configs\EntityFramework.config" />
+    <Content Include="Configs\Log4Net.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Properties\PublishProfiles\store.pubxml" />
     <None Include="Scripts\_references.js" />
     <Content Include="Views\Index.cshtml" />
     <Content Include="Web.config" />
@@ -324,11 +336,11 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\Error.cshtml" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Assignment.Data\Assignment.Data.csproj">

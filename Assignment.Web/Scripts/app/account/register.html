@@ -35,7 +35,7 @@
                     <label class="control-label col-lg-2 col-md-2" for="confirmPassword">Confirm password</label>
                     <div class="col-lg-10 col-md-10">
                         <div ng-class="{ 'has-error' : regForm.confirmPassword.$invalid && regForm.confirmPassword.$dirty, 'has-success' : regForm.confirmPassword.$valid }">
-                            <input id="confirmPassword" name="confirmPassword" type="password" required class="form-control" ng-model="user.confirmPassword" ng-model-options="{ updateOn: 'blur' }" compare-to="user.password" />
+                            <input id="confirmPassword" name="confirmPassword" type="password" required class="form-control" ng-model="user.confirmPassword" compare-to="user.password" />
                             <span class="glyphicon glyphicon-ok form-control-feedback" ng-if="regForm.confirmPassword.$valid"></span>
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="regForm.confirmPassword.$invalid && regForm.confirmPassword.$dirty"></span>
                             <span class="text-danger" ng-show="regForm.confirmPassword.$error.required && regForm.confirmPassword.$dirty">The Password field is required.</span>

@@ -3,6 +3,8 @@ using System.Data.Entity;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
+using log4net.Config;
+using System.IO;
 
 namespace Assignment.Web
 {
@@ -17,6 +19,7 @@ namespace Assignment.Web
             AutoMapperWebConfig.RegisterMappingProfiles();
             AutofacWebConfig.Initialize(GlobalConfiguration.Configuration);
             Database.SetInitializer(new AppDbContextInitializer());
+            XmlConfigurator.ConfigureAndWatch(new FileInfo(Server.MapPath("~/Configs/Log4Net.config")));
         }
     }
 }
