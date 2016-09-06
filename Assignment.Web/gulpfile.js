@@ -1,4 +1,5 @@
-﻿var gulp = require('gulp'),
+﻿/// <binding BeforeBuild='build-spa' />
+var gulp = require('gulp'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
     minifyCss = require('gulp-cssmin');
