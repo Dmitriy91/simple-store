@@ -3,26 +3,55 @@
 
     app_core.controller('CustomersController', CustomersController);
 
-    CustomersController.$inject = ['$scope', '$route', '$rootScope', '$location', 'dataService', 'notificationService'];
+    CustomersController.$inject = ['$scope', '$route', '$rootScope', '$location', 'dataService', 'notificationService', 'pagerService'];
 
-    function CustomersController($scope, $route, $rootScope, $location, dataService, notificationService) {
+    function CustomersController($scope, $route, $rootScope, $location, dataService, notificationService, pagerService) {
         $scope.customerType = 'naturalPerson';
         $scope.naturalPersons = [];
         $scope.juridicalPersons = [];
+        $scope.loadNaturalPersons = loadNaturalPersons;
+        $scope.loadJuridicalPersons = loadJuridicalPersons;
         $scope.removeNaturalPerson = removeNaturalPerson;
         $scope.removeJuridicalPerson = removeJuridicalPerson;
+        $scope.pageSize = 5;
+        $scope.naturalPersonsPager = {};
+        $scope.juridicalPersonsPager = {};
         activate();
 
-        function loadJuridicalPersons() {
-            dataService.get('/api/customers/juridical-persons', null, loadJuridicalPersonsSucceeded, loadJuridicalPersonsFailed);
+        function loadJuridicalPersons(pageNumber) {
+            var pageSize = $scope.pageSize || 5;
+
+            pageNumber = pageNumber || 1;
+
+            dataService.get('/api/customers/juridical-persons', {
+                params: {
+                    pageSize: pageSize,
+                    pageNumber: pageNumber
+                }
+            }, loadJuridicalPersonsSucceeded, loadJuridicalPersonsFailed);
         }
 
-        function loadNaturalPersons() {
-            dataService.get('/api/customers/natural-persons', null, loadNaturalPersonsSucceeded, loadNaturalPersonsFailed);
+        function loadNaturalPersons(pageNumber) {
+            var pageSize = $scope.pageSize || 5;
+
+            pageNumber = pageNumber || 1;
+
+            dataService.get('/api/customers/natural-persons', {
+                params: {
+                    pageSize: pageSize,
+                    pageNumber: pageNumber
+                }
+            }, loadNaturalPersonsSucceeded, loadNaturalPersonsFailed);
         }
 
         function loadJuridicalPersonsSucceeded(response) {
-            $scope.juridicalPersons = response.data;
+            $scope.juridicalPersons = response.data.juridicalPersons;
+            var currentPage = response.data.pagingInfo.currentPage;
+            var pageSize = response.data.pagingInfo.pageSize;
+            var totalItems = response.data.pagingInfo.totalItems;
+            var totalPages = response.data.pagingInfo.totalPages;
+
+            $scope.juridicalPersonsPager = pagerService.GetPager(totalItems, totalPages, currentPage, pageSize);
         }
 
         function loadJuridicalPersonsFailed(response) {
@@ -31,7 +60,13 @@
         }
 
         function loadNaturalPersonsSucceeded(response) {
-            $scope.naturalPersons = response.data;
+            $scope.naturalPersons = response.data.naturalPersons;
+            var currentPage = response.data.pagingInfo.currentPage;
+            var pageSize = response.data.pagingInfo.pageSize;
+            var totalItems = response.data.pagingInfo.totalItems;
+            var totalPages = response.data.pagingInfo.totalPages;
+
+            $scope.naturalPersonsPager = pagerService.GetPager(totalItems, totalPages, currentPage, pageSize);
         }
 
         function loadNaturalPersonsFailed(response) {

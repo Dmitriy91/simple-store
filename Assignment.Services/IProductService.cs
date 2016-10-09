@@ -9,7 +9,7 @@ namespace Assignment.Services
     {
         Product GetProductById(int customerId);
 
-        IEnumerable<Product> GetAllProducts();
+        IEnumerable<Product> GetProducts(int pageNumber, int pageSize, out int productsFound);
 
         bool RemoveProductById(int productId);
 

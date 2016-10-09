@@ -64,7 +64,7 @@
         }
 
         function loadProductsSucceeded(response) {
-            $scope.products = response.data;
+            $scope.products = response.data.products;
         }
 
         function loadProductsFailed(response) {

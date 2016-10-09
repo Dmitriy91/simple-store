@@ -8,7 +8,7 @@ namespace Assignment.Data
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("AssignmentDbConnection1", throwIfV1Schema: false)
+            : base("Store", throwIfV1Schema: false)
         {
             Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
         }

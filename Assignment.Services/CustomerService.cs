@@ -45,18 +45,33 @@ namespace Assignment.Services
                 .FirstOrDefault(np => np.CustomerId == customerId);
         }
 
-        public IEnumerable<JuridicalPerson> GetAllJuridicalPersons()
+        public IEnumerable<JuridicalPerson> GetJuridicalPersons(int pageNumber, int pageSize, out int personsFound)
         {
-            return _juridicalPersonRepo.GetAll()
-                .Include(jp => jp.Customer)
-                .ToList();
+            IQueryable<JuridicalPerson> juridicalPersons = null;
+
+            juridicalPersons = _juridicalPersonRepo.GetAll();
+            personsFound = juridicalPersons.Count();
+
+            return juridicalPersons.
+                Include(jp => jp.Customer).
+                OrderBy(jp => jp.CustomerId).
+                Skip((pageNumber - 1) * pageSize).
+                Take(pageSize).
+                ToList();
         }
 
-        public IEnumerable<NaturalPerson> GetAllNaturalPersons()
+        public IEnumerable<NaturalPerson> GetNaturalPersons(int pageNumber, int pageSize, out int personsFound)
         {
-            return _naturalPersonRepo.GetAll()
-                .Include(np => np.Customer)
-                .ToList();
+            IQueryable<NaturalPerson> naturalPersons = null;
+
+            naturalPersons = _naturalPersonRepo.GetAll();
+            personsFound = naturalPersons.Count();
+
+            return naturalPersons.Include(np => np.Customer).
+                OrderBy(jp => jp.CustomerId).
+                Skip((pageNumber - 1) * pageSize).
+                Take(pageSize).
+                ToList();
         }
 
         public bool RemovePersonById(int customerId)

@@ -28,12 +28,26 @@ namespace Assignment.Web.Controllers
         #region Actions
         // GET: api/orders/1
         [Route("{customerId:int:min(1)}")]
-        public async Task<IHttpActionResult> GetOrdersByCustomer(int customerId)
+        public async Task<IHttpActionResult> GetOrdersByCustomer(int customerId, [FromUri]PaginationBindingModel pagination)
         {
-            IEnumerable<Order> orders = await Task.Run(() => _orderService.GetOrdersByCustomerId(customerId));
+            if (!ModelState.IsValid)
+                throw new BindingModelValidationException(this.GetModelStateErrorMessage());
+
+            int ordersFound = 0;
+
+            IEnumerable<Order> orders = await Task.Run(() => _orderService.GetOrdersByCustomerId(customerId, pagination.PageNumber, pagination.PageSize, out ordersFound));
             IEnumerable<OrderDto> orderDtos = Mapper.Map<IEnumerable<Order>, IEnumerable<OrderDto>>(orders);
 
-            return Ok(orderDtos);
+            return Ok(new
+            {
+                Orders = orderDtos,
+                PagingInfo = new PagingInfoDto
+                {
+                    CurrentPage = pagination.PageNumber,
+                    PageSize = pagination.PageSize,
+                    TotalItems = ordersFound
+                }
+            });
         }
 
         // GET: api/orders/details/1

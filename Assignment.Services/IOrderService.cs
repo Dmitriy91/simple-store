@@ -9,7 +9,7 @@ namespace Assignment.Services
     {
         Order GetOrderById(int orderId);
 
-        IEnumerable<Order> GetOrdersByCustomerId(int customerId);
+        IEnumerable<Order> GetOrdersByCustomerId(int customerId, int pageNumber, int pageSize, out int ordersFound);
 
         bool RemoveOrderById(int orderId);
 

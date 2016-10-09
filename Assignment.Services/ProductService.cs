@@ -3,6 +3,7 @@ using Assignment.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Assignment.Data;
+using System.Linq;
 
 namespace Assignment.Services
 {
@@ -31,9 +32,17 @@ namespace Assignment.Services
             return _productRepo.GetById(productId);
         }
 
-        public IEnumerable<Product> GetAllProducts()
+        public IEnumerable<Product> GetProducts(int pageNumber, int pageSize, out int productsFound)
         {
-            return _productRepo.GetAll();
+            IQueryable<Product> products = null;
+
+            products = _productRepo.GetAll();
+            productsFound = products.Count();
+
+            return products.OrderBy(p => p.Id).
+                Skip((pageNumber - 1) * pageSize).
+                Take(pageSize).
+                ToList();
         }
 
         public bool RemoveProductById(int productId)

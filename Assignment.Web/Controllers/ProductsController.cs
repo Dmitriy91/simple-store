@@ -27,12 +27,28 @@ namespace Assignment.Web.Controllers
 
         #region Actions
         // GET: api/products/
-        public async Task<IHttpActionResult> Get()
+        public async Task<IHttpActionResult> Get([FromUri]PaginationBindingModel pagination)
         {
-            IEnumerable<Product> products = await Task.Run(() => _productService.GetAllProducts());
+            pagination = pagination ?? new PaginationBindingModel();
+
+            if(!ModelState.IsValid)
+                throw new BindingModelValidationException(this.GetModelStateErrorMessage());
+
+            int productsFound = 0;
+
+            IEnumerable<Product> products = await Task.Run(() => _productService.GetProducts(pagination.PageNumber, pagination.PageSize, out productsFound));
             IEnumerable<ProductDto> productDtos = Mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products);
 
-            return Ok(productDtos);
+            return Ok(new
+            {
+                Products = productDtos,
+                PagingInfo = new PagingInfoDto
+                {
+                    CurrentPage = pagination.PageNumber,
+                    PageSize = pagination.PageSize,
+                    TotalItems = productsFound
+                }
+            });
         }
 
         // GET: api/products/details/1

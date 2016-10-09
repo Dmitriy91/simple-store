@@ -2,5 +2,7 @@
     'use strict';
 
     angular
-        .module('app.layout', ['angular-loading-bar']);
+        .module('app.layout', [
+            'angular-loading-bar'
+        ]);
 })();

@@ -11,9 +11,9 @@ namespace Assignment.Services
 
         NaturalPerson GetNaturalPersonById(int customerId);
 
-        IEnumerable<JuridicalPerson> GetAllJuridicalPersons();
+        IEnumerable<JuridicalPerson> GetJuridicalPersons(int pageNumber, int pageSize, out int personsFound);
 
-        IEnumerable<NaturalPerson> GetAllNaturalPersons();
+        IEnumerable<NaturalPerson> GetNaturalPersons(int pageNumber, int pageSize, out int personsFound);
 
         bool RemovePersonById(int customerId);
 

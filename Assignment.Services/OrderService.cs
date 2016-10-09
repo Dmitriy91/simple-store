@@ -42,14 +42,18 @@ namespace Assignment.Services
                 .FirstOrDefault(o => o.Id == orderId);
         }
 
-        public IEnumerable<Order> GetOrdersByCustomerId(int customerId)
+        public IEnumerable<Order> GetOrdersByCustomerId(int customerId, int pageNumber, int pageSize, out int ordersFound)
         {
-            IEnumerable<Order> orders = _orderRepo.GetAll()
+            IQueryable<Order> orders = _orderRepo.GetAll()
                 .Include(o => o.OrderDetails.Select(od => od.Product)) // Note: Should be optimized
-                .Where(o => o.CustomerId == customerId)
-                .ToList();
+                .Where(o => o.CustomerId == customerId);
 
-            return orders;
+            ordersFound = orders.Count();
+
+            return orders.OrderBy(o => o.Id).
+                Skip((pageNumber - 1) * pageSize).
+                Take(pageSize).
+                ToList();
         }
 
         public bool RemoveOrderById(int orderId)

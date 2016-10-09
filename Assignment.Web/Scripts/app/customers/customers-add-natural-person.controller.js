@@ -43,7 +43,7 @@
         }
 
         function addNaturalPersonFaild(response) {
-            notificationService.displayError("Unauthorised actions detected.");
+            notificationService.displayError("This person has been already added.");
         }
 
         function activate() {

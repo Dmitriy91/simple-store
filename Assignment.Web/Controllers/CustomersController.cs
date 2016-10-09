@@ -28,24 +28,57 @@ namespace Assignment.Web.Controllers
         #region Actions
         // GET: api/customers/juridical-persons
         [Route("juridical-persons")]
-        public async Task<IHttpActionResult> GetAllJuridicalPersons()
+        public async Task<IHttpActionResult> GetAllJuridicalPersons([FromUri]PaginationBindingModel pagination)
         {
-            IEnumerable<JuridicalPerson> juridcalPersons = await Task.Run(() => _customerService.GetAllJuridicalPersons());
+            pagination = pagination ?? new PaginationBindingModel();
+
+            if (!ModelState.IsValid)
+                throw new BindingModelValidationException(this.GetModelStateErrorMessage());
+
+            int personsFound = 0;
+
+            IEnumerable<JuridicalPerson> juridcalPersons =
+                await Task.Run(() => _customerService.GetJuridicalPersons(pagination.PageNumber, pagination.PageSize, out personsFound));
             IEnumerable<JuridicalPersonDto> juridicalPersonDtos
                 = Mapper.Map<IEnumerable<JuridicalPerson>, IEnumerable<JuridicalPersonDto>>(juridcalPersons);
 
-            return Ok(juridicalPersonDtos);
+            return Ok(new
+            {
+                JuridicalPersons = juridicalPersonDtos,
+                PagingInfo = new PagingInfoDto
+                {
+                    CurrentPage = pagination.PageNumber,
+                    PageSize = pagination.PageSize,
+                    TotalItems = personsFound
+                }
+            });
         }
 
         // GET: api/customers/juridical-persons
         [Route("natural-persons")]
-        public async Task<IHttpActionResult> GetAllNaturalPersons()
+        public async Task<IHttpActionResult> GetAllNaturalPersons([FromUri]PaginationBindingModel pagination)
         {
-            IEnumerable<NaturalPerson> naturalPersons = await Task.Run(() => _customerService.GetAllNaturalPersons());
+            pagination = pagination ?? new PaginationBindingModel();
+
+            if (!ModelState.IsValid)
+                throw new BindingModelValidationException(this.GetModelStateErrorMessage());
+
+            int personsFound = 0;
+
+            IEnumerable<NaturalPerson> naturalPersons = await Task.Run(() => _customerService.GetNaturalPersons(pagination.PageNumber, pagination.PageSize, out personsFound));
             IEnumerable<NaturalPersonDto> naturalPersonDtos
                 = Mapper.Map<IEnumerable<NaturalPerson>, IEnumerable<NaturalPersonDto>>(naturalPersons);
 
-            return Ok(naturalPersonDtos);
+            return Ok(new
+            {
+                NaturalPersons = naturalPersonDtos,
+                PagingInfo = new PagingInfoDto
+                {
+                    CurrentPage = pagination.PageNumber,
+                    PageSize = pagination.PageSize,
+                    TotalItems = personsFound
+                }
+            });
         }
 
         // GET: api/customers/juridical-person/1
@@ -120,6 +153,8 @@ namespace Assignment.Web.Controllers
 
             if (_customerService.AddJuridicalPerson(juridicalPerson))
                 await _customerService.CommitAsync();
+            else
+                throw new BindingModelValidationException("Already exists.");
 
             return Ok();
         }
@@ -136,6 +171,8 @@ namespace Assignment.Web.Controllers
 
             if (_customerService.AddNaturalPerson(naturalPerson))
                 await _customerService.CommitAsync();
+            else
+                throw new BindingModelValidationException("Already exists.");
 
             return Ok();
         }

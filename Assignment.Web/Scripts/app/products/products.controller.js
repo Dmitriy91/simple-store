@@ -3,19 +3,37 @@
 
     app_core.controller('ProductsController', ProductsController);
 
-    ProductsController.$inject = ['$scope', '$route', '$rootScope', '$location', 'dataService', 'notificationService'];
+    ProductsController.$inject = ['$scope', '$route', '$rootScope', '$location', 'dataService', 'notificationService', 'pagerService'];
 
-    function ProductsController($scope, $route, $rootScope, $location, dataService, notificationService) {
-        $scope.products = [];
+    function ProductsController($scope, $route, $rootScope, $location, dataService, notificationService, pagerService) {
+        $scope.products = []; 
         $scope.removeProduct = removeProduct;
+        $scope.loadProducts = loadProducts;
+        $scope.pageSize = 5;
+        $scope.pager = {};
         activate();
 
-        function loadProducts() {
-            dataService.get('/api/products', null, loadProductsSucceeded, loadProductsFailed);
+        function loadProducts(pageNumber) {
+            var pageSize = $scope.pageSize || 5;
+
+            pageNumber = pageNumber || 1;
+
+            dataService.get('/api/products', {
+                params: {
+                    pageSize: pageSize,
+                    pageNumber: pageNumber
+                }
+            }, loadProductsSucceeded, loadProductsFailed);
         }
 
         function loadProductsSucceeded(response) {
-            $scope.products = response.data;
+            $scope.products = response.data.products;
+            var currentPage = response.data.pagingInfo.currentPage;
+            var pageSize = response.data.pagingInfo.pageSize;
+            var totalItems = response.data.pagingInfo.totalItems;
+            var totalPages = response.data.pagingInfo.totalPages;
+
+            $scope.pager = pagerService.GetPager(totalItems, totalPages, currentPage, pageSize);
         }
 
         function loadProductsFailed(response) {

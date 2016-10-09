@@ -14,28 +14,12 @@ namespace Assignment.Data
 
         public void Commit()
         {
-            try
-            {
-                _dbContext.SaveChanges();
-            }
-            catch
-            {
-                // Log errors here
-                throw;
-            }
+            _dbContext.SaveChanges();
         }
 
         public async Task CommitAsync()
         {
-            try
-            {
-                await _dbContext.SaveChangesAsync();
-            }
-            catch
-            {
-                // Log errors here
-                throw;
-            }
+            await _dbContext.SaveChangesAsync();
         }
 
         protected virtual void Dispose(bool disposing)

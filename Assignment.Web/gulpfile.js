@@ -28,15 +28,17 @@ gulp.task('process-scripts', function () {
         'bower_components/toastr/toastr.js',
         'bower_components/angular/angular.js',
         'bower_components/angular-route/angular-route.js',
-        'bower_components/angular-loading-bar/build/loading-bar.js',
+        'bower_components/angular-loading-bar/src/loading-bar.js',
         'bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js',
         'Scripts/app/app.js',
         'Scripts/app/modules/app.core.module.js',
         'Scripts/app/modules/app.layout.module.js',
         'Scripts/app/layout/top-bar.directive.js',
+        'Scripts/app/layout/pagination.directive.js',
         'Scripts/app/services/data.service.js',
         'Scripts/app/services/notification.service.js',
         'Scripts/app/services/membership.service.js',
+        'Scripts/app/services/pager.service.js',
         'Scripts/app/home/root.controller.js',
         'Scripts/app/home/index.controller.js',
         'Scripts/app/account/login.controller.js',
@@ -57,8 +59,12 @@ gulp.task('process-scripts', function () {
         'Scripts/app/orders/orders-edit.controller.js',
         'Scripts/app/components/compare-to.directive.js'])
         .pipe(concat('app.js'))
-        .pipe(uglify())
+        //.pipe(uglify())
         .pipe(gulp.dest('Scripts'));
 });
 
-gulp.task('build-spa', ['process-scripts', 'process-styles', 'process-fonts']);
+gulp.task('build-spa', [
+    'process-scripts',
+    'process-styles',
+    'process-fonts'
+]);

@@ -1,0 +1,19 @@
+﻿<ul ng-if="pager.pages.length" class="pagination" ng-class="{ 'pagination-sm': size === 'sm', pagination: size === 'md', 'pagination-lg': size === 'lg' }">
+    <li ng-if="pager.currentPage > 6">
+        <a ng-click="loadItems({ pageNumber: 1 })">1</a>
+    </li>
+    <li ng-if="pager.currentPage !== 1">
+        <a ng-click="loadItems({ pageNumber: pager.currentPage - 1 })">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+    </li>
+    <li ng-repeat="page in pager.pages" ng-class="{ active:pager.currentPage === page }">
+        <a ng-click="pager.currentPage !== page ? loadItems({ pageNumber: page }) : null;">{{page}}</a>
+    </li>
+    <li ng-if="pager.currentPage !== pager.totalPages">
+        <a ng-click="loadItems({ pageNumber: pager.currentPage + 1 })"><span class="glyphicon glyphicon-chevron-right"></span></a>
+    </li>
+    <li ng-if="pager.currentPage + 4 < pager.totalPages">
+        <a ng-click="loadItems({ pageNumber: pager.totalPages })">{{pager.totalPages}}</a>
+    </li>
+</ul>
