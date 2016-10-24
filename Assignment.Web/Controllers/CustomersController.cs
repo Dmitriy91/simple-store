@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Assignment.Web.Infrastructure.ExceptionHandling;
 using Assignment.Web.Infrastructure;
+using WebApi.OutputCache.V2;
 
 namespace Assignment.Web.Controllers
 {
+    [AutoInvalidateCacheOutput]
     [Authorize(Roles = "Admin")]
     [RoutePrefix("api/customers")]
     public class CustomersController : ApiController
@@ -28,6 +30,7 @@ namespace Assignment.Web.Controllers
         #region Actions
         // GET: api/customers/juridical-persons
         [Route("juridical-persons")]
+        [CacheOutput(ServerTimeSpan = 300)]
         public async Task<IHttpActionResult> GetAllJuridicalPersons([FromUri]PaginationBindingModel pagination)
         {
             pagination = pagination ?? new PaginationBindingModel();
@@ -39,8 +42,8 @@ namespace Assignment.Web.Controllers
 
             IEnumerable<JuridicalPerson> juridcalPersons =
                 await Task.Run(() => _customerService.GetJuridicalPersons(pagination.PageNumber, pagination.PageSize, out personsFound));
-            IEnumerable<JuridicalPersonDto> juridicalPersonDtos
-                = Mapper.Map<IEnumerable<JuridicalPerson>, IEnumerable<JuridicalPersonDto>>(juridcalPersons);
+            IEnumerable<JuridicalPersonDto> juridicalPersonDtos =
+                Mapper.Map<IEnumerable<JuridicalPerson>, IEnumerable<JuridicalPersonDto>>(juridcalPersons);
 
             return Ok(new
             {
@@ -56,6 +59,7 @@ namespace Assignment.Web.Controllers
 
         // GET: api/customers/juridical-persons
         [Route("natural-persons")]
+        [CacheOutput(ServerTimeSpan = 300)]
         public async Task<IHttpActionResult> GetAllNaturalPersons([FromUri]PaginationBindingModel pagination)
         {
             pagination = pagination ?? new PaginationBindingModel();
@@ -65,9 +69,10 @@ namespace Assignment.Web.Controllers
 
             int personsFound = 0;
 
-            IEnumerable<NaturalPerson> naturalPersons = await Task.Run(() => _customerService.GetNaturalPersons(pagination.PageNumber, pagination.PageSize, out personsFound));
-            IEnumerable<NaturalPersonDto> naturalPersonDtos
-                = Mapper.Map<IEnumerable<NaturalPerson>, IEnumerable<NaturalPersonDto>>(naturalPersons);
+            IEnumerable<NaturalPerson> naturalPersons =
+                await Task.Run(() => _customerService.GetNaturalPersons(pagination.PageNumber, pagination.PageSize, out personsFound));
+            IEnumerable<NaturalPersonDto> naturalPersonDtos =
+                Mapper.Map<IEnumerable<NaturalPerson>, IEnumerable<NaturalPersonDto>>(naturalPersons);
 
             return Ok(new
             {
@@ -83,6 +88,7 @@ namespace Assignment.Web.Controllers
 
         // GET: api/customers/juridical-person/1
         [Route("juridical-person/{id:int:min(1)}")]
+        [CacheOutput(ServerTimeSpan = 300)]
         public IHttpActionResult GetJuridicalPerson(int id)
         {
             JuridicalPerson juridicalPerson = _customerService.GetJuridicalPersonById(id);
@@ -97,6 +103,7 @@ namespace Assignment.Web.Controllers
 
         // GET: api/customers/natural-person/1
         [Route("natural-person/{id:int:min(1)}")]
+        [CacheOutput(ServerTimeSpan = 300)]
         public IHttpActionResult GetNaturalPerson(int id)
         {
             NaturalPerson naturalPerson = _customerService.GetNaturalPersonById(id);

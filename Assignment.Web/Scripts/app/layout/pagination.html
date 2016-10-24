@@ -1,4 +1,4 @@
-﻿<ul ng-if="pager.pages.length" class="pagination" ng-class="{ 'pagination-sm': size === 'sm', pagination: size === 'md', 'pagination-lg': size === 'lg' }">
+﻿<ul ng-if="pager.pages.length && pager.totalPages > 1" class="pagination" ng-class="{ 'pagination-sm': size === 'sm', pagination: size === 'md', 'pagination-lg': size === 'lg' }">
     <li ng-if="pager.currentPage > 6">
         <a ng-click="loadItems({ pageNumber: 1 })">1</a>
     </li>

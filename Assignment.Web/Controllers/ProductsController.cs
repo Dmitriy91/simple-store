@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Assignment.Web.Infrastructure.ExceptionHandling;
 using Assignment.Web.Infrastructure;
+using WebApi.OutputCache.V2;
 
 namespace Assignment.Web.Controllers
 {
+    [AutoInvalidateCacheOutput]
     [Authorize(Roles = "Admin")]
     [RoutePrefix("api/products")]
     public class ProductsController : ApiController
@@ -27,6 +29,7 @@ namespace Assignment.Web.Controllers
 
         #region Actions
         // GET: api/products/
+        [CacheOutput(ServerTimeSpan = 300)]
         public async Task<IHttpActionResult> Get([FromUri]PaginationBindingModel pagination)
         {
             pagination = pagination ?? new PaginationBindingModel();
@@ -36,7 +39,8 @@ namespace Assignment.Web.Controllers
 
             int productsFound = 0;
 
-            IEnumerable<Product> products = await Task.Run(() => _productService.GetProducts(pagination.PageNumber, pagination.PageSize, out productsFound));
+            IEnumerable<Product> products =
+                await Task.Run(() => _productService.GetProducts(pagination.PageNumber, pagination.PageSize, out productsFound));
             IEnumerable<ProductDto> productDtos = Mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products);
 
             return Ok(new
@@ -53,6 +57,7 @@ namespace Assignment.Web.Controllers
 
         // GET: api/products/details/1
         [Route("details/{id:int:min(1)}")]
+        [CacheOutput(ServerTimeSpan = 300)]
         public IHttpActionResult Get(int id)
         {
             Product product = _productService.GetProductById(id);

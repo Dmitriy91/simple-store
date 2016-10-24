@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Assignment.Web.Infrastructure;
 using Assignment.Web.Infrastructure.ExceptionHandling;
+using WebApi.OutputCache.V2;
 
 namespace Assignment.Web.Controllers
 {
+    [AutoInvalidateCacheOutput]
     [Authorize(Roles = "Admin")]
     [RoutePrefix("api/orders")]
     public class OrdersController : ApiController
@@ -28,6 +30,7 @@ namespace Assignment.Web.Controllers
         #region Actions
         // GET: api/orders/1
         [Route("{customerId:int:min(1)}")]
+        [CacheOutput(ServerTimeSpan = 300)]
         public async Task<IHttpActionResult> GetOrdersByCustomer(int customerId, [FromUri]PaginationBindingModel pagination)
         {
             if (!ModelState.IsValid)
@@ -35,7 +38,8 @@ namespace Assignment.Web.Controllers
 
             int ordersFound = 0;
 
-            IEnumerable<Order> orders = await Task.Run(() => _orderService.GetOrdersByCustomerId(customerId, pagination.PageNumber, pagination.PageSize, out ordersFound));
+            IEnumerable<Order> orders =
+                await Task.Run(() => _orderService.GetOrdersByCustomerId(customerId, pagination.PageNumber, pagination.PageSize, out ordersFound));
             IEnumerable<OrderDto> orderDtos = Mapper.Map<IEnumerable<Order>, IEnumerable<OrderDto>>(orders);
 
             return Ok(new
@@ -52,12 +56,13 @@ namespace Assignment.Web.Controllers
 
         // GET: api/orders/details/1
         [Route("details/{id:int:min(1)}")]
+        [CacheOutput(ServerTimeSpan = 300)]
         public IHttpActionResult Get(int id)
         {
             Order order = _orderService.GetOrderById(id);
 
             if (order == null)
-                throw new BindingModelValidationException("Invalid order id.");
+                throw new BindingModelValidationException("The order does not exist.");
 
             OrderDto orderDto = Mapper.Map<Order, OrderDto>(order);
 

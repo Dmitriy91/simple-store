@@ -311,6 +311,8 @@
     <Content Include="Scripts\app\home\index.controller.js" />
     <Content Include="Scripts\app\home\index.html" />
     <Content Include="Scripts\app\home\root.controller.js" />
+    <Content Include="Scripts\app\layout\new-pagination.directive.js" />
+    <Content Include="Scripts\app\layout\new-pagination.html" />
     <Content Include="Scripts\app\layout\pagination.directive.js" />
     <Content Include="Scripts\app\layout\pagination.html" />
     <Content Include="Scripts\app\layout\top-bar.directive.js" />

@@ -47122,10 +47122,12 @@ angular.module('cfp.loadingBar', [])
             .otherwise({ redirectTo: '/' });
     }
 
-    run.$inject = ['$rootScope', '$location', '$http', '$window'];
+    run.$inject = ['$rootScope', '$templateCache', '$location', '$http', '$window'];
 
-    function run($rootScope, $location, $http, $window) {
-
+    function run($rootScope, $templateCache, $location, $http, $window) {
+        $rootScope.$on('$viewContentLoaded', function () {
+            $templateCache.removeAll();
+        });
     }
 
     isLoggedIn.$inject = ['membershipService', '$rootScope', '$location'];
@@ -48289,33 +48291,48 @@ angular.module('cfp.loadingBar', [])
     function OrdersController($scope, $route, $rootScope, $location, dataService, notificationService, pagerService) {
         $scope.customerType = 'naturalPerson';
         $scope.selectCustomerType = selectCustomerType;
+
         $scope.naturalPersons = [];
         $scope.juridicalPersons = [];
         $scope.orders = [];
-        $scope.orderItems = [];
+        $scope.orderDetails = [];
+        $scope.paginatedOrderDetails = [];
+
         $scope.selectedCustomerId = 0;
         $scope.selectedOrderId = 0;
         $scope.selectCustomer = selectCustomer;
         $scope.selectOrder = selectOrder;
         $scope.removeOrder = removeOrder;
+
         $scope.loadNaturalPersons = loadNaturalPersons;
         $scope.loadJuridicalPersons = loadJuridicalPersons;
-        $scope.pageSize = 5;
+        $scope.loadOrdersByCustomer = loadOrdersByCustomer;
+        $scope.loadOrderDetails = loadOrderDetails;
+
+        $scope.customersPageSize = 5;
+        $scope.ordersPageSize = 5;
+        $scope.orderDetailsPageSize = 5;
+
         $scope.naturalPersonsPager = {};
         $scope.juridicalPersonsPager = {};
+        $scope.ordersPager = {};
+        $scope.orderDetailsPager = {};
         activate();
 
         function clearSelectedCustomerInfo() {
             $scope.selectedCustomerId = 0;
             $scope.selectedOrderId = 0;
             $scope.orders = [];
-            $scope.orderItems = [];
+            $scope.orderDetails = [];
+            $scope.paginatedOrderDetails = [];
+            $scope.ordersPager = {};
+            $scope.orderDetailsPager = {};
         }
 
         function clearSelectedOrderInfo() {
             $scope.selectedOrderId = 0;
             $scope.orders = [];
-            $scope.orderItems = [];
+            $scope.orderDetails = [];
         }
 
         function selectCustomerType(customerType) {
@@ -48326,12 +48343,13 @@ angular.module('cfp.loadingBar', [])
         function selectCustomer(customerId) {
             clearSelectedCustomerInfo();
             $scope.selectedCustomerId = customerId;
-            loadOrdersByCustomerId(customerId);
+            loadOrdersByCustomer();
         }
 
-        function selectOrder(orderId, orderItems) {
+        function selectOrder(orderId, orderDetails) {
             $scope.selectedOrderId = orderId;
-            $scope.orderItems = orderItems;
+            $scope.orderDetails = orderDetails;
+            loadOrderDetails();
         }
 
         function removeOrder(inx) {
@@ -48349,18 +48367,54 @@ angular.module('cfp.loadingBar', [])
 
             clearSelectedOrderInfo();
             notificationService.displaySuccess('Order has been successfuly removed.');
-            loadOrdersByCustomerId(selectedCustomerId);
+            loadOrdersByCustomer(selectedCustomerId);
         }
 
-        function loadOrdersByCustomerId(customerId) {
-            dataService.get('/api/orders/' + customerId, null, loadOrdersByCustomerIdSucceeded, loadOrdersByCustomerIdFailed);
+        function loadOrderDetails(pageNumber) {
+            var pageSize = $scope.orderDetailsPageSize || 5;
+
+            pageNumber = pageNumber || 1;
+
+            var currentPage = pageNumber;
+            var pageSize = pageSize
+            var totalItems = $scope.orderDetails.length;
+            var totalPages = Math.ceil(totalItems / pageSize);
+
+            $scope.orderDetailsPager = pagerService.GetPager(totalItems, totalPages, currentPage, pageSize);
+
+            if ($scope.orderDetails != 'undefined') {
+                $scope.paginatedOrderDetails = $scope.orderDetails.filter(function (currentValue, inx) {
+                    return inx >= $scope.orderDetailsPager.startIndex && inx <= $scope.orderDetailsPager.endIndex;
+                });
+            }
         }
 
-        function loadOrdersByCustomerIdSucceeded(response) {
+        function loadOrdersByCustomer(pageNumber) {
+            var pageSize = $scope.ordersPageSize || 5;
+
+            pageNumber = pageNumber || 1;
+
+            if ($scope.selectedCustomerId !== 0) {
+                dataService.get('/api/orders/' + $scope.selectedCustomerId, {
+                    params: {
+                        pageSize: pageSize,
+                        pageNumber: pageNumber
+                    }
+                }, loadOrdersByCustomerSucceeded, loadOrdersByCustomerFailed);
+            }
+        }
+
+        function loadOrdersByCustomerSucceeded(response) {
             $scope.orders = response.data.orders;
+            var currentPage = response.data.pagingInfo.currentPage;
+            var pageSize = response.data.pagingInfo.pageSize;
+            var totalItems = response.data.pagingInfo.totalItems;
+            var totalPages = response.data.pagingInfo.totalPages;
+
+            $scope.ordersPager = pagerService.GetPager(totalItems, totalPages, currentPage, pageSize);
         }
 
-        function loadOrdersByCustomerIdFailed(response) {
+        function loadOrdersByCustomerFailed(response) {
             notificationService.displayError("Orders haven't been loaded. Please try again later.");
             $location.path('/');
         }
@@ -48433,16 +48487,19 @@ angular.module('cfp.loadingBar', [])
 
     app_core.controller('OrdersAddController', OrdersAddController);
 
-    OrdersAddController.$inject = ['$scope', '$rootScope', '$routeParams', '$location', 'dataService', 'notificationService'];
+    OrdersAddController.$inject = ['$scope', '$rootScope', '$routeParams', '$location', 'dataService', 'notificationService', 'pagerService'];
 
-    function OrdersAddController($scope, $rootScope, $routeParams, $location, dataService, notificationService) {
+    function OrdersAddController($scope, $rootScope, $routeParams, $location, dataService, notificationService, pagerService) {
         $scope.products = [];
         $scope.orderItems = [];
         $scope.totalCost = 0;
+        $scope.loadProducts = loadProducts;
         $scope.addOrder = addOrder;
         $scope.addProductToCart = addProductToCart;
         $scope.removeOrderItem = removeOrderItem;
         $scope.calculateTotalCost = calculateTotalCost;
+        $scope.pageSize = 5;
+        $scope.pager = {};
         activate();
 
         function calculateTotalCost() {
@@ -48514,12 +48571,27 @@ angular.module('cfp.loadingBar', [])
             notificationService.displayError("Unauthorised actions detected.");
         }
 
-        function loadProducts() {
-            dataService.get('/api/products', null, loadProductsSucceeded, loadProductsFailed);
+        function loadProducts(pageNumber) {
+            var pageSize = $scope.pageSize || 5;
+
+            pageNumber = pageNumber || 1;
+
+            dataService.get('/api/products', {
+                params: {
+                    pageSize: pageSize,
+                    pageNumber: pageNumber
+                }
+            }, loadProductsSucceeded, loadProductsFailed);
         }
 
         function loadProductsSucceeded(response) {
             $scope.products = response.data.products;
+            var currentPage = response.data.pagingInfo.currentPage;
+            var pageSize = response.data.pagingInfo.pageSize;
+            var totalItems = response.data.pagingInfo.totalItems;
+            var totalPages = response.data.pagingInfo.totalPages;
+
+            $scope.pager = pagerService.GetPager(totalItems, totalPages, currentPage, pageSize);
         }
 
         function loadProductsFailed(response) {
@@ -48538,16 +48610,19 @@ angular.module('cfp.loadingBar', [])
 
     app_core.controller('OrdersEditController', OrdersEditController);
 
-    OrdersEditController.$inject = ['$scope', '$rootScope', '$routeParams', '$location', 'dataService', 'notificationService'];
+    OrdersEditController.$inject = ['$scope', '$rootScope', '$routeParams', '$location', 'dataService', 'notificationService', 'pagerService'];
 
-    function OrdersEditController($scope, $rootScope, $routeParams, $location, dataService, notificationService) {
+    function OrdersEditController($scope, $rootScope, $routeParams, $location, dataService, notificationService, pagerService) {
         $scope.products = [];
         $scope.orderItems = [];
         $scope.totalCost = 0;
+        $scope.loadProducts = loadProducts;
         $scope.editOrder = editOrder;
         $scope.addProductToCart = addProductToCart;
         $scope.removeOrderItem = removeOrderItem;
         $scope.calculateTotalCost = calculateTotalCost;
+        $scope.pageSize = 5;
+        $scope.pager = {};
         activate();
 
         function calculateTotalCost() {
@@ -48594,12 +48669,27 @@ angular.module('cfp.loadingBar', [])
             calculateTotalCost();
         }
 
-        function loadProducts() {
-            dataService.get('/api/products', null, loadProductsSucceeded, loadProductsFailed);
+        function loadProducts(pageNumber) {
+            var pageSize = $scope.pageSize || 5;
+
+            pageNumber = pageNumber || 1;
+
+            dataService.get('/api/products', {
+                params: {
+                    pageSize: pageSize,
+                    pageNumber: pageNumber
+                }
+            }, loadProductsSucceeded, loadProductsFailed);
         }
 
         function loadProductsSucceeded(response) {
             $scope.products = response.data.products;
+            var currentPage = response.data.pagingInfo.currentPage;
+            var pageSize = response.data.pagingInfo.pageSize;
+            var totalItems = response.data.pagingInfo.totalItems;
+            var totalPages = response.data.pagingInfo.totalPages;
+
+            $scope.pager = pagerService.GetPager(totalItems, totalPages, currentPage, pageSize);
         }
 
         function loadProductsFailed(response) {

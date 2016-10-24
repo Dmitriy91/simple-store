@@ -95,10 +95,12 @@
             .otherwise({ redirectTo: '/' });
     }
 
-    run.$inject = ['$rootScope', '$location', '$http', '$window'];
+    run.$inject = ['$rootScope', '$templateCache', '$location', '$http', '$window'];
 
-    function run($rootScope, $location, $http, $window) {
-
+    function run($rootScope, $templateCache, $location, $http, $window) {
+        $rootScope.$on('$viewContentLoaded', function () {
+            $templateCache.removeAll();
+        });
     }
 
     isLoggedIn.$inject = ['membershipService', '$rootScope', '$location'];

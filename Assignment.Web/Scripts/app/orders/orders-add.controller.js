@@ -3,16 +3,19 @@
 
     app_core.controller('OrdersAddController', OrdersAddController);
 
-    OrdersAddController.$inject = ['$scope', '$rootScope', '$routeParams', '$location', 'dataService', 'notificationService'];
+    OrdersAddController.$inject = ['$scope', '$rootScope', '$routeParams', '$location', 'dataService', 'notificationService', 'pagerService'];
 
-    function OrdersAddController($scope, $rootScope, $routeParams, $location, dataService, notificationService) {
+    function OrdersAddController($scope, $rootScope, $routeParams, $location, dataService, notificationService, pagerService) {
         $scope.products = [];
         $scope.orderItems = [];
         $scope.totalCost = 0;
+        $scope.loadProducts = loadProducts;
         $scope.addOrder = addOrder;
         $scope.addProductToCart = addProductToCart;
         $scope.removeOrderItem = removeOrderItem;
         $scope.calculateTotalCost = calculateTotalCost;
+        $scope.pageSize = 5;
+        $scope.pager = {};
         activate();
 
         function calculateTotalCost() {
@@ -84,12 +87,27 @@
             notificationService.displayError("Unauthorised actions detected.");
         }
 
-        function loadProducts() {
-            dataService.get('/api/products', null, loadProductsSucceeded, loadProductsFailed);
+        function loadProducts(pageNumber) {
+            var pageSize = $scope.pageSize || 5;
+
+            pageNumber = pageNumber || 1;
+
+            dataService.get('/api/products', {
+                params: {
+                    pageSize: pageSize,
+                    pageNumber: pageNumber
+                }
+            }, loadProductsSucceeded, loadProductsFailed);
         }
 
         function loadProductsSucceeded(response) {
             $scope.products = response.data.products;
+            var currentPage = response.data.pagingInfo.currentPage;
+            var pageSize = response.data.pagingInfo.pageSize;
+            var totalItems = response.data.pagingInfo.totalItems;
+            var totalPages = response.data.pagingInfo.totalPages;
+
+            $scope.pager = pagerService.GetPager(totalItems, totalPages, currentPage, pageSize);
         }
 
         function loadProductsFailed(response) {

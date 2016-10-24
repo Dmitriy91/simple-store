@@ -8,10 +8,12 @@
     function OrdersController($scope, $route, $rootScope, $location, dataService, notificationService, pagerService) {
         $scope.customerType = 'naturalPerson';
         $scope.selectCustomerType = selectCustomerType;
+
         $scope.naturalPersons = [];
         $scope.juridicalPersons = [];
         $scope.orders = [];
-        $scope.orderItems = [];
+        $scope.orderDetails = [];
+        $scope.paginatedOrderDetails = [];
 
         $scope.selectedCustomerId = 0;
         $scope.selectedOrderId = 0;
@@ -21,27 +23,33 @@
 
         $scope.loadNaturalPersons = loadNaturalPersons;
         $scope.loadJuridicalPersons = loadJuridicalPersons;
-        $scope.loadJuridicalPersons = loadJuridicalPersons;
+        $scope.loadOrdersByCustomer = loadOrdersByCustomer;
+        $scope.loadOrderDetails = loadOrderDetails;
 
         $scope.customersPageSize = 5;
-        $scope.orderPageSize = 5;
+        $scope.ordersPageSize = 5;
         $scope.orderDetailsPageSize = 5;
 
         $scope.naturalPersonsPager = {};
         $scope.juridicalPersonsPager = {};
+        $scope.ordersPager = {};
+        $scope.orderDetailsPager = {};
         activate();
 
         function clearSelectedCustomerInfo() {
             $scope.selectedCustomerId = 0;
             $scope.selectedOrderId = 0;
             $scope.orders = [];
-            $scope.orderItems = [];
+            $scope.orderDetails = [];
+            $scope.paginatedOrderDetails = [];
+            $scope.ordersPager = {};
+            $scope.orderDetailsPager = {};
         }
 
         function clearSelectedOrderInfo() {
             $scope.selectedOrderId = 0;
             $scope.orders = [];
-            $scope.orderItems = [];
+            $scope.orderDetails = [];
         }
 
         function selectCustomerType(customerType) {
@@ -52,12 +60,13 @@
         function selectCustomer(customerId) {
             clearSelectedCustomerInfo();
             $scope.selectedCustomerId = customerId;
-            loadOrdersByCustomerId(customerId);
+            loadOrdersByCustomer();
         }
 
-        function selectOrder(orderId, orderItems) {
+        function selectOrder(orderId, orderDetails) {
             $scope.selectedOrderId = orderId;
-            $scope.orderItems = orderItems;
+            $scope.orderDetails = orderDetails;
+            loadOrderDetails();
         }
 
         function removeOrder(inx) {
@@ -75,18 +84,54 @@
 
             clearSelectedOrderInfo();
             notificationService.displaySuccess('Order has been successfuly removed.');
-            loadOrdersByCustomerId(selectedCustomerId);
+            loadOrdersByCustomer(selectedCustomerId);
         }
 
-        function loadOrdersByCustomerId(customerId) {
-            dataService.get('/api/orders/' + customerId, null, loadOrdersByCustomerIdSucceeded, loadOrdersByCustomerIdFailed);
+        function loadOrderDetails(pageNumber) {
+            var pageSize = $scope.orderDetailsPageSize || 5;
+
+            pageNumber = pageNumber || 1;
+
+            var currentPage = pageNumber;
+            var pageSize = pageSize
+            var totalItems = $scope.orderDetails.length;
+            var totalPages = Math.ceil(totalItems / pageSize);
+
+            $scope.orderDetailsPager = pagerService.GetPager(totalItems, totalPages, currentPage, pageSize);
+
+            if ($scope.orderDetails != 'undefined') {
+                $scope.paginatedOrderDetails = $scope.orderDetails.filter(function (currentValue, inx) {
+                    return inx >= $scope.orderDetailsPager.startIndex && inx <= $scope.orderDetailsPager.endIndex;
+                });
+            }
         }
 
-        function loadOrdersByCustomerIdSucceeded(response) {
+        function loadOrdersByCustomer(pageNumber) {
+            var pageSize = $scope.ordersPageSize || 5;
+
+            pageNumber = pageNumber || 1;
+
+            if ($scope.selectedCustomerId !== 0) {
+                dataService.get('/api/orders/' + $scope.selectedCustomerId, {
+                    params: {
+                        pageSize: pageSize,
+                        pageNumber: pageNumber
+                    }
+                }, loadOrdersByCustomerSucceeded, loadOrdersByCustomerFailed);
+            }
+        }
+
+        function loadOrdersByCustomerSucceeded(response) {
             $scope.orders = response.data.orders;
+            var currentPage = response.data.pagingInfo.currentPage;
+            var pageSize = response.data.pagingInfo.pageSize;
+            var totalItems = response.data.pagingInfo.totalItems;
+            var totalPages = response.data.pagingInfo.totalPages;
+
+            $scope.ordersPager = pagerService.GetPager(totalItems, totalPages, currentPage, pageSize);
         }
 
-        function loadOrdersByCustomerIdFailed(response) {
+        function loadOrdersByCustomerFailed(response) {
             notificationService.displayError("Orders haven't been loaded. Please try again later.");
             $location.path('/');
         }
