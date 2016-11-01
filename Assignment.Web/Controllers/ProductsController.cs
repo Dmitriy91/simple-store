@@ -1,12 +1,12 @@
-﻿using Assignment.Entities;
-using Assignment.Services;
-using Assignment.Web.Models;
-using AutoMapper;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Assignment.Web.Infrastructure.ExceptionHandling;
+using Assignment.Entities;
+using Assignment.Services;
 using Assignment.Web.Infrastructure;
+using Assignment.Web.Infrastructure.ExceptionHandling;
+using Assignment.Web.Models;
+using AutoMapper;
 using WebApi.OutputCache.V2;
 
 namespace Assignment.Web.Controllers
@@ -30,26 +30,26 @@ namespace Assignment.Web.Controllers
         #region Actions
         // GET: api/products/
         [CacheOutput(ServerTimeSpan = 300)]
-        public async Task<IHttpActionResult> Get([FromUri]PaginationBindingModel pagination)
+        public async Task<IHttpActionResult> Get([FromUri]ProductFilterBM filter)
         {
-            pagination = pagination ?? new PaginationBindingModel();
+            filter = filter ?? new ProductFilterBM();
 
             if(!ModelState.IsValid)
                 throw new BindingModelValidationException(this.GetModelStateErrorMessage());
 
             int productsFound = 0;
-
+            IFiltration filtration = Mapper.Map<ProductFilterBM, Filtration>(filter);
             IEnumerable<Product> products =
-                await Task.Run(() => _productService.GetProducts(pagination.PageNumber, pagination.PageSize, out productsFound));
-            IEnumerable<ProductDto> productDtos = Mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products);
+                await Task.Run(() => _productService.GetProducts(filtration, out productsFound));
+            IEnumerable<ProductDTO> productDtos = Mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(products);
 
             return Ok(new
             {
                 Products = productDtos,
-                PagingInfo = new PagingInfoDto
+                PagingInfo = new PagingInfoDTO
                 {
-                    CurrentPage = pagination.PageNumber,
-                    PageSize = pagination.PageSize,
+                    CurrentPage = filter.PageNumber,
+                    PageSize = filter.PageSize,
                     TotalItems = productsFound
                 }
             });
@@ -65,7 +65,7 @@ namespace Assignment.Web.Controllers
             if (product == null)
                 throw new BindingModelValidationException("Invalid product id.");
 
-            ProductDto productDto = Mapper.Map<Product, ProductDto>(product);
+            ProductDTO productDto = Mapper.Map<Product, ProductDTO>(product);
 
             return Ok(productDto);
         }
@@ -73,12 +73,12 @@ namespace Assignment.Web.Controllers
         // POST: api/products/update
         [HttpPost]
         [Route("update")]
-        public async Task<IHttpActionResult> Update([FromBody]ProductBindingModel productBindingModel)
+        public async Task<IHttpActionResult> Update([FromBody]ProductBM productBindingModel)
         {
             if (!ModelState.IsValid)
                 throw new BindingModelValidationException(this.GetModelStateErrorMessage());
 
-            Product product = Mapper.Map<ProductBindingModel, Product>(productBindingModel);
+            Product product = Mapper.Map<ProductBM, Product>(productBindingModel);
 
             if (_productService.UpdateProduct(product))
                 await _productService.CommitAsync();
@@ -89,12 +89,12 @@ namespace Assignment.Web.Controllers
         // POST: api/products/add
         [HttpPost]
         [Route("add")]
-        public async Task<IHttpActionResult> Add([FromBody]ProductBindingModel productBindingModel)
+        public async Task<IHttpActionResult> Add([FromBody]ProductBM productBindingModel)
         {
             if (!ModelState.IsValid)
                 throw new BindingModelValidationException(this.GetModelStateErrorMessage());
 
-            Product product = Mapper.Map<ProductBindingModel, Product>(productBindingModel);
+            Product product = Mapper.Map<ProductBM, Product>(productBindingModel);
 
             _productService.AddProduct(product);
             await _productService.CommitAsync();

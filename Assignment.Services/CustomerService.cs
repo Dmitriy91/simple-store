@@ -1,10 +1,13 @@
-﻿using Assignment.Data.Repositories;
-using Assignment.Entities;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Data.Entity;
+using System.Linq;
+using System.Linq.Dynamic;
+using System.Text;
+using System.Threading.Tasks;
 using Assignment.Data;
+using Assignment.Data.Repositories;
+using Assignment.Entities;
 
 namespace Assignment.Services
 {
@@ -45,33 +48,93 @@ namespace Assignment.Services
                 .FirstOrDefault(np => np.CustomerId == customerId);
         }
 
-        public IEnumerable<JuridicalPerson> GetJuridicalPersons(int pageNumber, int pageSize, out int personsFound)
+        public IEnumerable<JuridicalPerson> GetJuridicalPersons(IFiltration filtration, out int personsFound)
         {
             IQueryable<JuridicalPerson> juridicalPersons = null;
+            StringBuilder whereClause = new StringBuilder();
+            IList<object> filterVales = new List<object>();
+            int filterValueInx = 0;
 
-            juridicalPersons = _juridicalPersonRepo.GetAll();
+            if (filtration.Filters != null)
+            {
+                foreach (var kvp in filtration.Filters)
+                {
+                    filterVales.Add(kvp.Value);
+                    whereClause.AppendFormat("{0}.Contains(@{1}) AND ", kvp.Key, filterValueInx);
+                    filterValueInx++;
+                }
+            }
+
+            if (whereClause.Length > 0)
+            {
+                whereClause.Remove(whereClause.Length - 5, 5); // Remove last ' AND '
+                juridicalPersons = _juridicalPersonRepo.GetAll().
+                Include(jp => jp.Customer).
+                Where(whereClause.ToString(), filterVales.ToArray());
+            }
+            else
+            {
+                juridicalPersons = _juridicalPersonRepo.GetAll().Include(jp => jp.Customer);
+            }
+
             personsFound = juridicalPersons.Count();
 
-            return juridicalPersons.
-                Include(jp => jp.Customer).
-                OrderBy(jp => jp.CustomerId).
-                Skip((pageNumber - 1) * pageSize).
-                Take(pageSize).
-                ToList();
+            if (filtration.SortBy == null)
+                juridicalPersons = juridicalPersons.OrderBy(p => p.CustomerId);
+            else
+                juridicalPersons = juridicalPersons.OrderBy(filtration.SortBy);
+
+            return juridicalPersons.ApplyPagination(filtration.PageNumber, filtration.PageSize);
         }
 
-        public IEnumerable<NaturalPerson> GetNaturalPersons(int pageNumber, int pageSize, out int personsFound)
+        public IEnumerable<NaturalPerson> GetNaturalPersons(IFiltration filtration, out int personsFound)
         {
             IQueryable<NaturalPerson> naturalPersons = null;
+            StringBuilder whereClause = new StringBuilder();
+            IList<object> filterVales = new List<object>();
+            int filterValueInx = 0;
 
-            naturalPersons = _naturalPersonRepo.GetAll();
+            if (filtration.Filters != null)
+            {
+                foreach (var kvp in filtration.Filters)
+                {
+                    if (kvp.Key == "Birthdate")
+                    {
+                        DateTime birthdate = DateTime.Parse(kvp.Value).Date;
+
+                        whereClause.AppendFormat("{0}.Value == @{1} AND ", kvp.Key, filterValueInx);
+                        filterVales.Add(birthdate);
+                    }
+                    else
+                    {
+                        whereClause.AppendFormat("{0}.Contains(@{1}) AND ", kvp.Key, filterValueInx);
+                        filterVales.Add(kvp.Value);
+                    }
+
+                    filterValueInx++;
+                }
+            }
+
+            if (whereClause.Length > 0)
+            {
+                whereClause.Remove(whereClause.Length - 5, 5); // Remove last ' AND '
+                naturalPersons = _naturalPersonRepo.GetAll().
+                Include(jp => jp.Customer).
+                Where(whereClause.ToString(), filterVales.ToArray());
+            }
+            else
+            {
+                naturalPersons = _naturalPersonRepo.GetAll().Include(jp => jp.Customer);
+            }
+
             personsFound = naturalPersons.Count();
 
-            return naturalPersons.Include(np => np.Customer).
-                OrderBy(jp => jp.CustomerId).
-                Skip((pageNumber - 1) * pageSize).
-                Take(pageSize).
-                ToList();
+            if (filtration.SortBy == null)
+                naturalPersons = naturalPersons.OrderBy(jp => jp.CustomerId);
+            else
+                naturalPersons = naturalPersons.OrderBy(filtration.SortBy);
+
+            return naturalPersons.ApplyPagination(filtration.PageNumber, filtration.PageSize);
         }
 
         public bool RemovePersonById(int customerId)

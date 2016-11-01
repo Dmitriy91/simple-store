@@ -23,6 +23,50 @@
 
         $scope.loadNaturalPersons = loadNaturalPersons;
         $scope.loadJuridicalPersons = loadJuridicalPersons;
+        $scope.naturalPersonsSortBy = '';
+        $scope.juridicalPersonsSortBy = '';
+        $scope.ordersSortBy = '';
+        $scope.naturalPersonFilters = [
+            {
+                name: 'firstName',
+                value: ''
+            },
+            {
+                name: 'middleName',
+                value: ''
+            },
+            {
+                name: 'lastName',
+                value: ''
+            }
+        ];
+        $scope.juridicalPersonFilters = [
+            {
+                name: 'legalName',
+                value: ''
+            },
+            {
+                name: 'tin',
+                value: ''
+            }
+        ];
+        $scope.orderFilters = [
+            {
+                name: 'id',
+                value: ''
+            },
+            {
+                name: 'orderDate',
+                value: ''
+            }
+        ];
+        $scope.customerFiltersDisplayed = false;
+        $scope.orderFiltersDisplayed = false;
+        $scope.toggleCustomerFilters = toggleCustomerFilters;
+        $scope.toggleOrderFilters = toggleOrderFilters;
+        $scope.clearCustomerFilters = clearCustomerFilters;
+        $scope.clearOrderFilters = clearOrderFilters;
+
         $scope.loadOrdersByCustomer = loadOrdersByCustomer;
         $scope.loadOrderDetails = loadOrderDetails;
 
@@ -55,6 +99,11 @@
         function selectCustomerType(customerType) {
             clearSelectedCustomerInfo();
             $scope.customerType = customerType;
+
+            if (customerType === 'naturalPerson')
+                loadNaturalPersons();
+            else
+                loadJuridicalPersons();
         }
 
         function selectCustomer(customerId) {
@@ -107,16 +156,25 @@
         }
 
         function loadOrdersByCustomer(pageNumber) {
-            var pageSize = $scope.ordersPageSize || 5;
-
             pageNumber = pageNumber || 1;
+
+            var pageSize = $scope.ordersPageSize || 5;
+            var queryParams = {
+                pageNumber: pageNumber,
+                pageSize: pageSize
+            };
+
+            if ($scope.ordersSortBy)
+                queryParams['sortBy'] = $scope.ordersSortBy;
+
+            angular.forEach($scope.orderFilters, function (filter) {
+                if (filter && filter.value)
+                    queryParams[filter.name] = filter.value;
+            });
 
             if ($scope.selectedCustomerId !== 0) {
                 dataService.get('/api/orders/' + $scope.selectedCustomerId, {
-                    params: {
-                        pageSize: pageSize,
-                        pageNumber: pageNumber
-                    }
+                    params: queryParams
                 }, loadOrdersByCustomerSucceeded, loadOrdersByCustomerFailed);
             }
         }
@@ -137,28 +195,46 @@
         }
 
         function loadJuridicalPersons(pageNumber) {
-            var pageSize = $scope.pageSize || 5;
-
             pageNumber = pageNumber || 1;
 
+            var pageSize = $scope.customersPageSize || 5;
+            var queryParams = {
+                pageNumber: pageNumber,
+                pageSize: pageSize
+            };
+
+            if ($scope.juridicalPersonsSortBy)
+                queryParams['sortBy'] = $scope.juridicalPersonsSortBy;
+
+            angular.forEach($scope.juridicalPersonFilters, function (filter) {
+                if (filter && filter.value)
+                    queryParams[filter.name] = filter.value;
+            });
+
             dataService.get('/api/customers/juridical-persons', {
-                params: {
-                    pageSize: pageSize,
-                    pageNumber: pageNumber
-                }
+                params: queryParams
             }, loadJuridicalPersonsSucceeded, loadJuridicalPersonsFailed);
         }
 
         function loadNaturalPersons(pageNumber) {
-            var pageSize = $scope.pageSize || 5;
-
             pageNumber = pageNumber || 1;
 
+            var pageSize = $scope.customersPageSize || 5;
+            var queryParams = {
+                pageNumber: pageNumber,
+                pageSize: pageSize
+            };
+
+            if ($scope.naturalPersonsSortBy)
+                queryParams['sortBy'] = $scope.naturalPersonsSortBy;
+
+            angular.forEach($scope.naturalPersonFilters, function (filter) {
+                if (filter && filter.value)
+                    queryParams[filter.name] = filter.value;
+            });
+
             dataService.get('/api/customers/natural-persons', {
-                params: {
-                    pageSize: pageSize,
-                    pageNumber: pageNumber
-                }
+                params: queryParams
             }, loadNaturalPersonsSucceeded, loadNaturalPersonsFailed);
         }
 
@@ -192,7 +268,162 @@
             $location.path('/');
         }
 
+        function toggleCustomerFilters() {
+            if ($scope.customerFiltersDisplayed) {
+                var updateNaturalPersons = false;
+                var updateJuridicalPersons = false;
+
+                $scope.customerFiltersDisplayed = false;
+                angular.forEach($scope.naturalPersonFilters, function (filter) {
+                    if (filter && filter.value) {
+                        filter.value = '';
+                        updateNaturalPersons = true;
+                    }
+                });
+                angular.forEach($scope.juridicalPersonFilters, function (filter) {
+                    if (filter && filter.value) {
+                        filter.value = '';
+                        updateJuridicalPersons = true;
+                    }
+                });
+
+                if (updateJuridicalPersons)
+                    loadJuridicalPersons();
+
+                if (updateNaturalPersons)
+                    loadNaturalPersons();
+            }
+            else {
+                $scope.customerFiltersDisplayed = true;
+            }
+        }
+
+        function toggleOrderFilters() {
+            if ($scope.orderFiltersDisplayed) {
+                var updateOrders = false;
+
+                $scope.orderFiltersDisplayed = false;
+                angular.forEach($scope.orderFilters, function (filter) {
+                    if (filter && filter.value) {
+                        filter.value = '';
+                        updateOrders = true;
+                    }
+                });
+
+                if (updateOrders)
+                    loadOrdersByCustomer();
+            }
+            else {
+                $scope.orderFiltersDisplayed = true;
+            }
+        }
+
+        function clearCustomerFilters() {
+            if ($scope.customerType == 'naturalPerson') {
+                var updateNaturalPersons = false;
+
+                angular.forEach($scope.naturalPersonFilters, function (filter) {
+                    if (filter && filter.value) {
+                        filter.value = '';
+                        updateNaturalPersons = true;
+                    }
+                });
+
+                if (updateNaturalPersons)
+                    loadNaturalPersons();
+            }
+            else {
+                var updateJuridicalPersons = false;
+
+                angular.forEach($scope.juridicalPersonFilters, function (filter) {
+                    if (filter && filter.value) {
+                        filter.value = '';
+                        updateJuridicalPersons = true;
+                    }
+                });
+
+                if (updateJuridicalPersons)
+                    loadJuridicalPersons();
+            }
+        }
+
+        function clearOrderFilters() {
+            var updateOrders = false;
+
+            angular.forEach($scope.orderFilters, function (filter) {
+                if (filter && filter.value) {
+                    filter.value = '';
+                    updateOrders = true;
+                }
+            });
+
+            if (updateOrders)
+                loadOrdersByCustomer();
+        }
+
         function activate() {
+            var jq = jQuery.noConflict();
+
+            jq('#naturalPersonsTable').tablesorter();
+            jq('#juridicalPersonsTable').tablesorter();
+            jq('#ordersTable').tablesorter({
+                headers: {
+                    2: {
+                        // disable sorting for the 3-th column
+                        sorter: false
+                    }
+                }
+            });
+            jq('#naturalPersonsTable').bind('sortEnd', function (e) {
+                var $columnHeader = jq('#naturalPersonsTable > thead > tr > th[class*="headerSortUp"], #naturalPersonsTable > thead > tr > th[class*="headerSortDown"]').eq(0);
+                var sortBy = $columnHeader.attr('data-sort-by');
+
+                if (sortBy) {
+                    if ($columnHeader.hasClass('headerSortUp'))
+                        $scope.naturalPersonsSortBy = sortBy + 'Asc';
+                    else
+                        $scope.naturalPersonsSortBy = sortBy + 'Desc';
+                }
+
+                loadNaturalPersons();
+            });
+            jq('#juridicalPersonsTable').bind('sortEnd', function (e) {
+                var $columnHeader = jq('#juridicalPersonsTable > thead > tr > th[class*="headerSortUp"], #juridicalPersonsTable > thead > tr > th[class*="headerSortDown"]').eq(0);
+                var sortBy = $columnHeader.attr('data-sort-by');
+
+                if (sortBy) {
+                    if ($columnHeader.hasClass('headerSortUp'))
+                        $scope.juridicalPersonsSortBy = sortBy + 'Asc';
+                    else
+                        $scope.juridicalPersonsSortBy = sortBy + 'Desc';
+                }
+
+                loadJuridicalPersons();
+            });
+            jq('#ordersTable').bind('sortEnd', function (e) {
+                var $columnHeader = jq('#ordersTable > thead > tr > th[class*="headerSortUp"], #ordersTable > thead > tr > th[class*="headerSortDown"]').eq(0);
+                var sortBy = $columnHeader.attr('data-sort-by');
+
+                if (sortBy) {
+                    if ($columnHeader.hasClass('headerSortUp'))
+                        $scope.ordersSortBy = sortBy + 'Asc';
+                    else
+                        $scope.ordersSortBy = sortBy + 'Desc';
+                }
+
+                loadOrdersByCustomer();
+            });
+            jq('.datepicker').datepicker({
+                forceParse: true,
+                format: 'yyyy-mm-dd',
+                todayHighlight: true,
+                daysOfWeekHighlighted: '0,6',
+                calendarWeeks: true,
+                weekStart: 1,
+                autoclose: true,
+                clearBtn: true,
+            });
+
             loadJuridicalPersons();
             loadNaturalPersons();
         }

@@ -52,8 +52,8 @@
       <HintPath>..\packages\Autofac.WebApi2.3.4.0\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=5.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.1.1\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
@@ -262,19 +262,28 @@
     <Compile Include="Infrastructure\ExceptionHandling\ErrorResult.cs" />
     <Compile Include="Infrastructure\ExceptionHandling\GlobalExceptionHandler.cs" />
     <Compile Include="Infrastructure\Mappings\BindingModelToDomainModel.cs" />
-    <Compile Include="Infrastructure\Mappings\DomainModelToDto.cs" />
-    <Compile Include="Models\AccountBindingModels.cs" />
-    <Compile Include="Models\AccountDtos.cs" />
-    <Compile Include="Models\JuridicalPersonBindingModel.cs" />
-    <Compile Include="Models\NaturalPersonBindingModel.cs" />
-    <Compile Include="Models\JuridicalPersonDto.cs" />
-    <Compile Include="Models\NaturalPersonDto.cs" />
-    <Compile Include="Models\OrderBindingModel.cs" />
-    <Compile Include="Models\OrderDto.cs" />
-    <Compile Include="Models\PaginationBindingModel.cs" />
-    <Compile Include="Models\PagingInfoDto.cs" />
-    <Compile Include="Models\ProductBindingModel.cs" />
-    <Compile Include="Models\ProductDto.cs" />
+    <Compile Include="Infrastructure\Mappings\DomainModelToDTO.cs" />
+    <Compile Include="Infrastructure\ValidationAttributes\JuridicalPersonSortByValidation.cs" />
+    <Compile Include="Infrastructure\ValidationAttributes\NaturalPersonSortByValidation.cs" />
+    <Compile Include="Infrastructure\ValidationAttributes\OrderSortByValidation.cs" />
+    <Compile Include="Infrastructure\ValidationAttributes\ProductSortByValidation.cs" />
+    <Compile Include="Models\BM\AccountBMs.cs" />
+    <Compile Include="Models\BM\OrderFilterBM.cs" />
+    <Compile Include="Models\DTO\AccountDTOs.cs" />
+    <Compile Include="Models\BM\CustomerFilterBM.cs" />
+    <Compile Include="Models\BM\JuridicalPersonFilterBM.cs" />
+    <Compile Include="Models\BM\NaturalPersonFilterBM.cs" />
+    <Compile Include="Models\BM\ProductFilterBM.cs" />
+    <Compile Include="Models\BM\JuridicalPersonBM.cs" />
+    <Compile Include="Models\BM\NaturalPersonBM.cs" />
+    <Compile Include="Models\DTO\JuridicalPersonDTO.cs" />
+    <Compile Include="Models\DTO\NaturalPersonDTO.cs" />
+    <Compile Include="Models\BM\OrderBM.cs" />
+    <Compile Include="Models\DTO\OrderDTO.cs" />
+    <Compile Include="Models\BM\PaginationBM.cs" />
+    <Compile Include="Models\DTO\PagingInfoDTO.cs" />
+    <Compile Include="Models\BM\ProductBM.cs" />
+    <Compile Include="Models\DTO\ProductDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Infrastructure\AuthProviders\ApplicationOAuthProvider.cs" />
     <Compile Include="Infrastructure\ActionResults\ChallengeResult.cs" />
@@ -282,7 +291,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\app.css" />
+    <Content Include="Content\css\asc.gif" />
+    <Content Include="Content\css\bg.gif" />
     <Content Include="Content\css\common.css" />
+    <Content Include="Content\css\desc.gif" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\img\store.jpg" />
     <Content Include="Global.asax" />
@@ -311,8 +323,6 @@
     <Content Include="Scripts\app\home\index.controller.js" />
     <Content Include="Scripts\app\home\index.html" />
     <Content Include="Scripts\app\home\root.controller.js" />
-    <Content Include="Scripts\app\layout\new-pagination.directive.js" />
-    <Content Include="Scripts\app\layout\new-pagination.html" />
     <Content Include="Scripts\app\layout\pagination.directive.js" />
     <Content Include="Scripts\app\layout\pagination.html" />
     <Content Include="Scripts\app\layout\top-bar.directive.js" />

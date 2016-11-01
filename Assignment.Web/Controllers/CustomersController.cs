@@ -1,13 +1,14 @@
-﻿using Assignment.Entities;
-using Assignment.Services;
-using Assignment.Web.Models;
-using AutoMapper;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Assignment.Web.Infrastructure.ExceptionHandling;
+using Assignment.Entities;
+using Assignment.Services;
 using Assignment.Web.Infrastructure;
+using Assignment.Web.Infrastructure.ExceptionHandling;
+using Assignment.Web.Models;
+using AutoMapper;
 using WebApi.OutputCache.V2;
+using static Assignment.Services.CustomerService;
 
 namespace Assignment.Web.Controllers
 {
@@ -31,56 +32,57 @@ namespace Assignment.Web.Controllers
         // GET: api/customers/juridical-persons
         [Route("juridical-persons")]
         [CacheOutput(ServerTimeSpan = 300)]
-        public async Task<IHttpActionResult> GetAllJuridicalPersons([FromUri]PaginationBindingModel pagination)
+        public async Task<IHttpActionResult> GetJuridicalPersons([FromUri]JuridicalPersonFilterBM filter)
         {
-            pagination = pagination ?? new PaginationBindingModel();
+            filter = filter ?? new JuridicalPersonFilterBM();
 
             if (!ModelState.IsValid)
                 throw new BindingModelValidationException(this.GetModelStateErrorMessage());
 
             int personsFound = 0;
-
+            IFiltration filtration = Mapper.Map<JuridicalPersonFilterBM, Filtration>(filter);
             IEnumerable<JuridicalPerson> juridcalPersons =
-                await Task.Run(() => _customerService.GetJuridicalPersons(pagination.PageNumber, pagination.PageSize, out personsFound));
-            IEnumerable<JuridicalPersonDto> juridicalPersonDtos =
-                Mapper.Map<IEnumerable<JuridicalPerson>, IEnumerable<JuridicalPersonDto>>(juridcalPersons);
+                await Task.Run(() => _customerService.GetJuridicalPersons(filtration, out personsFound));
+            IEnumerable<JuridicalPersonDTO> juridicalPersonDtos =
+                Mapper.Map<IEnumerable<JuridicalPerson>, IEnumerable<JuridicalPersonDTO>>(juridcalPersons);
 
             return Ok(new
             {
                 JuridicalPersons = juridicalPersonDtos,
-                PagingInfo = new PagingInfoDto
+                PagingInfo = new PagingInfoDTO
                 {
-                    CurrentPage = pagination.PageNumber,
-                    PageSize = pagination.PageSize,
+                    CurrentPage = filter.PageNumber,
+                    PageSize = filter.PageSize,
                     TotalItems = personsFound
                 }
             });
         }
 
-        // GET: api/customers/juridical-persons
+        // GET: api/customers/natural-persons
         [Route("natural-persons")]
         [CacheOutput(ServerTimeSpan = 300)]
-        public async Task<IHttpActionResult> GetAllNaturalPersons([FromUri]PaginationBindingModel pagination)
+        public async Task<IHttpActionResult> GetNaturalPersons([FromUri]NaturalPersonFilterBM naturalPersonFilter)
         {
-            pagination = pagination ?? new PaginationBindingModel();
+            naturalPersonFilter = naturalPersonFilter ?? new NaturalPersonFilterBM();
 
             if (!ModelState.IsValid)
                 throw new BindingModelValidationException(this.GetModelStateErrorMessage());
 
             int personsFound = 0;
-
+            IFiltration jpFilter = Mapper.Map<NaturalPersonFilterBM, Filtration>(naturalPersonFilter);
+            jpFilter = Mapper.Map<NaturalPersonFilterBM, Filtration>(naturalPersonFilter);
             IEnumerable<NaturalPerson> naturalPersons =
-                await Task.Run(() => _customerService.GetNaturalPersons(pagination.PageNumber, pagination.PageSize, out personsFound));
-            IEnumerable<NaturalPersonDto> naturalPersonDtos =
-                Mapper.Map<IEnumerable<NaturalPerson>, IEnumerable<NaturalPersonDto>>(naturalPersons);
+                await Task.Run(() => _customerService.GetNaturalPersons(jpFilter, out personsFound));
+            IEnumerable<NaturalPersonDTO> naturalPersonDtos =
+                Mapper.Map<IEnumerable<NaturalPerson>, IEnumerable<NaturalPersonDTO>>(naturalPersons);
 
             return Ok(new
             {
                 NaturalPersons = naturalPersonDtos,
-                PagingInfo = new PagingInfoDto
+                PagingInfo = new PagingInfoDTO
                 {
-                    CurrentPage = pagination.PageNumber,
-                    PageSize = pagination.PageSize,
+                    CurrentPage = jpFilter.PageNumber,
+                    PageSize = jpFilter.PageSize,
                     TotalItems = personsFound
                 }
             });
@@ -96,7 +98,7 @@ namespace Assignment.Web.Controllers
             if (juridicalPerson == null)
                 throw new BindingModelValidationException("Invalid juridical person id.");
 
-            JuridicalPersonDto juridicalPersonDto = Mapper.Map<JuridicalPerson, JuridicalPersonDto>(juridicalPerson);
+            JuridicalPersonDTO juridicalPersonDto = Mapper.Map<JuridicalPerson, JuridicalPersonDTO>(juridicalPerson);
 
             return Ok(juridicalPersonDto);
         }
@@ -111,7 +113,7 @@ namespace Assignment.Web.Controllers
             if (naturalPerson == null)
                 throw new BindingModelValidationException("Invalid natural person id.");
 
-            NaturalPersonDto naturalPersonDto = Mapper.Map<NaturalPerson, NaturalPersonDto>(naturalPerson);
+            NaturalPersonDTO naturalPersonDto = Mapper.Map<NaturalPerson, NaturalPersonDTO>(naturalPerson);
 
             return Ok(naturalPersonDto);
         }
@@ -119,12 +121,12 @@ namespace Assignment.Web.Controllers
         // POST: api/customers/juridical-person/update
         [HttpPost]
         [Route("juridical-person/update")]
-        public async Task<IHttpActionResult> UpdateJuridicalPerson([FromBody]JuridicalPersonBindingModel juridicalPersonBindingModel)
+        public async Task<IHttpActionResult> UpdateJuridicalPerson([FromBody]JuridicalPersonBM juridicalPersonBM)
         {
             if (!ModelState.IsValid)
                 throw new BindingModelValidationException(this.GetModelStateErrorMessage());
 
-            JuridicalPerson juridicalPerson = Mapper.Map<JuridicalPersonBindingModel, JuridicalPerson>(juridicalPersonBindingModel);
+            JuridicalPerson juridicalPerson = Mapper.Map<JuridicalPersonBM, JuridicalPerson>(juridicalPersonBM);
 
             if (_customerService.UpdateJuridicalPerson(juridicalPerson))
                 await _customerService.CommitAsync();
@@ -135,12 +137,12 @@ namespace Assignment.Web.Controllers
         // POST: api/customers/juridical-person/update
         [HttpPost]
         [Route("natural-person/update")]
-        public async Task<IHttpActionResult> UpdateNaturalPerson([FromBody]NaturalPersonBindingModel naturalPersonBindingModel)
+        public async Task<IHttpActionResult> UpdateNaturalPerson([FromBody]NaturalPersonBM naturalPersonBM)
         {
             if (!ModelState.IsValid)
                 throw new BindingModelValidationException(this.GetModelStateErrorMessage());
 
-            NaturalPerson naturalPerson = Mapper.Map<NaturalPersonBindingModel, NaturalPerson>(naturalPersonBindingModel);
+            NaturalPerson naturalPerson = Mapper.Map<NaturalPersonBM, NaturalPerson>(naturalPersonBM);
 
             if (_customerService.UpdateNaturalPerson(naturalPerson))
                 await _customerService.CommitAsync();
@@ -151,12 +153,12 @@ namespace Assignment.Web.Controllers
         // POST: api/customers/juridical-person/add
         [HttpPost]
         [Route("juridical-person/add")]
-        public async Task<IHttpActionResult> AddJuridicalPerson([FromBody]JuridicalPersonBindingModel juridicalPersonBindingModel)
+        public async Task<IHttpActionResult> AddJuridicalPerson([FromBody]JuridicalPersonBM juridicalPersonBM)
         {
             if (!ModelState.IsValid)
                 throw new BindingModelValidationException(this.GetModelStateErrorMessage());
 
-            JuridicalPerson juridicalPerson = Mapper.Map<JuridicalPersonBindingModel, JuridicalPerson>(juridicalPersonBindingModel);
+            JuridicalPerson juridicalPerson = Mapper.Map<JuridicalPersonBM, JuridicalPerson>(juridicalPersonBM);
 
             if (_customerService.AddJuridicalPerson(juridicalPerson))
                 await _customerService.CommitAsync();
@@ -169,12 +171,12 @@ namespace Assignment.Web.Controllers
         // POST: api/customers/natural-person/add
         [HttpPost]
         [Route("natural-person/add")]
-        public async Task<IHttpActionResult> AddNaturalPerson([FromBody]NaturalPersonBindingModel naturalPersonBindingModel)
+        public async Task<IHttpActionResult> AddNaturalPerson([FromBody]NaturalPersonBM naturalPersonBM)
         {
             if (!ModelState.IsValid)
                 throw new BindingModelValidationException(this.GetModelStateErrorMessage());
 
-            NaturalPerson naturalPerson = Mapper.Map<NaturalPersonBindingModel, NaturalPerson>(naturalPersonBindingModel);
+            NaturalPerson naturalPerson = Mapper.Map<NaturalPersonBM, NaturalPerson>(naturalPersonBM);
 
             if (_customerService.AddNaturalPerson(naturalPerson))
                 await _customerService.CommitAsync();

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Assignment.Entities
+﻿namespace Assignment.Entities
 {
     public class OrderDetails
     {

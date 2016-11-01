@@ -14,7 +14,7 @@
         return directive;
 
         function link(scope, element) {
-            var jq = $.noConflict();
+            var jq = jQuery.noConflict();
 
             // highlight a saved theme when the page is loaded
             if (getCookie('theme') !== '') {

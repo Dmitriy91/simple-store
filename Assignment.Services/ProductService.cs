@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Assignment.Data;
 using System.Linq;
+using System.Linq.Dynamic;
 
 namespace Assignment.Services
 {
@@ -32,17 +33,25 @@ namespace Assignment.Services
             return _productRepo.GetById(productId);
         }
 
-        public IEnumerable<Product> GetProducts(int pageNumber, int pageSize, out int productsFound)
+        public IEnumerable<Product> GetProducts(IFiltration filtration, out int productsFound)
         {
             IQueryable<Product> products = null;
+            string productName = filtration["ProductName"];
+            string sortBy = filtration.SortBy;
 
-            products = _productRepo.GetAll();
+            if (productName == null)
+                products = _productRepo.GetAll();
+            else
+                products = _productRepo.GetMany(p => p.ProductName.Contains(productName));
+
             productsFound = products.Count();
 
-            return products.OrderBy(p => p.Id).
-                Skip((pageNumber - 1) * pageSize).
-                Take(pageSize).
-                ToList();
+            if (sortBy == null)
+                products = products.OrderBy(p => p.Id);
+            else
+                products = products.OrderBy(sortBy);
+
+            return products.ApplyPagination(filtration.PageNumber, filtration.PageSize);
         }
 
         public bool RemoveProductById(int productId)

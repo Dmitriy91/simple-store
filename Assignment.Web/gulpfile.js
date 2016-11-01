@@ -30,6 +30,7 @@ gulp.task('process-scripts', function () {
         'bower_components/angular-route/angular-route.js',
         'bower_components/angular-loading-bar/src/loading-bar.js',
         'bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js',
+        'bower_components/tablesorter/jquery.tablesorter.js',
         'Scripts/app/app.js',
         'Scripts/app/modules/app.core.module.js',
         'Scripts/app/modules/app.layout.module.js',

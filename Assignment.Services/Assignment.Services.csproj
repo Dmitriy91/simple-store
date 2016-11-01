@@ -42,6 +42,10 @@
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,10 +54,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Filtration\Filtration.cs" />
+    <Compile Include="Filtration\FilteringHelpers.cs" />
+    <Compile Include="Filtration\IFiltration.cs" />
     <Compile Include="ICustomerService.cs" />
     <Compile Include="IOrderService.cs" />
+    <Compile Include="Filtration\IPagination.cs" />
     <Compile Include="IProductService.cs" />
     <Compile Include="OrderService.cs" />
+    <Compile Include="Filtration\Pagination.cs" />
     <Compile Include="ProductService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CustomerService.cs" />

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Assignment.Data;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Dynamic;
 using System;
 
 namespace Assignment.Services
@@ -42,18 +43,35 @@ namespace Assignment.Services
                 .FirstOrDefault(o => o.Id == orderId);
         }
 
-        public IEnumerable<Order> GetOrdersByCustomerId(int customerId, int pageNumber, int pageSize, out int ordersFound)
+        public IEnumerable<Order> GetOrdersByCustomerId(int customerId, IFiltration filtration, out int ordersFound)
         {
-            IQueryable<Order> orders = _orderRepo.GetAll()
-                .Include(o => o.OrderDetails.Select(od => od.Product)) // Note: Should be optimized
-                .Where(o => o.CustomerId == customerId);
+            IQueryable<Order> orders = null;
+            string orderDate = filtration["OrderDate"];
+            string sortBy = filtration.SortBy;
+
+            if (orderDate == null)
+            {
+                orders = _orderRepo.GetAll()
+                    .Include(o => o.OrderDetails.Select(od => od.Product))
+                    .Where(o => o.CustomerId == customerId);
+            }
+            else
+            {
+                DateTime date = DateTime.Parse(orderDate).Date;
+
+                orders = _orderRepo.GetAll()
+                    .Include(o => o.OrderDetails.Select(od => od.Product))
+                    .Where(o => o.CustomerId == customerId && DbFunctions.TruncateTime(o.OrderDate) == date);
+            }
 
             ordersFound = orders.Count();
 
-            return orders.OrderBy(o => o.Id).
-                Skip((pageNumber - 1) * pageSize).
-                Take(pageSize).
-                ToList();
+            if (sortBy == null)
+                orders = orders.OrderBy(p => p.Id);
+            else
+                orders = orders.OrderBy(sortBy);
+
+            return orders.ApplyPagination(filtration.PageNumber, filtration.PageSize);
         }
 
         public bool RemoveOrderById(int orderId)

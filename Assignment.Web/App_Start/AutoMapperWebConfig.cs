@@ -10,7 +10,7 @@ namespace Assignment.Web
             Mapper.Initialize(cfg =>
             {
                 cfg.AddProfile<BindingModelToDomainModel>();
-                cfg.AddProfile<DomainModelToDto>();
+                cfg.AddProfile<DomainModelToDTO>();
             });
         }
     }

@@ -5,16 +5,16 @@ using System.Collections.Generic;
 
 namespace Assignment.Web.Infrastructure.Mappings
 {
-    public class DomainModelToDto : Profile
+    public class DomainModelToDTO : Profile
     {
-        public DomainModelToDto()
-            : base("DomainModelToDto")
+        public DomainModelToDTO()
+            : base("DomainModelToDTO")
         { }
 
         protected override void Configure()
         {
             // Juridical Person
-            CreateMap<JuridicalPerson, JuridicalPersonDto>()
+            CreateMap<JuridicalPerson, JuridicalPersonDTO>()
                 .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.CustomerId))
                 .ForMember(dest => dest.LegalName, opts => opts.MapFrom(src => src.LegalName))
                 .ForMember(dest => dest.TIN, opts => opts.MapFrom(src => src.TIN))
@@ -25,7 +25,7 @@ namespace Assignment.Web.Infrastructure.Mappings
                 .ForMember(dest => dest.PostalCode, opts => opts.MapFrom(src => src.Customer.PostalCode));
 
             // Natural Person
-            CreateMap<NaturalPerson, NaturalPersonDto>()
+            CreateMap<NaturalPerson, NaturalPersonDTO>()
                 .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.CustomerId))
                 .ForMember(dest => dest.Birthdate, opts => opts.MapFrom(src => (src.Birthdate != null) ? src.Birthdate.Value.ToString("yyyy-MM-dd") : string.Empty))
                 .ForMember(dest => dest.Country, opts => opts.MapFrom(src => src.Customer.Country))
@@ -35,16 +35,16 @@ namespace Assignment.Web.Infrastructure.Mappings
                 .ForMember(dest => dest.PostalCode, opts => opts.MapFrom(src => src.Customer.PostalCode));
 
             // Product
-            CreateMap<Product, ProductDto>();
+            CreateMap<Product, ProductDTO>();
 
             // Order
-            CreateMap<OrderDetails, OrderDto.Details>()
+            CreateMap<OrderDetails, OrderDTO.Details>()
                 .ForMember(dest => dest.ProductName, opts => opts.MapFrom(src => (src.Product == null) ? "Product has been removed." : src.Product.ProductName));
-            CreateMap<Order, OrderDto>()
+            CreateMap<Order, OrderDTO>()
                 .ForMember(dest => dest.OrderDate, opts => opts.MapFrom(src => (src.OrderDate.ToString("yyyy-MM-dd"))))
                 .ForMember(dest => dest.OrderDetails, opts =>
                 {
-                    opts.MapFrom(src => Mapper.Map<IEnumerable<OrderDetails>, IEnumerable<OrderDto.Details>>(src.OrderDetails));
+                    opts.MapFrom(src => Mapper.Map<IEnumerable<OrderDetails>, IEnumerable<OrderDTO.Details>>(src.OrderDetails));
                 });
         }
     }

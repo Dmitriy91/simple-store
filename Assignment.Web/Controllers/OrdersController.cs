@@ -1,12 +1,12 @@
-﻿using Assignment.Entities;
-using Assignment.Services;
-using Assignment.Web.Models;
-using AutoMapper;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Assignment.Entities;
+using Assignment.Services;
 using Assignment.Web.Infrastructure;
 using Assignment.Web.Infrastructure.ExceptionHandling;
+using Assignment.Web.Models;
+using AutoMapper;
 using WebApi.OutputCache.V2;
 
 namespace Assignment.Web.Controllers
@@ -31,24 +31,26 @@ namespace Assignment.Web.Controllers
         // GET: api/orders/1
         [Route("{customerId:int:min(1)}")]
         [CacheOutput(ServerTimeSpan = 300)]
-        public async Task<IHttpActionResult> GetOrdersByCustomer(int customerId, [FromUri]PaginationBindingModel pagination)
+        public async Task<IHttpActionResult> GetOrdersByCustomer(int customerId, [FromUri]OrderFilterBM filter)
         {
+            filter = filter ?? new OrderFilterBM();
+
             if (!ModelState.IsValid)
                 throw new BindingModelValidationException(this.GetModelStateErrorMessage());
 
             int ordersFound = 0;
-
+            IFiltration filtration = Mapper.Map<OrderFilterBM, Filtration>(filter);
             IEnumerable<Order> orders =
-                await Task.Run(() => _orderService.GetOrdersByCustomerId(customerId, pagination.PageNumber, pagination.PageSize, out ordersFound));
-            IEnumerable<OrderDto> orderDtos = Mapper.Map<IEnumerable<Order>, IEnumerable<OrderDto>>(orders);
+                await Task.Run(() => _orderService.GetOrdersByCustomerId(customerId, filtration, out ordersFound));
+            IEnumerable<OrderDTO> orderDtos = Mapper.Map<IEnumerable<Order>, IEnumerable<OrderDTO>>(orders);
 
             return Ok(new
             {
                 Orders = orderDtos,
-                PagingInfo = new PagingInfoDto
+                PagingInfo = new PagingInfoDTO
                 {
-                    CurrentPage = pagination.PageNumber,
-                    PageSize = pagination.PageSize,
+                    CurrentPage = filter.PageNumber,
+                    PageSize = filter.PageSize,
                     TotalItems = ordersFound
                 }
             });
@@ -64,7 +66,7 @@ namespace Assignment.Web.Controllers
             if (order == null)
                 throw new BindingModelValidationException("The order does not exist.");
 
-            OrderDto orderDto = Mapper.Map<Order, OrderDto>(order);
+            OrderDTO orderDto = Mapper.Map<Order, OrderDTO>(order);
 
             return Ok(orderDto);
         }
@@ -72,12 +74,12 @@ namespace Assignment.Web.Controllers
         // POST: api/orders/update
         [HttpPost]
         [Route("update")]
-        public async Task<IHttpActionResult> Update([FromBody]OrderBindingModel orderBindingModel)
+        public async Task<IHttpActionResult> Update([FromBody]OrderBM orderBindingModel)
         {
             if (!ModelState.IsValid)
                 throw new BindingModelValidationException(this.GetModelStateErrorMessage());
 
-            Order order = Mapper.Map<OrderBindingModel, Order>(orderBindingModel);
+            Order order = Mapper.Map<OrderBM, Order>(orderBindingModel);
 
             if (_orderService.UpdateOrder(order))
                 await _orderService.CommitAsync();
@@ -88,12 +90,12 @@ namespace Assignment.Web.Controllers
         // POST: api/orders/add
         [HttpPost]
         [Route("add")]
-        public async Task<IHttpActionResult> Add([FromBody]OrderBindingModel orderBindingModel)
+        public async Task<IHttpActionResult> Add([FromBody]OrderBM orderBindingModel)
         {
             if (!ModelState.IsValid)
                 throw new BindingModelValidationException(this.GetModelStateErrorMessage());
 
-            Order order = Mapper.Map<OrderBindingModel, Order>(orderBindingModel);
+            Order order = Mapper.Map<OrderBM, Order>(orderBindingModel);
 
             if (_orderService.AddOrder(order))
                 await _orderService.CommitAsync();
