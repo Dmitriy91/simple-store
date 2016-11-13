@@ -33,12 +33,12 @@
         }
 
         function updateJuridicalPersonSucceeded(response) {
-            notificationService.displaySuccess("Customer has been successfu updated.");
+            notificationService.displaySuccess('Customer has been successfu updated.');
             $location.path('/customers');
         }
 
         function updateJuridicalPersonFaild(response) {
-            notificationService.displayError("Unauthorised actions detected.");
+            notificationService.displayError('Unauthorised actions detected.');
         }
 
         function loadJuridicalPerson() {
@@ -57,18 +57,18 @@
         }
 
         function loadJuridicalPersonFailed(response) {
-            notificationService.displayError("Unauthrized actions detected.");
+            notificationService.displayError('Unauthrized actions detected.');
             $location.path('/customers');
         }
 
         function activate() {
             loadJuridicalPerson();
-            jQuery(".datepicker").datepicker({
+            jQuery('.datepicker').datepicker({
                 forceParse: true,
-                format: "yyyy-mm-dd",
+                format: 'yyyy-mm-dd',
                 todayBtn: "linked",
                 todayHighlight: true,
-                daysOfWeekHighlighted: "0,6",
+                daysOfWeekHighlighted: '0,6',
                 calendarWeeks: true,
                 weekStart: 1,
                 autoclose: true

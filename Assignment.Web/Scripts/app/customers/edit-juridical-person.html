@@ -3,7 +3,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">Update Customer - Natural Person</div>
         <div class="panel-body">
-            <form name="updateJuridicalPersonForm" class="form-horizontal" role="form" novalidate autocomplete="off" onkeydown="event.which == 13 || event.keyCode == 13 ? document.querySelector('#submitBtn').click() : true">
+            <form name="updateJuridicalPersonForm" class="form-horizontal" role="form" novalidate autocomplete="off" ng-submit="updateJuridicalPersonForm.$valid ? juridicalPerson.update() : null">
                 <div class="form-group has-feedback required">
                     <label class="control-label col-lg-2 col-md-2" for="legalName">Legal Name</label>
                     <div class="col-lg-10 col-md-10">
@@ -83,10 +83,11 @@
                 <div class="form-group">
                     <div class="col-lg-10 col-md-10 col-lg-offset-2 col-md-offset-2">
                         <div class="btn-group btn-group-justified">
+                            <input type="submit" style="display:none" tabindex="-1" />
                             <a href="#/customers" class="btn btn-default">
                                 <span class="glyphicon glyphicon-circle-arrow-left"></span> Back
                             </a>
-                            <a id="submitBtn" class="btn btn-block btn-default" ng-disabled="updateJuridicalPersonForm.$invalid" ng-click="updateJuridicalPersonForm.$valid ? juridicalPerson.update() : null;">
+                            <a id="submitBtn" class="btn btn-block btn-default" ng-disabled="updateJuridicalPersonForm.$invalid" ng-click="updateJuridicalPersonForm.$valid ? juridicalPerson.update() : null">
                                 <span class="glyphicon glyphicon-edit"></span> Submit
                             </a>
                         </div>

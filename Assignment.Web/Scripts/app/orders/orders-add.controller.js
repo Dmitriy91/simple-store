@@ -53,7 +53,7 @@
                 $scope.orderItems.push(selectedOrderItem);
             }
             else {
-                notificationService.displayWarning("The product added.");
+                notificationService.displayWarning('The product added.');
             }
         }
 
@@ -79,12 +79,12 @@
         }
 
         function addOrderSucceeded(response) {
-            notificationService.displaySuccess("Order has been successfu created.");
+            notificationService.displaySuccess('Order has been successfu created.');
             $location.path('/orders');
         }
 
         function addOrderFaild(response) {
-            notificationService.displayError("Unauthorised actions detected.");
+            notificationService.displayError('Unauthorised actions detected.');
         }
 
         function loadProducts(pageNumber) {

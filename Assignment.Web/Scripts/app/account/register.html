@@ -3,7 +3,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">Registration</div>
         <div class="panel-body">
-            <form name="regForm" class="form-horizontal" role="form" novalidate autocomplete="off" onkeydown="event.which == 13 || event.keyCode == 13 ? document.querySelector('#submitBtn').click() : true">
+            <form name="regForm" class="form-horizontal" role="form" novalidate autocomplete="off" ng-submit="regForm.$valid ? user.register() : null">
                 <div class="form-group has-feedback required">
                     <label class="control-label col-lg-2 col-md-2" for="email">Email</label>
                     <div class="col-lg-10 col-md-10">
@@ -12,7 +12,7 @@
                             <span class="glyphicon glyphicon-ok form-control-feedback" ng-if="regForm.email.$valid"></span>
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="regForm.email.$invalid && regForm.email.$dirty"></span>
                             <span class="text-danger" ng-show="regForm.email.$error.required && regForm.email.$dirty">The Email field is required.</span>
-                            <span class="text-danger" ng-show="regForm.email.$error.email">The Email field is not a valid e-mail address.</span>
+                            <span class="text-danger" ng-show="regForm.email.$error.email">The Email field is not a valid E-mail address.</span>
                         </div>
                     </div>
                 </div>
@@ -45,6 +45,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-lg-10 col-md-10 col-lg-offset-2 col-md-offset-2">
+                        <input type="submit" style="display:none" tabindex="-1" />
                         <bytton id="submitBtn" type="button" class="btn btn-block btn-default" ng-disabled="regForm.$invalid" ng-click="regForm.$valid ? user.register() : null;">
                             <span class="glyphicon glyphicon-user"></span> Submit
                         </bytton>

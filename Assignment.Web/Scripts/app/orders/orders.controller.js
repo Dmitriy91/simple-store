@@ -132,7 +132,7 @@
             var selectedCustomerId = $scope.selectedCustomerId;
 
             clearSelectedOrderInfo();
-            notificationService.displaySuccess('Order has been successfuly removed.');
+            notificationService.displaySuccess('Order has been successfully removed.');
             loadOrdersByCustomer(selectedCustomerId);
         }
 

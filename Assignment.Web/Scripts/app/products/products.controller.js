@@ -66,7 +66,7 @@
 
         function removeProductSucceeded(response) {
             $route.reload();
-            notificationService.displaySuccess('Product has been successfuly removed.');
+            notificationService.displaySuccess('Product has been successfully removed.');
         }
 
         function activate() {

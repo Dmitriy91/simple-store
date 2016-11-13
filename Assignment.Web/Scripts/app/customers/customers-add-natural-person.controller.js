@@ -38,20 +38,20 @@
         }
 
         function addNaturalPersonSucceeded(response) {
-            notificationService.displaySuccess("Customer has been successfu created.");
+            notificationService.displaySuccess('Customer has been successfu created.');
             $location.path('/customers');
         }
 
         function addNaturalPersonFaild(response) {
-            notificationService.displayError("This person has been already added.");
+            notificationService.displayError('This person has been already added.');
         }
 
         function activate() {
-            jQuery(".datepicker").datepicker({
+            jQuery('.datepicker').datepicker({
                 forceParse: true,
-                format: "yyyy-mm-dd",
+                format: 'yyyy-mm-dd',
                 todayHighlight: true,
-                daysOfWeekHighlighted: "0,6",
+                daysOfWeekHighlighted: '0,6',
                 calendarWeeks: true,
                 weekStart: 1,
                 autoclose: true,

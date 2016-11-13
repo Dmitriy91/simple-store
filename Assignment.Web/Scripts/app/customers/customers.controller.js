@@ -188,7 +188,7 @@
 
         function removeJuridicalPersonSucceeded(response) {
             loadJuridicalPersons();
-            notificationService.displaySuccess('Customer has been successfuly removed.');
+            notificationService.displaySuccess('Customer has been successfully removed.');
         }
 
         function removeNaturalPerson(inx) {
@@ -203,7 +203,7 @@
 
         function removeNaturalPersonSucceeded(response) {
             loadNaturalPersons();
-            notificationService.displaySuccess('Customer has been successfuly removed.');
+            notificationService.displaySuccess('Customer has been successfully removed.');
         }
 
         function clearFilters() {

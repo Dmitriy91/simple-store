@@ -22,12 +22,12 @@
         }
 
         function addProductSucceeded(response) {
-            notificationService.displaySuccess("Product has been successfu created.");
+            notificationService.displaySuccess('Product has been successfu created.');
             $location.path('/products');
         }
 
         function addProductFaild(response) {
-            notificationService.displayError("Unauthorised actions detected.");
+            notificationService.displayError('Unauthorised actions detected.');
         }
     }
 })(angular.module('app.core'));

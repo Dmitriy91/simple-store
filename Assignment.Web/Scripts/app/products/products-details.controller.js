@@ -25,7 +25,7 @@
         }
 
         function loadProductFailed(response) {
-            notificationService.displayError("Unauthrized actions detected.");
+            notificationService.displayError('Unauthrized actions detected.');
             $location.path('/products');
         }
 

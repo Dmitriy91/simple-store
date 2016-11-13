@@ -3,7 +3,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">Update Product</div>
         <div class="panel-body">
-            <form name="updateProductForm" class="form-horizontal" autocomplete="off" novalidate role="form" onkeydown="event.which == 13 || event.keyCode == 13 ? document.querySelector('#submitBtn').click() : true">
+            <form name="updateProductForm" class="form-horizontal" role="form" novalidate autocomplete="off" ng-submit="updateProductForm.$valid ? product.update() : null">
                 <div class="form-group has-feedback required">
                     <label class="control-label col-lg-2 col-md-2" for="productName">Product</label>
                     <div class="col-lg-10 col-md-10">
@@ -33,7 +33,7 @@
                         <div ng-class="{ 'has-error' : updateProductForm.unitsInStock.$invalid && updateProductForm.unitsInStock.$dirty }">
                             <input id="unitsInStock" name="unitsInStock" type="number" required min="0" max="2147483647" step="1" class="form-control" ng-model="product.unitsInStock" ng-pattern="/^([1-9]\d*|0)$/" />
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="updateProductForm.unitsInStock.$invalid && updateProductForm.unitsInStock.$dirty"></span>
-                            <span class="text-danger" ng-show="updateProductForm.unitsInStock.$error.number || updateProductForm.unitsInStock.$error.pattern || updateProductForm.unitsInStock.$error.min">The Units In Stock field must be a positive integer or omitted.</span>
+                            <span class="text-danger" ng-show="updateProductForm.unitsInStock.$error.number || updateProductForm.unitsInStock.$error.pattern || updateProductForm.unitsInStock.$error.min">The Units In Stock field must be a positive integer.</span>
                             <span class="text-danger" ng-show="updateProductForm.unitsInStock.$error.max">The Units In Stock field must not be greater than 2147483647.</span>
                             <span class="text-danger" ng-show="updateProductForm.unitsInStock.$error.required && updateProductForm.unitsInStock.$dirty">The Units In Stocks is required.</span>
                         </div>
@@ -42,10 +42,11 @@
                 <div class="form-group">
                     <div class="col-lg-10 col-md-10 col-lg-offset-2 col-md-offset-2">
                         <div class="btn-group btn-group-justified">
+                            <input type="submit" style="display:none" tabindex="-1" />
                             <a href="#/products" class="btn btn-default">
                                 <span class="glyphicon glyphicon-circle-arrow-left"></span> Back
                             </a>
-                            <a id="submitBtn" class="btn btn-block btn-default" ng-disabled="updateProductForm.$invalid" ng-click="updateProductForm.$valid ? product.update() : null;">
+                            <a id="submitBtn" class="btn btn-block btn-default" ng-disabled="updateProductForm.$invalid" ng-click="updateProductForm.$valid ? product.update() : null">
                                 <span class="glyphicon glyphicon-plus"></span> Submit
                             </a>
                         </div>

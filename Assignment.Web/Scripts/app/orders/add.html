@@ -12,7 +12,8 @@
                                 ng-model="pageSize"
                                 ng-change="loadProducts()"
                                 ng-init="pageSize = 5"
-                                ng-options="option for option in [5,10,20,30]"></select>
+                                ng-options="option for option in [5,10,20,30]">
+                        </select>
                     </div>
                 </form>
             </div>
@@ -73,7 +74,7 @@
                 </h3>
             </div>
             <div class="table-responsive">
-                <form name="cartForm" role="form" novalidate="novalidate">
+                <form name="cartForm" role="form" autocomplete="off" novalidate ng-submit="cartForm.$valid ? addOrder() : null">
                     <table id="product-table" class="table table-condensed table-striped table-hover table-bordered">
                         <thead>
                             <tr>
@@ -124,7 +125,8 @@
                             <tr>
                                 <td colspan="4" class="text-center">
                                     <div class="btn-group btn-group-justified btn-group-sm">
-                                        <div class="btn btn-info" ng-click="addOrder()">
+                                        <input type="submit" style="display:none" tabindex="-1" />
+                                        <div class="btn btn-info" ng-click="cartForm.$valid ? addOrder() : null">
                                             Confirm
                                         </div>
                                     </div>

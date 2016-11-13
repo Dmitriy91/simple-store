@@ -25,12 +25,12 @@
         }
 
         function updateProductSucceeded(response) {
-            notificationService.displaySuccess("Product has been successfu updated.");
+            notificationService.displaySuccess('Product has been successfully updated.');
             $location.path('/products');
         }
 
         function updateProductFaild(response) {
-            notificationService.displayError("Unauthorised actions detected.");
+            notificationService.displayError('Unauthorised actions detected.');
         }
 
         function loadProduct() {
@@ -45,7 +45,7 @@
         }
 
         function loadProductFailed(response) {
-            notificationService.displayError("Unauthrized actions detected.");
+            notificationService.displayError('Unauthrized actions detected.');
             $location.path('/products');
         }
 

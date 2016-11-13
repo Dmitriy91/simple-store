@@ -3,7 +3,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">Update Customer - Natural Person</div>
         <div class="panel-body">
-            <form name="updateNaturalPersonForm" class="form-horizontal" role="form" novalidate autocomplete="off" onkeydown="event.which == 13 || event.keyCode == 13 ? document.querySelector('#submitBtn').click() : true">
+            <form name="updateNaturalPersonForm" class="form-horizontal" role="form" novalidate autocomplete="off" ng-submit="updateNaturalPersonForm.$valid ? naturalPerson.update() : null">
                 <div class="form-group has-feedback required">
                     <label class="control-label col-lg-2 col-md-2" for="firstName">First Name</label>
                     <div class="col-lg-10 col-md-10">
@@ -51,7 +51,7 @@
                     <label class="control-label col-lg-2 col-md-2" for="birthdate">Birthdate</label>
                     <div class="col-lg-10 col-md-10">
                         <div ng-class="{ 'has-error' : updateNaturalPersonForm.birthdate.$invalid && updateNaturalPersonForm.birthdate.$dirty }">
-                            <input id="birthdate" name="birthdate" type="text" class="form-control datepicker" ng-model="naturalPerson.birthdate" ng-pattern="/^\d{4}-\d{2}-\d{2}?$/" />
+                            <input id="birthdate" name="birthdate" type="text" class="form-control datepicker" ng-model="naturalPerson.birthdate" ng-model-options="{ updateOn: 'blur' }" ng-pattern="/^\d{4}-\d{2}-\d{2}?$/" />
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="updateNaturalPersonForm.birthdate.$invalid && updateNaturalPersonForm.birthdate.$dirty"></span>
                             <span class="text-danger" ng-show="updateNaturalPersonForm.birthdate.$error.pattern">The Birthdate field must be a date or omitted.</span>
                         </div>
@@ -114,10 +114,11 @@
                 <div class="form-group">
                     <div class="col-lg-10 col-md-10 col-lg-offset-2 col-md-offset-2">
                         <div class="btn-group btn-group-justified">
+                            <input type="submit" style="display:none" tabindex="-1" />
                             <a href="#/customers" class="btn btn-default">
                                 <span class="glyphicon glyphicon-circle-arrow-left"></span> Back
                             </a>
-                            <a id="submitBtn" class="btn btn-block btn-default" ng-disabled="updateNaturalPersonForm.$invalid" ng-click="updateNaturalPersonForm.$valid ? naturalPerson.update() : null;">
+                            <a id="submitBtn" class="btn btn-block btn-default" ng-disabled="updateNaturalPersonForm.$invalid" ng-click="updateNaturalPersonForm.$valid ? naturalPerson.update() : null">
                                 <span class="glyphicon glyphicon-edit"></span> Submit
                             </a>
                         </div>

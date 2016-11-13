@@ -3,24 +3,23 @@
     <div class="panel panel-default">
         <div class="panel-heading">Add Customer - Juridical Person</div>
         <div class="panel-body">
-            <form name="addJuridicalPersonForm" class="form-horizontal" role="form" autocomplete="off" novalidate onkeydown="event.which == 13 || event.keyCode == 13 ? document.querySelector('#submitBtn').click() : true">
+            <form name="addJuridicalPersonForm" class="form-horizontal" role="form" autocomplete="off" novalidate ng-submit="addJuridicalPersonForm.$valid ? juridicalPerson.add() : null">
                 <div class="form-group has-feedback required">
                     <label class="control-label col-lg-2 col-md-2" for="legalName">Legal Name</label>
                     <div class="col-lg-10 col-md-10">
                         <div ng-class="{ 'has-error' : addJuridicalPersonForm.legalName.$invalid && addJuridicalPersonForm.legalName.$dirty }">
-                            <input id="legalName" name="legalName" type="text" required ng-maxlength="64" class="form-control" ng-model="juridicalPerson.legalName" ng-model-options="{ updateOn: 'blur' }" />
+                            <input id="legalName" name="legalName" type="text" required ng-maxlength="64" class="form-control" ng-model="juridicalPerson.legalName" />
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="addJuridicalPersonForm.legalName.$invalid && addJuridicalPersonForm.legalName.$dirty"></span>
                             <span class="text-danger" ng-show="addJuridicalPersonForm.legalName.$error.required && addJuridicalPersonForm.legalName.$dirty">The Legal Name field is required.</span>
                             <span class="text-danger" ng-show="addJuridicalPersonForm.legalName.$error.maxlength">The Legal Name field has the maximum length of 64 symbols.</span>
                         </div>
                     </div>
                 </div>
-
                 <div class="form-group has-feedback required">
                     <label class="control-label col-lg-2 col-md-2" for="tin">TIN</label>
                     <div class="col-lg-10 col-md-10">
                         <div ng-class="{ 'has-error' : addJuridicalPersonForm.tin.$invalid && addJuridicalPersonForm.tin.$dirty }">
-                            <input id="tin" name="tin" type="text" required ng-maxlength="16" class="form-control" ng-model="juridicalPerson.tin" ng-model-options="{ updateOn: 'blur' }" />
+                            <input id="tin" name="tin" type="text" required ng-maxlength="16" class="form-control" ng-model="juridicalPerson.tin" />
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="addJuridicalPersonForm.tin.$invalid && addJuridicalPersonForm.tin.$dirty"></span>
                             <span class="text-danger" ng-show="addJuridicalPersonForm.tin.$error.required && addJuridicalPersonForm.tin.$dirty">The TIN field is required.</span>
                             <span class="text-danger" ng-show="addJuridicalPersonForm.tin.$error.maxlength">The TIN field has the maximum length of 16 symbols.</span>
@@ -31,7 +30,7 @@
                     <label class="control-label col-lg-2 col-md-2" for="country">Country</label>
                     <div class="col-lg-10 col-md-10">
                         <div ng-class="{ 'has-error' : addJuridicalPersonForm.country.$invalid && addJuridicalPersonForm.country.$dirty }">
-                            <input id="country" name="country" type="text" required ng-maxlength="32" class="form-control" ng-model="juridicalPerson.country" ng-model-options="{ updateOn: 'blur' }" />
+                            <input id="country" name="country" type="text" required ng-maxlength="32" class="form-control" ng-model="juridicalPerson.country" />
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="addJuridicalPersonForm.country.$invalid && addJuridicalPersonForm.country.$dirty"></span>
                             <span class="text-danger" ng-show="addJuridicalPersonForm.country.$error.required && addJuridicalPersonForm.country.$dirty">The Country field is required.</span>
                             <span class="text-danger" ng-show="addJuridicalPersonForm.country.$error.maxlength">The Country field has the maximum length of 32 symbols.</span>
@@ -42,7 +41,7 @@
                     <label class="control-label col-lg-2 col-md-2" for="country">Region</label>
                     <div class="col-lg-10 col-md-10">
                         <div ng-class="{ 'has-error' : addJuridicalPersonForm.region.$invalid && addJuridicalPersonForm.region.$dirty }">
-                            <input id="region" name="region" type="text" required ng-maxlength="32" class="form-control" ng-model="juridicalPerson.region" ng-model-options="{ updateOn: 'blur' }" />
+                            <input id="region" name="region" type="text" required ng-maxlength="32" class="form-control" ng-model="juridicalPerson.region" />
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="addJuridicalPersonForm.region.$invalid && addJuridicalPersonForm.region.$dirty"></span>
                             <span class="text-danger" ng-show="addJuridicalPersonForm.region.$error.required && addJuridicalPersonForm.region.$dirty">The Region field is required.</span>
                             <span class="text-danger" ng-show="addJuridicalPersonForm.region.$error.maxlength">The Region field has the maximum length of 32 symbols.</span>
@@ -53,7 +52,7 @@
                     <label class="control-label col-lg-2 col-md-2" for="city">City</label>
                     <div class="col-lg-10 col-md-10">
                         <div ng-class="{ 'has-error' : addJuridicalPersonForm.city.$invalid && addJuridicalPersonForm.city.$dirty }">
-                            <input id="city" name="city" type="text" required ng-maxlength="32" class="form-control" ng-model="juridicalPerson.city" ng-model-options="{ updateOn: 'blur' }" />
+                            <input id="city" name="city" type="text" required ng-maxlength="32" class="form-control" ng-model="juridicalPerson.city" />
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="addJuridicalPersonForm.city.$invalid && addJuridicalPersonForm.city.$dirty"></span>
                             <span class="text-danger" ng-show="addJuridicalPersonForm.city.$error.required && addJuridicalPersonForm.city.$dirty">The City field is required.</span>
                             <span class="text-danger" ng-show="addJuridicalPersonForm.city.$error.maxlength">The City field has the maximum length of 32 symbols.</span>
@@ -64,7 +63,7 @@
                     <label class="control-label col-lg-2 col-md-2" for="streetAddress">Street Address</label>
                     <div class="col-lg-10 col-md-10">
                         <div ng-class="{ 'has-error' : addJuridicalPersonForm.streetAddress.$invalid && addJuridicalPersonForm.streetAddress.$dirty }">
-                            <input id="streetAddress" name="streetAddress" type="text" required ng-maxlength="32" class="form-control" ng-model="juridicalPerson.streetAddress" ng-model-options="{ updateOn: 'blur' }" />
+                            <input id="streetAddress" name="streetAddress" type="text" required ng-maxlength="32" class="form-control" ng-model="juridicalPerson.streetAddress" />
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="addJuridicalPersonForm.streetAddress.$invalid && addJuridicalPersonForm.streetAddress.$dirty"></span>
                             <span class="text-danger" ng-show="addJuridicalPersonForm.streetAddress.$error.required && addJuridicalPersonForm.streetAddress.$dirty">The Street Address field is required.</span>
                             <span class="text-danger" ng-show="addJuridicalPersonForm.streetAddress.$error.maxlength">The Street Address field has the maximum length of 32 symbols.</span>
@@ -75,7 +74,7 @@
                     <label class="control-label col-lg-2 col-md-2" for="postalCode">Postal Code</label>
                     <div class="col-lg-10 col-md-10">
                         <div ng-class="{ 'has-error' : addJuridicalPersonForm.postalCode.$invalid && addJuridicalPersonForm.postalCode.$dirty }">
-                            <input id="postalCode" name="postalCode" type="text" ng-maxlength="32" class="form-control" ng-model="juridicalPerson.postalCode" ng-model-options="{ updateOn: 'blur' }" />
+                            <input id="postalCode" name="postalCode" type="text" ng-maxlength="32" class="form-control" ng-model="juridicalPerson.postalCode" />
                             <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-if="addJuridicalPersonForm.postalCode.$invalid && addJuridicalPersonForm.postalCode.$dirty"></span>
                             <span class="text-danger" ng-show="addJuridicalPersonForm.postalCode.$error.maxlength">The Postal Code field has the maximum length of 32 symbols.</span>
                         </div>
@@ -84,10 +83,11 @@
                 <div class="form-group">
                     <div class="col-lg-10 col-md-10 col-lg-offset-2 col-md-offset-2">
                         <div class="btn-group btn-group-justified">
+                            <input type="submit" style="display:none" tabindex="-1" />
                             <a href="#/customers" class="btn btn-default">
                                 <span class="glyphicon glyphicon-circle-arrow-left"></span> Back
                             </a>
-                            <a id="submitBtn" class="btn btn-block btn-default" ng-disabled="addJuridicalPersonForm.$invalid" ng-click="addJuridicalPersonForm.$valid ? juridicalPerson.add() : null;">
+                            <a id="submitBtn" class="btn btn-block btn-default" ng-disabled="addJuridicalPersonForm.$invalid" ng-click="addJuridicalPersonForm.$valid ? juridicalPerson.add() : null">
                                 <span class="glyphicon glyphicon-plus"></span> Submit
                             </a>
                         </div>
