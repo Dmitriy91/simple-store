@@ -7,6 +7,7 @@ namespace Assignment.Data.Repositories
     {
         public NaturalPersonRepository(DbContext _dbContext)
             : base(_dbContext)
-        { }
+        {
+        }
     }
 }

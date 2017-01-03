@@ -71,7 +71,7 @@ namespace Assignment.Services
             else
                 orders = orders.OrderBy(sortBy);
 
-            return orders.ApplyPagination(filtration.PageNumber, filtration.PageSize);
+            return orders.Paginate(filtration.PageNumber, filtration.PageSize);
         }
 
         public bool RemoveOrderById(int orderId)
@@ -100,7 +100,7 @@ namespace Assignment.Services
                 return false;
 
             _orderDetailsRepo.Delete(od => od.OrderId == order.Id);
-            _unitOfWork.Commit();
+            //_unitOfWork.Commit();
 
             foreach (OrderDetails orderItem in order.OrderDetails)
             {

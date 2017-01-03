@@ -7,6 +7,7 @@ namespace Assignment.Data.Repositories
     {
         public CustomerRepository(DbContext _dbContext)
             : base(_dbContext)
-        { }
+        {
+        }
     }
 }

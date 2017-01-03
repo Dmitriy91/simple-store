@@ -69,10 +69,9 @@ namespace Assignment.Web.Controllers
                 throw new BindingModelValidationException(this.GetModelStateErrorMessage());
 
             int personsFound = 0;
-            IFiltration jpFilter = Mapper.Map<NaturalPersonFilterBM, Filtration>(naturalPersonFilter);
-            jpFilter = Mapper.Map<NaturalPersonFilterBM, Filtration>(naturalPersonFilter);
+            IFiltration filtration = Mapper.Map<NaturalPersonFilterBM, Filtration>(naturalPersonFilter);
             IEnumerable<NaturalPerson> naturalPersons =
-                await Task.Run(() => _customerService.GetNaturalPersons(jpFilter, out personsFound));
+                await Task.Run(() => _customerService.GetNaturalPersons(filtration, out personsFound));
             IEnumerable<NaturalPersonDTO> naturalPersonDtos =
                 Mapper.Map<IEnumerable<NaturalPerson>, IEnumerable<NaturalPersonDTO>>(naturalPersons);
 
@@ -81,8 +80,8 @@ namespace Assignment.Web.Controllers
                 NaturalPersons = naturalPersonDtos,
                 PagingInfo = new PagingInfoDTO
                 {
-                    CurrentPage = jpFilter.PageNumber,
-                    PageSize = jpFilter.PageSize,
+                    CurrentPage = filtration.PageNumber,
+                    PageSize = filtration.PageSize,
                     TotalItems = personsFound
                 }
             });

@@ -14,9 +14,9 @@ namespace Assignment.Services
     public class CustomerService : ICustomerService
     {
         #region Fields
-        private IRepository<Customer> _customerRepo;
-        private IRepository<JuridicalPerson> _juridicalPersonRepo;
-        private IRepository<NaturalPerson> _naturalPersonRepo;
+        private readonly IRepository<Customer> _customerRepo;
+        private readonly IRepository<JuridicalPerson> _juridicalPersonRepo;
+        private readonly IRepository<NaturalPerson> _naturalPersonRepo;
         private IUnitOfWork _unitOfWork;
         #endregion
 
@@ -84,7 +84,7 @@ namespace Assignment.Services
             else
                 juridicalPersons = juridicalPersons.OrderBy(filtration.SortBy);
 
-            return juridicalPersons.ApplyPagination(filtration.PageNumber, filtration.PageSize);
+            return juridicalPersons.Paginate(filtration.PageNumber, filtration.PageSize);
         }
 
         public IEnumerable<NaturalPerson> GetNaturalPersons(IFiltration filtration, out int personsFound)
@@ -134,7 +134,7 @@ namespace Assignment.Services
             else
                 naturalPersons = naturalPersons.OrderBy(filtration.SortBy);
 
-            return naturalPersons.ApplyPagination(filtration.PageNumber, filtration.PageSize);
+            return naturalPersons.Paginate(filtration.PageNumber, filtration.PageSize);
         }
 
         public bool RemovePersonById(int customerId)

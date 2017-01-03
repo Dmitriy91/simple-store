@@ -7,6 +7,7 @@ namespace Assignment.Data.Repositories
     {
         public OrderRepository(DbContext _dbContext)
             : base(_dbContext)
-        { }
+        {
+        }
     }
 }

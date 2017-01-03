@@ -5,7 +5,7 @@ namespace Assignment.Services
 {
     public static class FilteringHelpers
     {
-        public static IEnumerable<TEntity> ApplyPagination<TEntity>(this IQueryable<TEntity> entities, int pageNumber, int pageSize)
+        public static IEnumerable<TEntity> Paginate<TEntity>(this IQueryable<TEntity> entities, int pageNumber, int pageSize)
             where TEntity : class
         {
              return entities.

@@ -11,8 +11,8 @@ namespace Assignment.Services
     public class ProductService : IProductService
     {
         #region Fields
-        private IRepository<Product> _productRepo;
-        private IRepository<OrderDetails> _orderDetailsRepo;
+        private readonly IRepository<Product> _productRepo;
+        private readonly IRepository<OrderDetails> _orderDetailsRepo;
         private IUnitOfWork _unitOfWork;
         #endregion
 
@@ -51,7 +51,7 @@ namespace Assignment.Services
             else
                 products = products.OrderBy(sortBy);
 
-            return products.ApplyPagination(filtration.PageNumber, filtration.PageSize);
+            return products.Paginate(filtration.PageNumber, filtration.PageSize);
         }
 
         public bool RemoveProductById(int productId)
