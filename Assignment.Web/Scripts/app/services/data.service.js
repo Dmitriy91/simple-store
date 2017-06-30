@@ -18,21 +18,21 @@
                     .then(success, function (response) {
                             unauthorizedAccessHandler(response)
 
-                            if (error != null) error(response);
+                            if (error !== null) error(response);
                     });
         }
 
         function post(url, data, success, error, headers) {
-            return $http.post(url, data, { headers: headers == undefined ? null : headers })
+            return $http.post(url, data, { headers: headers === undefined ? null : headers })
                     .then(success, function (response) {
                             unauthorizedAccessHandler(response)
 
-                            if (error != null) error(response);
+                            if (error !== null) error(response);
                     });
         }
 
         function unauthorizedAccessHandler(response) {
-            if (response.status == '401') {
+            if (response.status === '401') {
                 notificationService.displayWarning('Authentication required.');
                 $rootScope.previousState = $location.path();
                 $location.path('/login');

@@ -75,7 +75,7 @@
                 });
             });
             
-            dataService.post('/api/orders/add', orderData, addOrderSucceeded, addOrderFaild);
+            dataService.post('/api/v1/orders/add', orderData, addOrderSucceeded, addOrderFaild);
         }
 
         function addOrderSucceeded(response) {
@@ -92,7 +92,7 @@
 
             pageNumber = pageNumber || 1;
 
-            dataService.get('/api/products', {
+            dataService.get('/api/v1/products', {
                 params: {
                     pageSize: pageSize,
                     pageNumber: pageNumber

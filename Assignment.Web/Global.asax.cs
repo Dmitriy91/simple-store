@@ -6,6 +6,8 @@ using System.Web.Routing;
 using log4net.Config;
 using System.IO;
 
+#pragma warning disable 1591
+
 namespace Assignment.Web
 {
     public class WebApiApplication : System.Web.HttpApplication
@@ -23,3 +25,5 @@ namespace Assignment.Web
         }
     }
 }
+
+#pragma warning restore

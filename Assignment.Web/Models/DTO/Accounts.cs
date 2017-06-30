@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace Assignment.Web.Models
+#pragma warning disable 1591
+
+namespace Assignment.Web.Models.DTO
 {
     // Models returned by AccountController actions.
 
-    public class ExternalLoginDTO
+    public class ExternalLogin
     {
         public string Name { get; set; }
 
@@ -13,18 +15,18 @@ namespace Assignment.Web.Models
         public string State { get; set; }
     }
 
-    public class ManageInfoDTO
+    public class ManageInfo
     {
         public string LocalLoginProvider { get; set; }
 
         public string Email { get; set; }
 
-        public IEnumerable<UserLoginInfoDTO> Logins { get; set; }
+        public IEnumerable<UserLoginInfo> Logins { get; set; }
 
-        public IEnumerable<ExternalLoginDTO> ExternalLoginProviders { get; set; }
+        public IEnumerable<ExternalLogin> ExternalLoginProviders { get; set; }
     }
 
-    public class UserInfoDTO
+    public class UserInfo
     {
         public string Email { get; set; }
 
@@ -33,10 +35,12 @@ namespace Assignment.Web.Models
         public string LoginProvider { get; set; }
     }
 
-    public class UserLoginInfoDTO
+    public class UserLoginInfo
     {
         public string LoginProvider { get; set; }
 
         public string ProviderKey { get; set; }
     }
 }
+
+#pragma warning restore 1591

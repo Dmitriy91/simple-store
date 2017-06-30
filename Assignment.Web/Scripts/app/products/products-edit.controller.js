@@ -21,7 +21,7 @@
             productData.productName = $scope.product.productName;
             productData.unitPrice = $scope.product.unitPrice;
             productData.unitsInStock = $scope.product.unitsInStock;
-            dataService.post('/api/products/update/', productData, updateProductSucceeded, updateProductFaild);
+            dataService.post('/api/v1/products/update/', productData, updateProductSucceeded, updateProductFaild);
         }
 
         function updateProductSucceeded(response) {
@@ -34,7 +34,7 @@
         }
 
         function loadProduct() {
-            dataService.get('/api/products/details/' + $routeParams.id, null, loadProductSucceeded, loadProductFailed);
+            dataService.get('/api/v1/products/details/' + $routeParams.id, null, loadProductSucceeded, loadProductFailed);
         }
 
         function loadProductSucceeded(response) {

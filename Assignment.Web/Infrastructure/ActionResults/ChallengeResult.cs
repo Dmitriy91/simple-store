@@ -4,6 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 
+#pragma warning disable 1591
+
 namespace Assignment.Web.Infrastructure.ActionResults
 {
     public class ChallengeResult : IHttpActionResult
@@ -27,3 +29,5 @@ namespace Assignment.Web.Infrastructure.ActionResults
         }
     }
 }
+
+#pragma warning restore 1591

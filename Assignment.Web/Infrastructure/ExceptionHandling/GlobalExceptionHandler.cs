@@ -3,11 +3,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http.ExceptionHandling;
 using log4net;
+
+#pragma warning disable 1591
 
 namespace Assignment.Web.Infrastructure.ExceptionHandling
 {
@@ -64,3 +64,5 @@ namespace Assignment.Web.Infrastructure.ExceptionHandling
         }
     }
 }
+
+#pragma warning restore 1591

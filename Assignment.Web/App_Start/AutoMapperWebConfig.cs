@@ -1,6 +1,8 @@
 ﻿using Assignment.Web.Infrastructure.Mappings;
 using AutoMapper;
 
+#pragma warning disable 1591
+
 namespace Assignment.Web
 {
     public static class AutoMapperWebConfig
@@ -15,3 +17,5 @@ namespace Assignment.Web
         }
     }
 }
+
+#pragma warning restore 1591

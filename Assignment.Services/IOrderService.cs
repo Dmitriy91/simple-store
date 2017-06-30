@@ -11,11 +11,11 @@ namespace Assignment.Services
 
         IEnumerable<Order> GetOrdersByCustomerId(int customerId, IFiltration filtration, out int ordersFound);
 
-        bool RemoveOrderById(int orderId);
+        void RemoveOrderById(int orderId);
 
-        bool UpdateOrder(Order order);
+        void UpdateOrder(Order order);
 
-        bool AddOrder(Order order);
+        void AddOrder(Order order);
 
         Task CommitAsync();
 

@@ -121,7 +121,7 @@
         function removeOrder(inx) {
             var orderId = $scope.orders[inx].id;
 
-            dataService.post('/api/orders/delete/' + orderId, null, removeOrderSucceeded, removeOrderFailed);
+            dataService.post('/api/v1/orders/delete/' + orderId, null, removeOrderSucceeded, removeOrderFailed);
         }
 
         function removeOrderFailed(response) {
@@ -142,13 +142,12 @@
             pageNumber = pageNumber || 1;
 
             var currentPage = pageNumber;
-            var pageSize = pageSize
             var totalItems = $scope.orderDetails.length;
             var totalPages = Math.ceil(totalItems / pageSize);
 
             $scope.orderDetailsPager = pagerService.GetPager(totalItems, totalPages, currentPage, pageSize);
 
-            if ($scope.orderDetails != 'undefined') {
+            if ($scope.orderDetails !== 'undefined') {
                 $scope.paginatedOrderDetails = $scope.orderDetails.filter(function (currentValue, inx) {
                     return inx >= $scope.orderDetailsPager.startIndex && inx <= $scope.orderDetailsPager.endIndex;
                 });
@@ -173,7 +172,7 @@
             });
 
             if ($scope.selectedCustomerId !== 0) {
-                dataService.get('/api/orders/' + $scope.selectedCustomerId, {
+                dataService.get('/api/v1/orders/' + $scope.selectedCustomerId, {
                     params: queryParams
                 }, loadOrdersByCustomerSucceeded, loadOrdersByCustomerFailed);
             }
@@ -211,7 +210,7 @@
                     queryParams[filter.name] = filter.value;
             });
 
-            dataService.get('/api/customers/juridical-persons', {
+            dataService.get('/api/v1/customers/juridical-persons', {
                 params: queryParams
             }, loadJuridicalPersonsSucceeded, loadJuridicalPersonsFailed);
         }
@@ -233,7 +232,7 @@
                     queryParams[filter.name] = filter.value;
             });
 
-            dataService.get('/api/customers/natural-persons', {
+            dataService.get('/api/v1/customers/natural-persons', {
                 params: queryParams
             }, loadNaturalPersonsSucceeded, loadNaturalPersonsFailed);
         }
@@ -319,7 +318,7 @@
         }
 
         function clearCustomerFilters() {
-            if ($scope.customerType == 'naturalPerson') {
+            if ($scope.customerType === 'naturalPerson') {
                 var updateNaturalPersons = false;
 
                 angular.forEach($scope.naturalPersonFilters, function (filter) {

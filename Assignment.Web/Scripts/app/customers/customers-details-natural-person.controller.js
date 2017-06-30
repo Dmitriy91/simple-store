@@ -21,7 +21,7 @@
         activate();
 
         function loadNaturalPerson() {
-            dataService.get('/api/customers/natural-person/' + $routeParams.id, null, loadNaturalPersonSucceeded, loadNaturalPersonFailed);
+            dataService.get('/api/v1/customers/natural-person/' + $routeParams.id, null, loadNaturalPersonSucceeded, loadNaturalPersonFailed);
         }
 
         function loadNaturalPersonSucceeded(response) {

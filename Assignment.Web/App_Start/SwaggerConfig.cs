@@ -2,8 +2,10 @@ using System.Web.Http;
 using WebActivatorEx;
 using Assignment.Web;
 using Swashbuckle.Application;
+using Assignment.Web.Infrastructure.Swagger;
 
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
+#pragma warning disable 1591
 
 namespace Assignment.Web
 {
@@ -14,7 +16,7 @@ namespace Assignment.Web
             var thisAssembly = typeof(SwaggerConfig).Assembly;
 
             GlobalConfiguration.Configuration 
-                .EnableSwagger(c =>
+                .EnableSwagger("docs/{apiVersion}/help", c =>
                     {
                         // By default, the service root url is inferred from the request used to access the docs.
                         // However, there may be situations (e.g. proxy and load-balanced environments) where this does not
@@ -33,6 +35,7 @@ namespace Assignment.Web
                         // additional fields by chaining methods off SingleApiVersion.
                         //
                         c.SingleApiVersion("v1", "Assignment.Web");
+                        //c.OperationFilter<AddAuthorizationHeaderParameterOperationFilter>();
 
                         // If your API has multiple versions, use "MultipleApiVersions" instead of "SingleApiVersion".
                         // In this case, you must provide a lambda that tells Swashbuckle which actions should be
@@ -57,22 +60,23 @@ namespace Assignment.Web
                         //c.BasicAuth("basic")
                         //    .Description("Basic HTTP Authentication");
                         //
-						// NOTE: You must also configure 'EnableApiKeySupport' below in the SwaggerUI section
+                        // NOTE: You must also configure 'EnableApiKeySupport' below in the SwaggerUI section
                         //c.ApiKey("apiKey")
                         //    .Description("API Key Authentication")
                         //    .Name("apiKey")
                         //    .In("header");
                         //
-                        //c.OAuth2("oauth2")
-                        //    .Description("OAuth2 Implicit Grant")
-                        //    .Flow("implicit")
-                        //    .AuthorizationUrl("http://petstore.swagger.wordnik.com/api/oauth/dialog")
-                        //    //.TokenUrl("https://tempuri.org/token")
-                        //    .Scopes(scopes =>
-                        //    {
-                        //        scopes.Add("read", "Read access to protected resources");
-                        //        scopes.Add("write", "Write access to protected resources");
-                        //    });
+                        c.OAuth2("oauth2")
+                            .Description("OAuth2 Implicit Grant")
+                            .Flow("implicit")
+                            .AuthorizationUrl("http://localhost:56582/#/login")
+                            .TokenUrl("http://localhost:56582/token")
+                            .Scopes(scopes =>
+                            {
+                                scopes.Add("self", "SELF");
+                                scopes.Add("read", "Read access to protected resources");
+                                scopes.Add("write", "Write access to protected resources");
+                            });
 
                         // Set this flag to omit descriptions for any actions decorated with the Obsolete attribute
                         //c.IgnoreObsoleteActions();
@@ -97,7 +101,7 @@ namespace Assignment.Web
                         // those comments into the generated docs and UI. You can enable this by providing the path to one or
                         // more Xml comment files.
                         //
-                        //c.IncludeXmlComments(GetXmlCommentsPath());
+                        c.IncludeXmlComments(GetXmlCommentsPath());
 
                         // Swashbuckle makes a best attempt at generating Swagger compliant JSON schemas for the various types
                         // exposed in your API. However, there may be occasions when more control of the output is needed.
@@ -123,7 +127,7 @@ namespace Assignment.Web
                         // Swagger docs and UI. However, if you have multiple types in your API with the same class name, you'll
                         // need to opt out of this behavior to avoid Schema Id conflicts.
                         //
-                        //c.UseFullTypeNameInSchemaIds();
+                        c.UseFullTypeNameInSchemaIds();
 
                         // Alternatively, you can provide your own custom strategy for inferring SchemaId's for
                         // describing "complex" types in your API.
@@ -152,7 +156,6 @@ namespace Assignment.Web
                         // to inspect some attribute on each action and infer which (if any) OAuth2 scopes are required
                         // to execute the operation
                         //
-                        //c.OperationFilter<AssignOAuth2SecurityRequirements>();
 
                         // Post-modify the entire Swagger document by wiring up one or more Document filters.
                         // This gives full control to modify the final SwaggerDocument. You should have a good understanding of
@@ -172,8 +175,11 @@ namespace Assignment.Web
                         // alternative implementation for ISwaggerProvider with the CustomProvider option.
                         //
                         //c.CustomProvider((defaultProvider) => new CachingSwaggerProvider(defaultProvider));
+
+                        c.OperationFilter<ShortenNameOperationFilter>();
+                        c.OperationFilter<AssignOAuth2SecurityRequirements>();
                     })
-                .EnableSwaggerUi(c =>
+                .EnableSwaggerUi("help/{*assetPath}", c =>
                     {
                         // Use the "InjectStylesheet" option to enrich the UI with one or more additional CSS stylesheets.
                         // The file must be included in your project as an "Embedded Resource", and then the resource's
@@ -208,7 +214,7 @@ namespace Assignment.Web
                         // Specify which HTTP operations will have the 'Try it out!' option. An empty paramter list disables
                         // it for all operations.
                         //
-                        //c.SupportedSubmitMethods("GET", "HEAD");
+                        //c.SupportedSubmitMethods("GET");
 
                         // Use the CustomAsset option to provide your own version of assets used in the swagger-ui.
                         // It's typically used to instruct Swashbuckle to return your version instead of the default
@@ -228,13 +234,13 @@ namespace Assignment.Web
                         // If your API supports the OAuth2 Implicit flow, and you've described it correctly, according to
                         // the Swagger 2.0 specification, you can enable UI support as shown below.
                         //
-                        //c.EnableOAuth2Support(
-                        //    clientId: "test-client-id",
-                        //    clientSecret: null,
-                        //    realm: "test-realm",
-                        //    appName: "Swagger UI"
-                        //    //additionalQueryStringParams: new Dictionary<string, string>() { { "foo", "bar" } }
-                        //);
+                        c.EnableOAuth2Support(
+                            clientId: "self",
+                            clientSecret: null,
+                            realm: "test-realm",
+                            appName: "Swagger UI"
+                        //additionalQueryStringParams: new Dictionary<string, string>() { { "foo", "bar" } }
+                        );
 
                         // If your API supports ApiKey, you can override the default values.
                         // "apiKeyIn" can either be "query" or "header"                                                
@@ -242,5 +248,12 @@ namespace Assignment.Web
                         //c.EnableApiKeySupport("apiKey", "header");
                     });
         }
+
+        protected static string GetXmlCommentsPath()
+        {
+            return string.Format(@"{0}\bin\Assignment.Web.XML", System.AppDomain.CurrentDomain.BaseDirectory);
+        }
     }
 }
+
+#pragma warning restore 1591

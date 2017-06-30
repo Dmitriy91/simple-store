@@ -4,6 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 
+#pragma warning disable 1591
+
 namespace Assignment.Web.Infrastructure.ExceptionHandling
 {
     public class ErrorResult : IHttpActionResult
@@ -35,3 +37,5 @@ namespace Assignment.Web.Infrastructure.ExceptionHandling
         }
     }
 }
+
+#pragma warning restore 1591

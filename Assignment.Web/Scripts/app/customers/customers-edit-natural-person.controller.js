@@ -35,7 +35,7 @@
             naturalPersonData.city = $scope.naturalPerson.city;
             naturalPersonData.streetAddress = $scope.naturalPerson.streetAddress;
             naturalPersonData.postalCode = $scope.naturalPerson.postalCode;
-            dataService.post('/api/customers/natural-person/update/', naturalPersonData, updateNaturalPersonSucceeded, updateNaturalPersonFaild);
+            dataService.post('/api/v1/customers/natural-person/update/', naturalPersonData, updateNaturalPersonSucceeded, updateNaturalPersonFaild);
         }
 
         function updateNaturalPersonSucceeded(response) {
@@ -48,7 +48,7 @@
         }
 
         function loadNaturalPerson() {
-            dataService.get('/api/customers/natural-person/' + $routeParams.id, null, loadNaturalPersonSucceeded, loadNaturalPersonFailed);
+            dataService.get('/api/v1/customers/natural-person/' + $routeParams.id, null, loadNaturalPersonSucceeded, loadNaturalPersonFailed);
         }
 
         function loadNaturalPersonSucceeded(response) {

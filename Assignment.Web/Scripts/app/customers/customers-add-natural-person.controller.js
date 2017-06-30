@@ -34,7 +34,7 @@
             naturalPersonData.streetAddress = $scope.naturalPerson.streetAddress;
             naturalPersonData.postalCode = $scope.naturalPerson.postalCode;
 
-            dataService.post('/api/customers/natural-person/add', naturalPersonData, addNaturalPersonSucceeded, addNaturalPersonFaild);
+            dataService.post('/api/v1/customers/natural-person/add', naturalPersonData, addNaturalPersonSucceeded, addNaturalPersonFaild);
         }
 
         function addNaturalPersonSucceeded(response) {

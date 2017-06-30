@@ -7,40 +7,55 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using Assignment.Entities;
-using Assignment.Web;
-using Assignment.Web.Infrastructure;
 using Assignment.Web.Infrastructure.ActionResults;
 using Assignment.Web.Infrastructure.AuthProviders;
-using Assignment.Web.Infrastructure.ExceptionHandling;
-using Assignment.Web.Models;
+using DTO = Assignment.Web.Models.DTO;
+using BM = Assignment.Web.Models.BM;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
+using Swashbuckle.Swagger.Annotations;
+using Assignment.Web.Infrastructure.ValidationAttributes;
 
-namespace SpaNotes.Web.Controllers
+namespace Assignment.Web.Controllers.V1
 {
+    /// <summary>
+    /// Accounts
+    /// </summary>
     [Authorize]
-    [RoutePrefix("api/account")]
+    [RoutePrefix("api/{apiVersion}/account")]
     public class AccountController : ApiController
     {
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
 
+        #region Constructors
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public AccountController()
         {
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="accessTokenFormat"></param>
         public AccountController(ApplicationUserManager userManager,
             ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
         {
             UserManager = userManager;
             AccessTokenFormat = accessTokenFormat;
         }
+        #endregion
 
+        /// <summary>
+        /// UserManager
+        /// </summary>
         public ApplicationUserManager UserManager
         {
             get
@@ -53,16 +68,24 @@ namespace SpaNotes.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// AccessTokenFormat
+        /// </summary>
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
-        // GET api/Account/UserInfo
+        // GET api/v1/account/user-info
+        /// <summary>
+        /// Get user's info
+        /// </summary>
+        /// <returns></returns>
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
-        [Route("UserInfo")]
-        public UserInfoDTO GetUserInfo()
+        [Route("user-info")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(DTO.UserInfo))]
+        public DTO.UserInfo GetUserInfo()
         {
             ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
 
-            return new UserInfoDTO
+            return new DTO.UserInfo
             {
                 Email = User.Identity.GetUserName(),
                 HasRegistered = externalLogin == null,
@@ -70,8 +93,12 @@ namespace SpaNotes.Web.Controllers
             };
         }
 
-        // POST api/Account/Logout
-        [Route("Logout")]
+        // POST api/v1/account/log-out
+        /// <summary>
+        /// Log out user
+        /// </summary>
+        /// <returns></returns>
+        [Route("log-out")]
         public IHttpActionResult Logout()
         {
             Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
@@ -79,20 +106,27 @@ namespace SpaNotes.Web.Controllers
             return Ok();
         }
 
-        // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
-        [Route("ManageInfo")]
-        public async Task<ManageInfoDTO> GetManageInfo(string returnUrl, bool generateState = false)
+        // GET api/v1/account/manage-info?returnUrl=%2F&generateState=true
+        /// <summary>
+        /// Manage info
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <param name="generateState"></param>
+        /// <returns></returns>
+        [Route("manage-info")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(DTO.ManageInfo))]
+        public async Task<DTO.ManageInfo> GetManageInfo(string returnUrl, bool generateState = false)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
             if (user == null)
                 return null;
 
-            List<UserLoginInfoDTO> logins = new List<UserLoginInfoDTO>();
+            List<DTO.UserLoginInfo> logins = new List<DTO.UserLoginInfo>();
 
             foreach (IdentityUserLogin linkedAccount in user.Logins)
             {
-                logins.Add(new UserLoginInfoDTO
+                logins.Add(new DTO.UserLoginInfo
                 {
                     LoginProvider = linkedAccount.LoginProvider,
                     ProviderKey = linkedAccount.ProviderKey
@@ -101,14 +135,14 @@ namespace SpaNotes.Web.Controllers
 
             if (user.PasswordHash != null)
             {
-                logins.Add(new UserLoginInfoDTO
+                logins.Add(new DTO.UserLoginInfo
                 {
                     LoginProvider = LocalLoginProvider,
                     ProviderKey = user.UserName,
                 });
             }
 
-            return new ManageInfoDTO
+            return new DTO.ManageInfo
             {
                 LocalLoginProvider = LocalLoginProvider,
                 Email = user.UserName,
@@ -117,13 +151,16 @@ namespace SpaNotes.Web.Controllers
             };
         }
 
-        // POST api/Account/ChangePassword
-        [Route("ChangePassword")]
-        public async Task<IHttpActionResult> ChangePassword(ChangePasswordBM model)
+        // POST api/v1/account/change-password
+        /// <summary>
+        /// Change password
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [Route("chang-password")]
+        [ModelStateValidation]
+        public async Task<IHttpActionResult> ChangePassword([FromBody]BM.ChangePassword model)
         {
-            if (!ModelState.IsValid)
-                throw new BindingModelValidationException(this.GetModelStateErrorMessage());
-
             IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(),
                 model.OldPassword,
                 model.NewPassword);
@@ -134,13 +171,16 @@ namespace SpaNotes.Web.Controllers
             return Ok();
         }
 
-        // POST api/Account/SetPassword
-        [Route("SetPassword")]
-        public async Task<IHttpActionResult> SetPassword(SetPasswordBM model)
+        // POST api/v1/account/set-password
+        /// <summary>
+        /// Set password
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [Route("set-password")]
+        [ModelStateValidation]
+        public async Task<IHttpActionResult> SetPassword([FromBody]BM.SetPassword model)
         {
-            if (!ModelState.IsValid)
-                throw new BindingModelValidationException(this.GetModelStateErrorMessage());
-
             IdentityResult result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
 
             if (!result.Succeeded)
@@ -149,13 +189,16 @@ namespace SpaNotes.Web.Controllers
             return Ok();
         }
 
-        // POST api/Account/AddExternalLogin
-        [Route("AddExternalLogin")]
-        public async Task<IHttpActionResult> AddExternalLogin(AddExternalLoginBM model)
+        // POST api/v1/account/add-external-login
+        /// <summary>
+        /// Add external login
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [Route("add-external-login")]
+        [ModelStateValidation]
+        public async Task<IHttpActionResult> AddExternalLogin([FromBody]BM.AddExternalLogin model)
         {
-            if (!ModelState.IsValid)
-                throw new BindingModelValidationException(this.GetModelStateErrorMessage());
-
             Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
 
             AuthenticationTicket ticket = AccessTokenFormat.Unprotect(model.ExternalAccessToken);
@@ -181,13 +224,16 @@ namespace SpaNotes.Web.Controllers
             return Ok();
         }
 
-        // POST api/Account/RemoveLogin
-        [Route("RemoveLogin")]
-        public async Task<IHttpActionResult> RemoveLogin(RemoveLoginBM model)
+        // POST api/v1/account/remove-login
+        /// <summary>
+        /// Remove password
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [Route("remove-login")]
+        [ModelStateValidation]
+        public async Task<IHttpActionResult> RemoveLogin([FromBody]BM.RemoveLogin model)
         {
-            if (!ModelState.IsValid)
-                throw new BindingModelValidationException(this.GetModelStateErrorMessage());
-
             IdentityResult result = null;
 
             if (model.LoginProvider == LocalLoginProvider)
@@ -206,11 +252,17 @@ namespace SpaNotes.Web.Controllers
             return Ok();
         }
 
-        // GET api/Account/ExternalLogin
+        // GET api/account/external-login
+        /// <summary>
+        /// Get external login
+        /// </summary>
+        /// <param name="provider"></param>
+        /// <param name="error"></param>
+        /// <returns></returns>
         [OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalCookie)]
         [AllowAnonymous]
-        [Route("ExternalLogin", Name = "ExternalLogin")]
+        [Route("external-login", Name = "ExternalLogin")]
         public async Task<IHttpActionResult> GetExternalLogin(string provider, string error = null)
         {
             if (error != null)
@@ -231,7 +283,7 @@ namespace SpaNotes.Web.Controllers
                 return new ChallengeResult(provider, this);
             }
 
-            ApplicationUser user = await UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
+            Entities.ApplicationUser user = await UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
                 externalLogin.ProviderKey));
 
             bool hasRegistered = user != null;
@@ -259,13 +311,19 @@ namespace SpaNotes.Web.Controllers
             return Ok();
         }
 
-        // GET api/Account/ExternalLogins?returnUrl=%2F&generateState=true
+        // GET api/v1/account/external-logins?returnUrl=%2F&generateState=true
+        /// <summary>
+        /// Get external logins
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <param name="generateState"></param>
+        /// <returns></returns>
         [AllowAnonymous]
-        [Route("ExternalLogins")]
-        public IEnumerable<ExternalLoginDTO> GetExternalLogins(string returnUrl, bool generateState = false)
+        [Route("external-logins")]
+        public IEnumerable<DTO.ExternalLogin> GetExternalLogins(string returnUrl, bool generateState = false)
         {
             IEnumerable<AuthenticationDescription> descriptions = Authentication.GetExternalAuthenticationTypes();
-            List<ExternalLoginDTO> logins = new List<ExternalLoginDTO>();
+            List<DTO.ExternalLogin> logins = new List<DTO.ExternalLogin>();
 
             string state = null;
 
@@ -277,7 +335,7 @@ namespace SpaNotes.Web.Controllers
 
             foreach (AuthenticationDescription description in descriptions)
             {
-                ExternalLoginDTO login = new ExternalLoginDTO
+                DTO.ExternalLogin login = new DTO.ExternalLogin
                 {
                     Name = description.Caption,
                     Url = Url.Route("ExternalLogin", new
@@ -297,15 +355,18 @@ namespace SpaNotes.Web.Controllers
             return logins;
         }
 
-        // POST api/Account/Register
+        // POST api/v1/account/register
+        /// <summary>
+        /// Register
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [AllowAnonymous]
-        [Route("Register")]
-        public async Task<IHttpActionResult> Register(RegisterBM model)
+        [Route("register")]
+        [ModelStateValidation]
+        public async Task<IHttpActionResult> Register([FromBody]BM.Register model)
         {
-            if (!ModelState.IsValid)
-                throw new BindingModelValidationException(this.GetModelStateErrorMessage());
-
-            ApplicationUser user = new ApplicationUser
+            var user = new Entities.ApplicationUser
             {
                 UserName = model.Email,
                 Email = model.Email
@@ -319,21 +380,24 @@ namespace SpaNotes.Web.Controllers
             return Ok();
         }
 
-        // POST api/Account/RegisterExternal
+        // POST api/v1/account/register-external
+        /// <summary>
+        /// Register external
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
-        [Route("RegisterExternal")]
-        public async Task<IHttpActionResult> RegisterExternal(RegisterExternalBM model)
+        [Route("register-external")]
+        [ModelStateValidation]
+        public async Task<IHttpActionResult> RegisterExternal([FromBody]BM.RegisterExternal model)
         {
-            if (!ModelState.IsValid)
-                throw new BindingModelValidationException(this.GetModelStateErrorMessage());
-
             ExternalLoginInfo info = await Authentication.GetExternalLoginInfoAsync();
 
             if (info == null)
                 throw new HttpException((int)HttpStatusCode.InternalServerError, string.Empty);
 
-            var user = new ApplicationUser
+            var user = new Entities.ApplicationUser
             {
                 UserName = model.Email,
                 Email = model.Email
@@ -352,6 +416,10 @@ namespace SpaNotes.Web.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Dispose related resources
+        /// </summary>
+        /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)
@@ -392,8 +460,6 @@ namespace SpaNotes.Web.Controllers
                     // No ModelState errors are available to send, so just return an empty BadRequest.
                     throw new HttpException((int)HttpStatusCode.BadRequest, string.Empty);
                 }
-
-                throw new BindingModelValidationException(this.GetModelStateErrorMessage());
             }
 
             return null;

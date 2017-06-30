@@ -14,7 +14,7 @@
         activate();
 
         function loadProduct() {
-            dataService.get('/api/products/details/' + $routeParams.id, null, loadProductSucceeded, loadProductFailed);
+            dataService.get('/api/v1/products/details/' + $routeParams.id, null, loadProductSucceeded, loadProductFailed);
         }
 
         function loadProductSucceeded(response) {

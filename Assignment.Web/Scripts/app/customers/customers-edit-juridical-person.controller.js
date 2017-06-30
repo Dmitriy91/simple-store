@@ -29,7 +29,7 @@
             juridicalPersonData.city = $scope.juridicalPerson.city;
             juridicalPersonData.streetAddress = $scope.juridicalPerson.streetAddress;
             juridicalPersonData.postalCode = $scope.juridicalPerson.postalCode;
-            dataService.post('/api/customers/juridical-person/update/', juridicalPersonData, updateJuridicalPersonSucceeded, updateJuridicalPersonFaild);
+            dataService.post('/api/v1/customers/juridical-person/update/', juridicalPersonData, updateJuridicalPersonSucceeded, updateJuridicalPersonFaild);
         }
 
         function updateJuridicalPersonSucceeded(response) {
@@ -42,7 +42,7 @@
         }
 
         function loadJuridicalPerson() {
-            dataService.get('/api/customers/juridical-person/' + $routeParams.id, null, loadJuridicalPersonSucceeded, loadJuridicalPersonFailed);
+            dataService.get('/api/v1/customers/juridical-person/' + $routeParams.id, null, loadJuridicalPersonSucceeded, loadJuridicalPersonFailed);
         }
 
         function loadJuridicalPersonSucceeded(response) {

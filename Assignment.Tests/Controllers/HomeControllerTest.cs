@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Assignment.Web;
-using Assignment.Web.Controllers;
+using Assignment.Web.Controllers.V1;
 
 namespace Assignment.Tests.Controllers
 {

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Assignment.Data;
 using System.Linq;
 using System.Linq.Dynamic;
+using System;
 
 namespace Assignment.Services
 {
@@ -54,31 +55,25 @@ namespace Assignment.Services
             return products.Paginate(filtration.PageNumber, filtration.PageSize);
         }
 
-        public bool RemoveProductById(int productId)
+        public void RemoveProductById(int productId)
         {
             bool productExists = _productRepo.Exists(p => p.Id == productId);
             bool productIsOrdered = _orderDetailsRepo.Exists(od => od.ProductId == productId);
 
-            if (productExists && !productIsOrdered)
-            {
-                _productRepo.Delete(new Product { Id = productId });
-                return true;
-            }
+            if (!productExists || productIsOrdered)
+                throw new ApplicationException("The product doesn't exist or it's ordered");
 
-            return false;
+            _productRepo.Delete(new Product { Id = productId });
         }
 
-        public bool UpdateProduct(Product product)
+        public void UpdateProduct(Product product)
         {
             bool productExists = _productRepo.Exists(p => p.Id == product.Id);
 
-            if (productExists)
-            {
-                _productRepo.Update(product);
-                return true;
-            }
+            if (!productExists)
+                throw new ApplicationException("The product doesn't exist");
 
-            return false;
+            _productRepo.Update(product);
         }
 
         public void AddProduct(Product product)

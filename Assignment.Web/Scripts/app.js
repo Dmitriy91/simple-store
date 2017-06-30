@@ -48321,21 +48321,21 @@ angular.module('cfp.loadingBar', [])
                     .then(success, function (response) {
                             unauthorizedAccessHandler(response)
 
-                            if (error != null) error(response);
+                            if (error !== null) error(response);
                     });
         }
 
         function post(url, data, success, error, headers) {
-            return $http.post(url, data, { headers: headers == undefined ? null : headers })
+            return $http.post(url, data, { headers: headers === undefined ? null : headers })
                     .then(success, function (response) {
                             unauthorizedAccessHandler(response)
 
-                            if (error != null) error(response);
+                            if (error !== null) error(response);
                     });
         }
 
         function unauthorizedAccessHandler(response) {
-            if (response.status == '401') {
+            if (response.status === '401') {
                 notificationService.displayWarning('Authentication required.');
                 $rootScope.previousState = $location.path();
                 $location.path('/login');
@@ -48412,7 +48412,7 @@ angular.module('cfp.loadingBar', [])
         return service;
 
         function register(user, succeeded, failed) {
-            dataService.post('/api/account/register', user, succeeded, failed);
+            dataService.post('/api/v1/account/register', user, succeeded, failed);
         }
 
         function logIn(user, succeeded, failed) {
@@ -48589,7 +48589,7 @@ angular.module('cfp.loadingBar', [])
                 grant_type: 'password'
             };
 
-            membershipService.logIn(userData, loginSucceeded, loginFailed)
+            membershipService.logIn(userData, loginSucceeded, loginFailed);
         }
 
         function loginSucceeded(response) {
@@ -48670,7 +48670,7 @@ angular.module('cfp.loadingBar', [])
 
             pageNumber = pageNumber || 1;
 
-            dataService.get('/api/products', {
+            dataService.get('/api/v1/products', {
                 params: {
                     pageSize: pageSize,
                     pageNumber: pageNumber,
@@ -48698,7 +48698,7 @@ angular.module('cfp.loadingBar', [])
         function removeProduct(inx) {
             var productId = $scope.products[inx].id;
 
-            dataService.post('/api/products/delete/' + productId, null, removeProductSucceeded, removeProductFailed);
+            dataService.post('/api/v1/products/delete/' + productId, null, removeProductSucceeded, removeProductFailed);
         }
 
         function removeProductFailed(response) {
@@ -48707,7 +48707,7 @@ angular.module('cfp.loadingBar', [])
 
         function removeProductSucceeded(response) {
             $route.reload();
-            notificationService.displaySuccess('Product has been successfuly removed.');
+            notificationService.displaySuccess('Product has been successfully removed.');
         }
 
         function activate() {
@@ -48736,16 +48736,16 @@ angular.module('cfp.loadingBar', [])
             productData.productName = $scope.product.productName;
             productData.unitPrice = $scope.product.unitPrice;
             productData.unitsInStock = $scope.product.unitsInStock;
-            dataService.post('/api/products/add', productData, addProductSucceeded, addProductFaild);
+            dataService.post('/api/v1/products/add', productData, addProductSucceeded, addProductFaild);
         }
 
         function addProductSucceeded(response) {
-            notificationService.displaySuccess("Product has been successfu created.");
+            notificationService.displaySuccess('Product has been successfu created.');
             $location.path('/products');
         }
 
         function addProductFaild(response) {
-            notificationService.displayError("Unauthorised actions detected.");
+            notificationService.displayError('Unauthorised actions detected.');
         }
     }
 })(angular.module('app.core'));
@@ -48766,7 +48766,7 @@ angular.module('cfp.loadingBar', [])
         activate();
 
         function loadProduct() {
-            dataService.get('/api/products/details/' + $routeParams.id, null, loadProductSucceeded, loadProductFailed);
+            dataService.get('/api/v1/products/details/' + $routeParams.id, null, loadProductSucceeded, loadProductFailed);
         }
 
         function loadProductSucceeded(response) {
@@ -48777,7 +48777,7 @@ angular.module('cfp.loadingBar', [])
         }
 
         function loadProductFailed(response) {
-            notificationService.displayError("Unauthrized actions detected.");
+            notificationService.displayError('Unauthrized actions detected.');
             $location.path('/products');
         }
 
@@ -48810,20 +48810,20 @@ angular.module('cfp.loadingBar', [])
             productData.productName = $scope.product.productName;
             productData.unitPrice = $scope.product.unitPrice;
             productData.unitsInStock = $scope.product.unitsInStock;
-            dataService.post('/api/products/update/', productData, updateProductSucceeded, updateProductFaild);
+            dataService.post('/api/v1/products/update/', productData, updateProductSucceeded, updateProductFaild);
         }
 
         function updateProductSucceeded(response) {
-            notificationService.displaySuccess("Product has been successfu updated.");
+            notificationService.displaySuccess('Product has been successfully updated.');
             $location.path('/products');
         }
 
         function updateProductFaild(response) {
-            notificationService.displayError("Unauthorised actions detected.");
+            notificationService.displayError('Unauthorised actions detected.');
         }
 
         function loadProduct() {
-            dataService.get('/api/products/details/' + $routeParams.id, null, loadProductSucceeded, loadProductFailed);
+            dataService.get('/api/v1/products/details/' + $routeParams.id, null, loadProductSucceeded, loadProductFailed);
         }
 
         function loadProductSucceeded(response) {
@@ -48834,7 +48834,7 @@ angular.module('cfp.loadingBar', [])
         }
 
         function loadProductFailed(response) {
-            notificationService.displayError("Unauthrized actions detected.");
+            notificationService.displayError('Unauthrized actions detected.');
             $location.path('/products');
         }
 
@@ -48965,7 +48965,7 @@ angular.module('cfp.loadingBar', [])
                     queryParams[filter.name] = filter.value;
             });
 
-            dataService.get('/api/customers/juridical-persons', {
+            dataService.get('/api/v1/customers/juridical-persons', {
                 params: queryParams
             }, loadJuridicalPersonsSucceeded, loadJuridicalPersonsFailed);
         }
@@ -48987,7 +48987,7 @@ angular.module('cfp.loadingBar', [])
                     queryParams[filter.name] = filter.value;
             });
 
-            dataService.get('/api/customers/natural-persons', {
+            dataService.get('/api/v1/customers/natural-persons', {
                 params: queryParams
             }, loadNaturalPersonsSucceeded, loadNaturalPersonsFailed);
         }
@@ -49025,7 +49025,7 @@ angular.module('cfp.loadingBar', [])
         function removeJuridicalPerson(inx) {
             var personId = $scope.juridicalPersons[inx].id;
 
-            dataService.post('/api/customers/delete/' + personId, null, removeJuridicalPersonSucceeded, removeJuridicalPersonFailed);
+            dataService.post('/api/v1/customers/delete/' + personId, null, removeJuridicalPersonSucceeded, removeJuridicalPersonFailed);
         }
 
         function removeJuridicalPersonFailed(response) {
@@ -49034,13 +49034,13 @@ angular.module('cfp.loadingBar', [])
 
         function removeJuridicalPersonSucceeded(response) {
             loadJuridicalPersons();
-            notificationService.displaySuccess('Customer has been successfuly removed.');
+            notificationService.displaySuccess('Customer has been successfully removed.');
         }
 
         function removeNaturalPerson(inx) {
             var personId = $scope.naturalPersons[inx].id;
 
-            dataService.post('/api/customers/delete/' + personId, null, removeNaturalPersonSucceeded, removeNaturalPersonFailed);
+            dataService.post('/api/v1/customers/delete/' + personId, null, removeNaturalPersonSucceeded, removeNaturalPersonFailed);
         }
 
         function removeNaturalPersonFailed(response) {
@@ -49049,11 +49049,11 @@ angular.module('cfp.loadingBar', [])
 
         function removeNaturalPersonSucceeded(response) {
             loadNaturalPersons();
-            notificationService.displaySuccess('Customer has been successfuly removed.');
+            notificationService.displaySuccess('Customer has been successfully removed.');
         }
 
         function clearFilters() {
-            if ($scope.customerType == 'naturalPerson') {
+            if ($scope.customerType === 'naturalPerson') {
                 var updateNaturalPersons = false;
 
                 angular.forEach($scope.naturalPersonFilters, function (filter) {
@@ -49203,25 +49203,25 @@ angular.module('cfp.loadingBar', [])
             juridicalPersonData.streetAddress = $scope.juridicalPerson.streetAddress;
             juridicalPersonData.postalCode = $scope.juridicalPerson.postalCode;
 
-            dataService.post('/api/customers/juridical-person/add', juridicalPersonData, addJuridicalPersonSucceeded, addJuridicalPersonFaild);
+            dataService.post('/api/v1/customers/juridical-person/add', juridicalPersonData, addJuridicalPersonSucceeded, addJuridicalPersonFaild);
         }
 
         function addJuridicalPersonSucceeded(response) {
-            notificationService.displaySuccess("Customer has been successfu created.");
+            notificationService.displaySuccess('Customer has been successfu created.');
             $location.path('/customers');
         }
 
         function addJuridicalPersonFaild(response) {
-            notificationService.displayError("This person has been already added.");
+            notificationService.displayError('This person has been already added.');
         }
 
         function activate() {
-            jQuery(".datepicker").datepicker({
+            jQuery('.datepicker').datepicker({
                 forceParse: true,
-                format: "yyyy-mm-dd",
-                todayBtn: "linked",
+                format: 'yyyy-mm-dd',
+                todayBtn: 'linked',
                 todayHighlight: true,
-                daysOfWeekHighlighted: "0,6",
+                daysOfWeekHighlighted: '0,6',
                 calendarWeeks: true,
                 weekStart: 1,
                 autoclose: true,
@@ -49267,24 +49267,24 @@ angular.module('cfp.loadingBar', [])
             naturalPersonData.streetAddress = $scope.naturalPerson.streetAddress;
             naturalPersonData.postalCode = $scope.naturalPerson.postalCode;
 
-            dataService.post('/api/customers/natural-person/add', naturalPersonData, addNaturalPersonSucceeded, addNaturalPersonFaild);
+            dataService.post('/api/v1/customers/natural-person/add', naturalPersonData, addNaturalPersonSucceeded, addNaturalPersonFaild);
         }
 
         function addNaturalPersonSucceeded(response) {
-            notificationService.displaySuccess("Customer has been successfu created.");
+            notificationService.displaySuccess('Customer has been successfu created.');
             $location.path('/customers');
         }
 
         function addNaturalPersonFaild(response) {
-            notificationService.displayError("This person has been already added.");
+            notificationService.displayError('This person has been already added.');
         }
 
         function activate() {
-            jQuery(".datepicker").datepicker({
+            jQuery('.datepicker').datepicker({
                 forceParse: true,
-                format: "yyyy-mm-dd",
+                format: 'yyyy-mm-dd',
                 todayHighlight: true,
-                daysOfWeekHighlighted: "0,6",
+                daysOfWeekHighlighted: '0,6',
                 calendarWeeks: true,
                 weekStart: 1,
                 autoclose: true,
@@ -49314,7 +49314,7 @@ angular.module('cfp.loadingBar', [])
         activate();
 
         function loadJuridicalPerson() {
-            dataService.get('/api/customers/juridical-person/' + $routeParams.id, null, loadJuridicalPersonSucceeded, loadJuridicalPersonFailed);
+            dataService.get('/api/v1/customers/juridical-person/' + $routeParams.id, null, loadJuridicalPersonSucceeded, loadJuridicalPersonFailed);
         }
 
         function loadJuridicalPersonSucceeded(response) {
@@ -49329,7 +49329,7 @@ angular.module('cfp.loadingBar', [])
         }
 
         function loadJuridicalPersonFailed(response) {
-            notificationService.displayError("Unauthrized actions detected.");
+            notificationService.displayError('Unauthrized actions detected.');
             $location.path('/customers');
         }
 
@@ -49362,7 +49362,7 @@ angular.module('cfp.loadingBar', [])
         activate();
 
         function loadNaturalPerson() {
-            dataService.get('/api/customers/natural-person/' + $routeParams.id, null, loadNaturalPersonSucceeded, loadNaturalPersonFailed);
+            dataService.get('/api/v1/customers/natural-person/' + $routeParams.id, null, loadNaturalPersonSucceeded, loadNaturalPersonFailed);
         }
 
         function loadNaturalPersonSucceeded(response) {
@@ -49380,7 +49380,7 @@ angular.module('cfp.loadingBar', [])
         }
 
         function loadNaturalPersonFailed(response) {
-            notificationService.displayError("Unauthrized actions detected.");
+            notificationService.displayError('Unauthrized actions detected.');
             $location.path('/customers');
         }
 
@@ -49421,20 +49421,20 @@ angular.module('cfp.loadingBar', [])
             juridicalPersonData.city = $scope.juridicalPerson.city;
             juridicalPersonData.streetAddress = $scope.juridicalPerson.streetAddress;
             juridicalPersonData.postalCode = $scope.juridicalPerson.postalCode;
-            dataService.post('/api/customers/juridical-person/update/', juridicalPersonData, updateJuridicalPersonSucceeded, updateJuridicalPersonFaild);
+            dataService.post('/api/v1/customers/juridical-person/update/', juridicalPersonData, updateJuridicalPersonSucceeded, updateJuridicalPersonFaild);
         }
 
         function updateJuridicalPersonSucceeded(response) {
-            notificationService.displaySuccess("Customer has been successfu updated.");
+            notificationService.displaySuccess('Customer has been successfu updated.');
             $location.path('/customers');
         }
 
         function updateJuridicalPersonFaild(response) {
-            notificationService.displayError("Unauthorised actions detected.");
+            notificationService.displayError('Unauthorised actions detected.');
         }
 
         function loadJuridicalPerson() {
-            dataService.get('/api/customers/juridical-person/' + $routeParams.id, null, loadJuridicalPersonSucceeded, loadJuridicalPersonFailed);
+            dataService.get('/api/v1/customers/juridical-person/' + $routeParams.id, null, loadJuridicalPersonSucceeded, loadJuridicalPersonFailed);
         }
 
         function loadJuridicalPersonSucceeded(response) {
@@ -49449,18 +49449,18 @@ angular.module('cfp.loadingBar', [])
         }
 
         function loadJuridicalPersonFailed(response) {
-            notificationService.displayError("Unauthrized actions detected.");
+            notificationService.displayError('Unauthrized actions detected.');
             $location.path('/customers');
         }
 
         function activate() {
             loadJuridicalPerson();
-            jQuery(".datepicker").datepicker({
+            jQuery('.datepicker').datepicker({
                 forceParse: true,
-                format: "yyyy-mm-dd",
+                format: 'yyyy-mm-dd',
                 todayBtn: "linked",
                 todayHighlight: true,
-                daysOfWeekHighlighted: "0,6",
+                daysOfWeekHighlighted: '0,6',
                 calendarWeeks: true,
                 weekStart: 1,
                 autoclose: true
@@ -49506,20 +49506,20 @@ angular.module('cfp.loadingBar', [])
             naturalPersonData.city = $scope.naturalPerson.city;
             naturalPersonData.streetAddress = $scope.naturalPerson.streetAddress;
             naturalPersonData.postalCode = $scope.naturalPerson.postalCode;
-            dataService.post('/api/customers/natural-person/update/', naturalPersonData, updateNaturalPersonSucceeded, updateNaturalPersonFaild);
+            dataService.post('/api/v1/customers/natural-person/update/', naturalPersonData, updateNaturalPersonSucceeded, updateNaturalPersonFaild);
         }
 
         function updateNaturalPersonSucceeded(response) {
-            notificationService.displaySuccess("Customer has been successfu updated.");
+            notificationService.displaySuccess('Customer has been successfu updated.');
             $location.path('/customers');
         }
 
         function updateNaturalPersonFaild(response) {
-            notificationService.displayError("Unauthorised actions detected.");
+            notificationService.displayError('Unauthorised actions detected.');
         }
 
         function loadNaturalPerson() {
-            dataService.get('/api/customers/natural-person/' + $routeParams.id, null, loadNaturalPersonSucceeded, loadNaturalPersonFailed);
+            dataService.get('/api/v1/customers/natural-person/' + $routeParams.id, null, loadNaturalPersonSucceeded, loadNaturalPersonFailed);
         }
 
         function loadNaturalPersonSucceeded(response) {
@@ -49537,17 +49537,17 @@ angular.module('cfp.loadingBar', [])
         }
 
         function loadNaturalPersonFailed(response) {
-            notificationService.displayError("Unauthrized actions detected.");
+            notificationService.displayError('Unauthrized actions detected.');
             $location.path('/customers');
         }
 
         function activate() {
             loadNaturalPerson();
-            jQuery(".datepicker").datepicker({
+            jQuery('.datepicker').datepicker({
                 forceParse: true,
-                format: "yyyy-mm-dd",
+                format: 'yyyy-mm-dd',
                 todayHighlight: true,
-                daysOfWeekHighlighted: "0,6",
+                daysOfWeekHighlighted: '0,6',
                 calendarWeeks: true,
                 weekStart: 1,
                 autoclose: true,
@@ -49680,7 +49680,7 @@ angular.module('cfp.loadingBar', [])
         function removeOrder(inx) {
             var orderId = $scope.orders[inx].id;
 
-            dataService.post('/api/orders/delete/' + orderId, null, removeOrderSucceeded, removeOrderFailed);
+            dataService.post('/api/v1/orders/delete/' + orderId, null, removeOrderSucceeded, removeOrderFailed);
         }
 
         function removeOrderFailed(response) {
@@ -49691,7 +49691,7 @@ angular.module('cfp.loadingBar', [])
             var selectedCustomerId = $scope.selectedCustomerId;
 
             clearSelectedOrderInfo();
-            notificationService.displaySuccess('Order has been successfuly removed.');
+            notificationService.displaySuccess('Order has been successfully removed.');
             loadOrdersByCustomer(selectedCustomerId);
         }
 
@@ -49701,13 +49701,12 @@ angular.module('cfp.loadingBar', [])
             pageNumber = pageNumber || 1;
 
             var currentPage = pageNumber;
-            var pageSize = pageSize
             var totalItems = $scope.orderDetails.length;
             var totalPages = Math.ceil(totalItems / pageSize);
 
             $scope.orderDetailsPager = pagerService.GetPager(totalItems, totalPages, currentPage, pageSize);
 
-            if ($scope.orderDetails != 'undefined') {
+            if ($scope.orderDetails !== 'undefined') {
                 $scope.paginatedOrderDetails = $scope.orderDetails.filter(function (currentValue, inx) {
                     return inx >= $scope.orderDetailsPager.startIndex && inx <= $scope.orderDetailsPager.endIndex;
                 });
@@ -49732,7 +49731,7 @@ angular.module('cfp.loadingBar', [])
             });
 
             if ($scope.selectedCustomerId !== 0) {
-                dataService.get('/api/orders/' + $scope.selectedCustomerId, {
+                dataService.get('/api/v1/orders/' + $scope.selectedCustomerId, {
                     params: queryParams
                 }, loadOrdersByCustomerSucceeded, loadOrdersByCustomerFailed);
             }
@@ -49770,7 +49769,7 @@ angular.module('cfp.loadingBar', [])
                     queryParams[filter.name] = filter.value;
             });
 
-            dataService.get('/api/customers/juridical-persons', {
+            dataService.get('/api/v1/customers/juridical-persons', {
                 params: queryParams
             }, loadJuridicalPersonsSucceeded, loadJuridicalPersonsFailed);
         }
@@ -49792,7 +49791,7 @@ angular.module('cfp.loadingBar', [])
                     queryParams[filter.name] = filter.value;
             });
 
-            dataService.get('/api/customers/natural-persons', {
+            dataService.get('/api/v1/customers/natural-persons', {
                 params: queryParams
             }, loadNaturalPersonsSucceeded, loadNaturalPersonsFailed);
         }
@@ -49878,7 +49877,7 @@ angular.module('cfp.loadingBar', [])
         }
 
         function clearCustomerFilters() {
-            if ($scope.customerType == 'naturalPerson') {
+            if ($scope.customerType === 'naturalPerson') {
                 var updateNaturalPersons = false;
 
                 angular.forEach($scope.naturalPersonFilters, function (filter) {
@@ -50044,7 +50043,7 @@ angular.module('cfp.loadingBar', [])
                 $scope.orderItems.push(selectedOrderItem);
             }
             else {
-                notificationService.displayWarning("The product added.");
+                notificationService.displayWarning('The product added.');
             }
         }
 
@@ -50066,16 +50065,16 @@ angular.module('cfp.loadingBar', [])
                 });
             });
             
-            dataService.post('/api/orders/add', orderData, addOrderSucceeded, addOrderFaild);
+            dataService.post('/api/v1/orders/add', orderData, addOrderSucceeded, addOrderFaild);
         }
 
         function addOrderSucceeded(response) {
-            notificationService.displaySuccess("Order has been successfu created.");
+            notificationService.displaySuccess('Order has been successfu created.');
             $location.path('/orders');
         }
 
         function addOrderFaild(response) {
-            notificationService.displayError("Unauthorised actions detected.");
+            notificationService.displayError('Unauthorised actions detected.');
         }
 
         function loadProducts(pageNumber) {
@@ -50083,7 +50082,7 @@ angular.module('cfp.loadingBar', [])
 
             pageNumber = pageNumber || 1;
 
-            dataService.get('/api/products', {
+            dataService.get('/api/v1/products', {
                 params: {
                     pageSize: pageSize,
                     pageNumber: pageNumber
@@ -50181,7 +50180,7 @@ angular.module('cfp.loadingBar', [])
 
             pageNumber = pageNumber || 1;
 
-            dataService.get('/api/products', {
+            dataService.get('/api/v1/products', {
                 params: {
                     pageSize: pageSize,
                     pageNumber: pageNumber
@@ -50205,7 +50204,7 @@ angular.module('cfp.loadingBar', [])
         }
 
         function loadOrderById(orderId) {
-            dataService.get('/api/orders/details/' + orderId, null, loadOrderByIdSucceeded, loadOrderByIdFailed);
+            dataService.get('/api/v1/orders/details/' + orderId, null, loadOrderByIdSucceeded, loadOrderByIdFailed);
         }
 
         function loadOrderByIdSucceeded(response) {
@@ -50243,7 +50242,7 @@ angular.module('cfp.loadingBar', [])
                 });
             });
 
-            dataService.post('/api/orders/update', orderData, editOrderSucceeded, editOrderFaild);
+            dataService.post('/api/v1/orders/update', orderData, editOrderSucceeded, editOrderFaild);
         }
 
         function editOrderSucceeded(response) {

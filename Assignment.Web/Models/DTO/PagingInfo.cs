@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
-namespace Assignment.Web.Models
+#pragma warning disable 1591
+
+namespace Assignment.Web.Models.DTO
 {
-    public class PagingInfoDTO
+    public class PagingInfo
     {
         public int TotalItems { get; set; }
 
@@ -25,3 +24,5 @@ namespace Assignment.Web.Models
         public int CurrentPage { get; set; }
     }
 }
+
+#pragma warning restore 1591

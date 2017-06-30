@@ -5,6 +5,8 @@ using Microsoft.Owin;
 using Assignment.Entities;
 using Assignment.Data;
 
+#pragma warning disable 1591
+
 namespace Assignment.Web
 {
     // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
@@ -43,3 +45,5 @@ namespace Assignment.Web
         }
     }
 }
+
+#pragma warning restore 1591

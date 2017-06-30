@@ -67,7 +67,7 @@
 
             pageNumber = pageNumber || 1;
 
-            dataService.get('/api/products', {
+            dataService.get('/api/v1/products', {
                 params: {
                     pageSize: pageSize,
                     pageNumber: pageNumber
@@ -91,7 +91,7 @@
         }
 
         function loadOrderById(orderId) {
-            dataService.get('/api/orders/details/' + orderId, null, loadOrderByIdSucceeded, loadOrderByIdFailed);
+            dataService.get('/api/v1/orders/details/' + orderId, null, loadOrderByIdSucceeded, loadOrderByIdFailed);
         }
 
         function loadOrderByIdSucceeded(response) {
@@ -129,7 +129,7 @@
                 });
             });
 
-            dataService.post('/api/orders/update', orderData, editOrderSucceeded, editOrderFaild);
+            dataService.post('/api/v1/orders/update', orderData, editOrderSucceeded, editOrderFaild);
         }
 
         function editOrderSucceeded(response) {

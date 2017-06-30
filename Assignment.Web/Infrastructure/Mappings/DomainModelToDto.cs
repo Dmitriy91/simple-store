@@ -1,7 +1,10 @@
 ﻿using Assignment.Entities;
-using Assignment.Web.Models;
+using DTO = Assignment.Web.Models.DTO;
 using AutoMapper;
 using System.Collections.Generic;
+using System;
+
+#pragma warning disable 1591
 
 namespace Assignment.Web.Infrastructure.Mappings
 {
@@ -11,10 +14,11 @@ namespace Assignment.Web.Infrastructure.Mappings
             : base("DomainModelToDTO")
         { }
 
+        [Obsolete]
         protected override void Configure()
         {
             // Juridical Person
-            CreateMap<JuridicalPerson, JuridicalPersonDTO>()
+            CreateMap<JuridicalPerson, DTO.JuridicalPerson>()
                 .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.CustomerId))
                 .ForMember(dest => dest.LegalName, opts => opts.MapFrom(src => src.LegalName))
                 .ForMember(dest => dest.TIN, opts => opts.MapFrom(src => src.TIN))
@@ -25,7 +29,7 @@ namespace Assignment.Web.Infrastructure.Mappings
                 .ForMember(dest => dest.PostalCode, opts => opts.MapFrom(src => src.Customer.PostalCode));
 
             // Natural Person
-            CreateMap<NaturalPerson, NaturalPersonDTO>()
+            CreateMap<NaturalPerson, DTO.NaturalPerson>()
                 .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.CustomerId))
                 .ForMember(dest => dest.Birthdate, opts => opts.MapFrom(src => (src.Birthdate != null) ? src.Birthdate.Value.ToString("yyyy-MM-dd") : string.Empty))
                 .ForMember(dest => dest.Country, opts => opts.MapFrom(src => src.Customer.Country))
@@ -35,17 +39,19 @@ namespace Assignment.Web.Infrastructure.Mappings
                 .ForMember(dest => dest.PostalCode, opts => opts.MapFrom(src => src.Customer.PostalCode));
 
             // Product
-            CreateMap<Product, ProductDTO>();
+            CreateMap<Product, DTO.Product>();
 
             // Order
-            CreateMap<OrderDetails, OrderDTO.Details>()
+            CreateMap<OrderDetails, DTO.Order.Details>()
                 .ForMember(dest => dest.ProductName, opts => opts.MapFrom(src => (src.Product == null) ? "Product has been removed." : src.Product.ProductName));
-            CreateMap<Order, OrderDTO>()
+            CreateMap<Order, DTO.Order>()
                 .ForMember(dest => dest.OrderDate, opts => opts.MapFrom(src => (src.OrderDate.ToString("yyyy-MM-dd"))))
                 .ForMember(dest => dest.OrderDetails, opts =>
                 {
-                    opts.MapFrom(src => Mapper.Map<IEnumerable<OrderDetails>, IEnumerable<OrderDTO.Details>>(src.OrderDetails));
+                    opts.MapFrom(src => Mapper.Map<IEnumerable<OrderDetails>, IEnumerable<DTO.Order.Details>>(src.OrderDetails));
                 });
         }
     }
 }
+
+#pragma warning restore 1591

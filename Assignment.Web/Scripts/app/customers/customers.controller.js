@@ -119,7 +119,7 @@
                     queryParams[filter.name] = filter.value;
             });
 
-            dataService.get('/api/customers/juridical-persons', {
+            dataService.get('/api/v1/customers/juridical-persons', {
                 params: queryParams
             }, loadJuridicalPersonsSucceeded, loadJuridicalPersonsFailed);
         }
@@ -141,7 +141,7 @@
                     queryParams[filter.name] = filter.value;
             });
 
-            dataService.get('/api/customers/natural-persons', {
+            dataService.get('/api/v1/customers/natural-persons', {
                 params: queryParams
             }, loadNaturalPersonsSucceeded, loadNaturalPersonsFailed);
         }
@@ -179,7 +179,7 @@
         function removeJuridicalPerson(inx) {
             var personId = $scope.juridicalPersons[inx].id;
 
-            dataService.post('/api/customers/delete/' + personId, null, removeJuridicalPersonSucceeded, removeJuridicalPersonFailed);
+            dataService.post('/api/v1/customers/delete/' + personId, null, removeJuridicalPersonSucceeded, removeJuridicalPersonFailed);
         }
 
         function removeJuridicalPersonFailed(response) {
@@ -194,7 +194,7 @@
         function removeNaturalPerson(inx) {
             var personId = $scope.naturalPersons[inx].id;
 
-            dataService.post('/api/customers/delete/' + personId, null, removeNaturalPersonSucceeded, removeNaturalPersonFailed);
+            dataService.post('/api/v1/customers/delete/' + personId, null, removeNaturalPersonSucceeded, removeNaturalPersonFailed);
         }
 
         function removeNaturalPersonFailed(response) {
@@ -207,7 +207,7 @@
         }
 
         function clearFilters() {
-            if ($scope.customerType == 'naturalPerson') {
+            if ($scope.customerType === 'naturalPerson') {
                 var updateNaturalPersons = false;
 
                 angular.forEach($scope.naturalPersonFilters, function (filter) {

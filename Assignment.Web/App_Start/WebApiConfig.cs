@@ -4,6 +4,8 @@ using Assignment.Web.Infrastructure.ExceptionHandling;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 
+#pragma warning disable 1591
+
 namespace Assignment.Web
 {
     public static class WebApiConfig
@@ -26,9 +28,11 @@ namespace Assignment.Web
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
+                routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
         }
     }
 }
+
+#pragma warning restore 1591

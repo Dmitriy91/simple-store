@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
@@ -83,6 +84,16 @@ namespace Assignment.Data.Repositories
                 return false;
 
             return _dbSet.Any(condition);
+        }
+
+        public virtual IQueryable<TEntity> ExecuteQuery(string sql, params object[] parameters)
+        {
+            return _dbSet.SqlQuery(sql, parameters)?.AsQueryable();
+        }
+
+        public virtual IQueryable<TResult> ExecuteQuery<TResult>(string sql, params object[] parameters)
+        {
+            return _dbContext.Database.SqlQuery<TResult>(sql, parameters)?.AsQueryable();
         }
     }
 }

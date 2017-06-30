@@ -18,7 +18,7 @@
             productData.productName = $scope.product.productName;
             productData.unitPrice = $scope.product.unitPrice;
             productData.unitsInStock = $scope.product.unitsInStock;
-            dataService.post('/api/products/add', productData, addProductSucceeded, addProductFaild);
+            dataService.post('/api/v1/products/add', productData, addProductSucceeded, addProductFaild);
         }
 
         function addProductSucceeded(response) {

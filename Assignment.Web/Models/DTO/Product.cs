@@ -1,6 +1,8 @@
-﻿namespace Assignment.Web.Models
+﻿#pragma warning disable 1591
+
+namespace Assignment.Web.Models.DTO
 {
-    public class ProductDTO
+    public class Product
     {
         public int Id { get; set; }
 
@@ -11,3 +13,5 @@
         public int UnitsInStock { get; set; }
     }
 }
+
+#pragma warning restore 1591

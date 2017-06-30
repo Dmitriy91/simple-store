@@ -11,9 +11,9 @@ namespace Assignment.Services
 
         IEnumerable<Product> GetProducts(IFiltration filtration, out int productsFound);
 
-        bool RemoveProductById(int productId);
+        void RemoveProductById(int productId);
 
-        bool UpdateProduct(Product product);
+        void UpdateProduct(Product product);
 
         void AddProduct(Product product);
 

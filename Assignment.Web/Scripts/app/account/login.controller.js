@@ -18,7 +18,7 @@
                 grant_type: 'password'
             };
 
-            membershipService.logIn(userData, loginSucceeded, loginFailed)
+            membershipService.logIn(userData, loginSucceeded, loginFailed);
         }
 
         function loginSucceeded(response) {

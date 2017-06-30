@@ -28,7 +28,7 @@
             juridicalPersonData.streetAddress = $scope.juridicalPerson.streetAddress;
             juridicalPersonData.postalCode = $scope.juridicalPerson.postalCode;
 
-            dataService.post('/api/customers/juridical-person/add', juridicalPersonData, addJuridicalPersonSucceeded, addJuridicalPersonFaild);
+            dataService.post('/api/v1/customers/juridical-person/add', juridicalPersonData, addJuridicalPersonSucceeded, addJuridicalPersonFaild);
         }
 
         function addJuridicalPersonSucceeded(response) {

@@ -74,30 +74,27 @@ namespace Assignment.Services
             return orders.Paginate(filtration.PageNumber, filtration.PageSize);
         }
 
-        public bool RemoveOrderById(int orderId)
+        public void RemoveOrderById(int orderId)
         {
             bool orderExists = _orderRepo.Exists(o => o.Id == orderId);
 
-            if (orderExists)
-            {
-                _orderRepo.Delete(new Order { Id = orderId });
-                return true;
-            }
+            if (!orderExists)
+                throw new ApplicationException("The order doesn't exist");
 
-            return false;
+            _orderRepo.Delete(new Order { Id = orderId });
         }
 
-        public bool UpdateOrder(Order order)
+        public void UpdateOrder(Order order)
         {
             if (order.OrderDetails == null || order.OrderDetails.Count == 0)
-                return false;
+                throw new ApplicationException("There are no order details provided");
 
             bool orderExists = _orderRepo.Exists(o =>
                 o.Id == order.Id &&
                 o.CustomerId == order.CustomerId);
 
             if (!orderExists)
-                return false;
+                throw new ApplicationException("The order doesn't exist");
 
             _orderDetailsRepo.Delete(od => od.OrderId == order.Id);
             //_unitOfWork.Commit();
@@ -114,19 +111,17 @@ namespace Assignment.Services
                     _orderDetailsRepo.Add(orderItem);
                 }
             }
-
-            return true;
         }
 
-        public bool AddOrder(Order order)
+        public void AddOrder(Order order)
         {
             if (order.OrderDetails == null || order.OrderDetails.Count == 0)
-                return false;
+                throw new ApplicationException("There are no order details provided");
 
             bool customerExists = _customerRepo.Exists(c => c.Id == order.CustomerId);
 
             if (!customerExists)
-                return false;
+                throw new ApplicationException("The customer doesn't exist");
 
             order.OrderDate = DateTime.Now;
 
@@ -143,8 +138,6 @@ namespace Assignment.Services
             }
 
             _orderRepo.Add(order);
-
-            return true;
         }
 
         async public Task CommitAsync()

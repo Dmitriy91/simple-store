@@ -15,15 +15,15 @@ namespace Assignment.Services
 
         IEnumerable<NaturalPerson> GetNaturalPersons(IFiltration filtration, out int personsFound);
 
-        bool RemovePersonById(int customerId);
+        void RemovePersonById(int customerId);
 
-        bool UpdateJuridicalPerson(JuridicalPerson juridicalPerson);
+        void UpdateJuridicalPerson(JuridicalPerson juridicalPerson);
 
-        bool UpdateNaturalPerson(NaturalPerson naturalPerson);
+        void UpdateNaturalPerson(NaturalPerson naturalPerson);
 
-        bool AddJuridicalPerson(JuridicalPerson juridicalPerson);
+        void AddJuridicalPerson(JuridicalPerson juridicalPerson);
 
-        bool AddNaturalPerson(NaturalPerson naturalPerson);
+        void AddNaturalPerson(NaturalPerson naturalPerson);
 
         Task CommitAsync();
 

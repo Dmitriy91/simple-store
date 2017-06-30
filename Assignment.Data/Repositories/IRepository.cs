@@ -24,5 +24,9 @@ namespace Assignment.Data.Repositories
         IQueryable<TEntity> GetMany(Expression<Func<TEntity, bool>> condition);
 
         bool Exists(Expression<Func<TEntity, bool>> condition);
+
+        IQueryable<TEntity> ExecuteQuery(string sql, params object[] parameters);
+
+        IQueryable<TResult> ExecuteQuery<TResult>(string sql, params object[] parameters);
     }
-}
+} 

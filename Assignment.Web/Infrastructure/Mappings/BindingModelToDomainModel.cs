@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using Assignment.Entities;
 using Assignment.Services;
-using Assignment.Web.Models;
+using BM = Assignment.Web.Models.BM;
 using AutoMapper;
+using System;
+
+#pragma warning disable 1591
 
 namespace Assignment.Web.Infrastructure.Mappings
 {
@@ -12,11 +15,12 @@ namespace Assignment.Web.Infrastructure.Mappings
             : base("BindingModelToDomainModel")
         { }
 
+        [Obsolete]
         protected override void Configure()
         {
             // Product
-            CreateMap<ProductBM, Product>();
-            CreateMap<ProductFilterBM, Filtration>()
+            CreateMap<BM.Product, Product>();
+            CreateMap<BM.ProductFilter, Filtration>()
                 .ForMember(dest => dest.Filters, opts => opts.ResolveUsing(pf => {
                     IDictionary<string, string> filters = null;
 
@@ -30,16 +34,16 @@ namespace Assignment.Web.Infrastructure.Mappings
                 }));
 
             // JuridicalPerson
-            CreateMap<JuridicalPersonBM, Customer>();
-            CreateMap<JuridicalPersonBM, JuridicalPerson>()
+            CreateMap<BM.JuridicalPerson, Customer>();
+            CreateMap<BM.JuridicalPerson, JuridicalPerson>()
                 .ForMember(dest => dest.CustomerId, opts => opts.MapFrom(src => src.Id))
                 .ForMember(dest => dest.LegalName, opts => opts.MapFrom(src => src.LegalName))
                 .ForMember(dest => dest.TIN, opts => opts.MapFrom(src => src.TIN))
                 .ForMember(dest => dest.Customer, opts =>
                 {
-                    opts.MapFrom(src => Mapper.Map<JuridicalPersonBM, Customer>(src));
+                    opts.MapFrom(src => Mapper.Map<BM.JuridicalPerson, Customer>(src));
                 });
-            CreateMap<JuridicalPersonFilterBM, Filtration>()
+            CreateMap<BM.JuridicalPersonFilter, Filtration>()
                 .ForMember(dest => dest.Filters, opts => opts.ResolveUsing(jpf => {
                     IDictionary<string, string> filters = null;
 
@@ -103,16 +107,16 @@ namespace Assignment.Web.Infrastructure.Mappings
                 }));
 
             // NaturalPerson
-            CreateMap<NaturalPersonBM, Customer>();
-            CreateMap<NaturalPersonBM, NaturalPerson>()
+            CreateMap<BM.NaturalPerson, Customer>();
+            CreateMap<BM.NaturalPerson, NaturalPerson>()
                 .ForMember(dest => dest.CustomerId, opts => opts.MapFrom(src => src.Id))
                 .ForMember(dest => dest.FirstName, opts => opts.MapFrom(src => src.FirstName))
                 .ForMember(dest => dest.MiddleName, opts => opts.MapFrom(src => src.MiddleName))
                 .ForMember(dest => dest.Customer, opts =>
                 {
-                    opts.MapFrom(src => Mapper.Map<NaturalPersonBM, Customer>(src));
+                    opts.MapFrom(src => Mapper.Map<BM.NaturalPerson, Customer>(src));
                 });
-            CreateMap<NaturalPersonFilterBM, Filtration>()
+            CreateMap<BM.NaturalPersonFilter, Filtration>()
                 .ForMember(dest => dest.Filters, opts => opts.ResolveUsing(npf => {
                     IDictionary<string, string> filters = null;
 
@@ -200,13 +204,13 @@ namespace Assignment.Web.Infrastructure.Mappings
                 }));
 
             // Order
-            CreateMap<OrderBM.Details, OrderDetails>();
-            CreateMap<OrderBM, Order>()
+            CreateMap<BM.Order.Details, OrderDetails>();
+            CreateMap<BM.Order, Order>()
                 .ForMember(dest => dest.OrderDetails, opts =>
                 {
-                    opts.MapFrom(src => Mapper.Map<IEnumerable<OrderBM.Details>, IEnumerable<OrderDetails>>(src.OrderDetails));
+                    opts.MapFrom(src => Mapper.Map<IEnumerable<BM.Order.Details>, IEnumerable<OrderDetails>>(src.OrderDetails));
                 });
-            CreateMap<OrderFilterBM, Filtration>()
+            CreateMap<BM.OrderFilter, Filtration>()
                 .ForMember(dest => dest.Filters, opts => opts.ResolveUsing(of => {
                     IDictionary<string, string> filters = null;
 
@@ -223,3 +227,5 @@ namespace Assignment.Web.Infrastructure.Mappings
         }
     }
 }
+
+#pragma warning restore 1591

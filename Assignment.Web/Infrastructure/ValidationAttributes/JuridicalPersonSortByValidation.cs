@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+#pragma warning disable 1591
+
 namespace Assignment.Web.Infrastructure.ValidationAttributes
 {
     public class JuridicalPersonSortByValidation : ValidationAttribute
@@ -39,3 +41,5 @@ namespace Assignment.Web.Infrastructure.ValidationAttributes
         }
     }
 }
+
+#pragma warning restore 1591

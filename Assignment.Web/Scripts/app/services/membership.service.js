@@ -17,7 +17,7 @@
         return service;
 
         function register(user, succeeded, failed) {
-            dataService.post('/api/account/register', user, succeeded, failed);
+            dataService.post('/api/v1/account/register', user, succeeded, failed);
         }
 
         function logIn(user, succeeded, failed) {

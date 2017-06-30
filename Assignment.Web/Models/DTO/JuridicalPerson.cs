@@ -1,6 +1,8 @@
-﻿namespace Assignment.Web.Models
+﻿#pragma warning disable 1591
+
+namespace Assignment.Web.Models.DTO
 {
-    public class JuridicalPersonDTO
+    public class JuridicalPerson
     {
         public int Id { get; set; }
 
@@ -19,3 +21,5 @@
         public string PostalCode { get; set; }
     }
 }
+
+#pragma warning restore 1591

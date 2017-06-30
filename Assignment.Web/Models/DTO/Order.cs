@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Assignment.Web.Models
+#pragma warning disable 1591
+
+namespace Assignment.Web.Models.DTO
 {
-    public class OrderDTO
+    public class Order
     {
         public int Id { get; set; }
 
@@ -27,3 +28,5 @@ namespace Assignment.Web.Models
         }
     }
 }
+
+#pragma warning restore 1591

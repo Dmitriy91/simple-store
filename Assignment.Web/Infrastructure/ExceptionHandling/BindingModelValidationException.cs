@@ -1,5 +1,7 @@
 ﻿using System;
 
+#pragma warning disable 1591
+
 namespace Assignment.Web.Infrastructure.ExceptionHandling
 {
     public class BindingModelValidationException : Exception
@@ -10,3 +12,5 @@ namespace Assignment.Web.Infrastructure.ExceptionHandling
         }
     }
 }
+
+#pragma warning restore 1591

@@ -7,6 +7,8 @@ using Owin;
 using Assignment.Web.Infrastructure.AuthProviders;
 using Assignment.Data;
 
+#pragma warning disable 1591
+
 namespace Assignment.Web
 {
     public partial class Startup
@@ -24,19 +26,19 @@ namespace Assignment.Web
 
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider
-            app.UseCookieAuthentication(new CookieAuthenticationOptions());
-            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+            //app.UseCookieAuthentication(new CookieAuthenticationOptions());
+            //app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             // Configure the application for OAuth based flow
             PublicClientId = "self";
             OAuthOptions = new OAuthAuthorizationServerOptions
             {
-                TokenEndpointPath = new PathString("/Token"),
+                TokenEndpointPath = new PathString("/token"),
                 Provider = new ApplicationOAuthProvider(PublicClientId),
-                AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
+                AuthorizeEndpointPath = new PathString("/api/v1/account/external-login"),
+                AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
                 // In production mode set AllowInsecureHttp = false
-                AllowInsecureHttp = true
+                AllowInsecureHttp = true,
             };
 
             // Enable the application to use bearer tokens to authenticate users
@@ -63,3 +65,5 @@ namespace Assignment.Web
         }
     }
 }
+
+#pragma warning restore 1591

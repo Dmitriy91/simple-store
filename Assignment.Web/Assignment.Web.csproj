@@ -33,7 +33,8 @@
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>2</WarningLevel>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Assignment.Web.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -86,14 +87,6 @@
     </Reference>
     <Reference Include="Microsoft.ApplicationInsights, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.2.0.0\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.1\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.1\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -249,41 +242,45 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\CustomersController.cs" />
-    <Compile Include="Controllers\OrdersController.cs" />
-    <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\V1\AccountController.cs" />
+    <Compile Include="Controllers\V1\CustomersController.cs" />
+    <Compile Include="Controllers\V1\OrdersController.cs" />
+    <Compile Include="Controllers\V1\ProductsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\ApiControllerHelpers.cs" />
     <Compile Include="Infrastructure\ExceptionHandling\BindingModelValidationException.cs" />
     <Compile Include="Infrastructure\ExceptionHandling\ErrorResult.cs" />
     <Compile Include="Infrastructure\ExceptionHandling\GlobalExceptionHandler.cs" />
     <Compile Include="Infrastructure\Mappings\BindingModelToDomainModel.cs" />
     <Compile Include="Infrastructure\Mappings\DomainModelToDTO.cs" />
+    <Compile Include="Infrastructure\Swagger\AddAuthorizationHeaderParameterOperationFilter.cs" />
+    <Compile Include="Infrastructure\Swagger\AssignOAuth2SecurityRequirements.cs" />
+    <Compile Include="Infrastructure\Swagger\ShortenNameOperationFilter.cs" />
     <Compile Include="Infrastructure\ValidationAttributes\JuridicalPersonSortByValidation.cs" />
+    <Compile Include="Infrastructure\ValidationAttributes\ModelStateValidation.cs" />
     <Compile Include="Infrastructure\ValidationAttributes\NaturalPersonSortByValidation.cs" />
     <Compile Include="Infrastructure\ValidationAttributes\OrderSortByValidation.cs" />
     <Compile Include="Infrastructure\ValidationAttributes\ProductSortByValidation.cs" />
-    <Compile Include="Models\BM\AccountBMs.cs" />
-    <Compile Include="Models\BM\OrderFilterBM.cs" />
-    <Compile Include="Models\DTO\AccountDTOs.cs" />
-    <Compile Include="Models\BM\CustomerFilterBM.cs" />
-    <Compile Include="Models\BM\JuridicalPersonFilterBM.cs" />
-    <Compile Include="Models\BM\NaturalPersonFilterBM.cs" />
-    <Compile Include="Models\BM\ProductFilterBM.cs" />
-    <Compile Include="Models\BM\JuridicalPersonBM.cs" />
-    <Compile Include="Models\BM\NaturalPersonBM.cs" />
-    <Compile Include="Models\DTO\JuridicalPersonDTO.cs" />
-    <Compile Include="Models\DTO\NaturalPersonDTO.cs" />
-    <Compile Include="Models\BM\OrderBM.cs" />
-    <Compile Include="Models\DTO\OrderDTO.cs" />
-    <Compile Include="Models\BM\PaginationBM.cs" />
-    <Compile Include="Models\DTO\PagingInfoDTO.cs" />
-    <Compile Include="Models\BM\ProductBM.cs" />
-    <Compile Include="Models\DTO\ProductDTO.cs" />
+    <Compile Include="Models\BM\Accounts.cs" />
+    <Compile Include="Models\BM\OrderFilter.cs" />
+    <Compile Include="Models\DTO\Accounts.cs" />
+    <Compile Include="Models\BM\CustomerFilter.cs" />
+    <Compile Include="Models\BM\JuridicalPersonFilter.cs" />
+    <Compile Include="Models\BM\NaturalPersonFilter.cs" />
+    <Compile Include="Models\BM\ProductFilter.cs" />
+    <Compile Include="Models\BM\JuridicalPerson.cs" />
+    <Compile Include="Models\BM\NaturalPerson.cs" />
+    <Compile Include="Models\DTO\JuridicalPerson.cs" />
+    <Compile Include="Models\DTO\NaturalPerson.cs" />
+    <Compile Include="Models\BM\Order.cs" />
+    <Compile Include="Models\DTO\Order.cs" />
+    <Compile Include="Models\BM\Pagination.cs" />
+    <Compile Include="Models\DTO\PaginatedData.cs" />
+    <Compile Include="Models\DTO\PagingInfo.cs" />
+    <Compile Include="Models\BM\Product.cs" />
+    <Compile Include="Models\DTO\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Infrastructure\AuthProviders\ApplicationOAuthProvider.cs" />
     <Compile Include="Infrastructure\ActionResults\ChallengeResult.cs" />
@@ -353,10 +350,15 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="Configs\ConnectionStrings.config" />
-    <Content Include="Configs\EntityFramework.config" />
+    <Content Include="Configs\ConnectionStrings.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Configs\EntityFramework.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Configs\Log4Net.config">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\PublishProfiles\store.pubxml" />
     <None Include="Scripts\_references.js" />

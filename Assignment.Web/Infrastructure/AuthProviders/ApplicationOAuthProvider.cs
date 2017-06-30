@@ -8,6 +8,8 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Assignment.Entities;
 
+#pragma warning disable 1591
+
 namespace Assignment.Web.Infrastructure.AuthProviders
 {
     public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider
@@ -93,3 +95,5 @@ namespace Assignment.Web.Infrastructure.AuthProviders
         }
     }
 }
+
+#pragma warning restore 1591

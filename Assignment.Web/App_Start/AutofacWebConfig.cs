@@ -8,6 +8,8 @@ using System.Data.Entity;
 using System.Reflection;
 using System.Web.Http;
 
+#pragma warning disable 1591
+
 namespace Assignment.Web
 {
     public class AutofacWebConfig
@@ -78,3 +80,5 @@ namespace Assignment.Web
         }
     }
 }
+
+#pragma warning restore 1591

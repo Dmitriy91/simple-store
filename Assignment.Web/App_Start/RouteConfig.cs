@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
+
+#pragma warning disable 1591
 
 namespace Assignment.Web
 {
@@ -21,3 +19,5 @@ namespace Assignment.Web
         }
     }
 }
+
+#pragma warning restore 1591

@@ -137,35 +137,30 @@ namespace Assignment.Services
             return naturalPersons.Paginate(filtration.PageNumber, filtration.PageSize);
         }
 
-        public bool RemovePersonById(int customerId)
+        public void RemovePersonById(int customerId)
         {
             bool customerExists = _customerRepo.Exists(c => c.Id == customerId);
 
             if (customerExists)
-            {
                 _customerRepo.Delete(new Customer { Id = customerId });
-                return true;
-            }
 
-            return false;
+            throw new ApplicationException("The user doesn't exist");
         }
 
-        public bool UpdateJuridicalPerson(JuridicalPerson juridicalPerson)
+        public void UpdateJuridicalPerson(JuridicalPerson juridicalPerson)
         {
             bool jpExists = _juridicalPersonRepo.Exists(jp => 
                 jp.CustomerId != juridicalPerson.CustomerId &&
                 jp.TIN == juridicalPerson.TIN);
 
             if (jpExists) // TIN is occupied
-                return false;
+                throw new ApplicationException("The TIN is occupied");
 
             _customerRepo.Update(juridicalPerson.Customer);
             _juridicalPersonRepo.Update(juridicalPerson);
-
-            return true;
         }
 
-        public bool UpdateNaturalPerson(NaturalPerson naturalPerson)
+        public void UpdateNaturalPerson(NaturalPerson naturalPerson)
         {
             bool npExists = _naturalPersonRepo.Exists(np =>
                 np.CustomerId != naturalPerson.CustomerId &&
@@ -174,27 +169,23 @@ namespace Assignment.Services
                 np.MiddleName == naturalPerson.MiddleName);
 
             if (npExists)
-                return false;
+                throw new ApplicationException("This person already exists");
 
             _customerRepo.Update(naturalPerson.Customer);
             _naturalPersonRepo.Update(naturalPerson);
-
-            return true;
         }
 
-        public bool AddJuridicalPerson(JuridicalPerson juridicalPerson)
+        public void AddJuridicalPerson(JuridicalPerson juridicalPerson)
         {
             bool jpExists = _juridicalPersonRepo.Exists(jp => jp.TIN == juridicalPerson.TIN);
 
             if (jpExists)
-                return false;
+                throw new ApplicationException("This person already exists");
 
             _juridicalPersonRepo.Add(juridicalPerson);
-
-            return true;
         }
 
-        public bool AddNaturalPerson(NaturalPerson naturalPerson)
+        public void AddNaturalPerson(NaturalPerson naturalPerson)
         {
             bool npExists = _naturalPersonRepo.Exists(np => 
                 np.FirstName == naturalPerson.FirstName &&
@@ -202,11 +193,9 @@ namespace Assignment.Services
                 np.MiddleName == naturalPerson.MiddleName);
 
             if (npExists)
-                return false;
+                throw new ApplicationException("This person already exists");
 
             _naturalPersonRepo.Add(naturalPerson);
-
-            return true;
         }
 
         async public Task CommitAsync()

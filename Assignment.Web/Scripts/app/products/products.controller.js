@@ -29,7 +29,7 @@
 
             pageNumber = pageNumber || 1;
 
-            dataService.get('/api/products', {
+            dataService.get('/api/v1/products', {
                 params: {
                     pageSize: pageSize,
                     pageNumber: pageNumber,
@@ -57,7 +57,7 @@
         function removeProduct(inx) {
             var productId = $scope.products[inx].id;
 
-            dataService.post('/api/products/delete/' + productId, null, removeProductSucceeded, removeProductFailed);
+            dataService.post('/api/v1/products/delete/' + productId, null, removeProductSucceeded, removeProductFailed);
         }
 
         function removeProductFailed(response) {
