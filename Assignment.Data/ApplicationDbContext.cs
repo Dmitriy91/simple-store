@@ -10,12 +10,15 @@ namespace Assignment.Data
         public ApplicationDbContext()
             : base("Store", throwIfV1Schema: false)
         {
+#if DEBUG
             Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+#endif
         }
 
         public virtual IDbSet<Customer> Customers { get; set; }
 
         public virtual IDbSet<JuridicalPerson> JuridicalPersons { get; set; }
+
 
         public virtual IDbSet<NaturalPerson> NaturalPersons { get; set; }
 

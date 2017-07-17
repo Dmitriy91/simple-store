@@ -4,7 +4,10 @@ using Assignment.Web;
 using Swashbuckle.Application;
 using Assignment.Web.Infrastructure.Swagger;
 
+#if DEBUG
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
+#endif
+
 #pragma warning disable 1591
 
 namespace Assignment.Web
@@ -69,8 +72,8 @@ namespace Assignment.Web
                         c.OAuth2("oauth2")
                             .Description("OAuth2 Implicit Grant")
                             .Flow("implicit")
-                            .AuthorizationUrl("http://localhost:56582/#/login")
-                            .TokenUrl("http://localhost:56582/token")
+                            .AuthorizationUrl("https://store.com/#/login")
+                            .TokenUrl("https://store.com/token")
                             .Scopes(scopes =>
                             {
                                 scopes.Add("self", "SELF");
