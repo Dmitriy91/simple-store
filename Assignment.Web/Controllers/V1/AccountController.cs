@@ -19,6 +19,8 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Swashbuckle.Swagger.Annotations;
 using Assignment.Web.Infrastructure.ValidationAttributes;
+using System.Linq;
+using Assignment.Web.Infrastructure.ExceptionHandling;
 
 namespace Assignment.Web.Controllers.V1
 {
@@ -157,7 +159,7 @@ namespace Assignment.Web.Controllers.V1
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [Route("chang-password")]
+        [Route("change-password")]
         [ModelStateValidation]
         public async Task<IHttpActionResult> ChangePassword([FromBody]BM.ChangePassword model)
         {
@@ -165,8 +167,8 @@ namespace Assignment.Web.Controllers.V1
                 model.OldPassword,
                 model.NewPassword);
 
-            if (!result.Succeeded)
-                return GetErrorResult(result);
+            if (result == null || !result.Succeeded)
+                GetErrorResult(result);
 
             return Ok();
         }
@@ -183,8 +185,8 @@ namespace Assignment.Web.Controllers.V1
         {
             IdentityResult result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
 
-            if (!result.Succeeded)
-                return GetErrorResult(result);
+            if (result == null || !result.Succeeded)
+                GetErrorResult(result);
 
             return Ok();
         }
@@ -219,7 +221,7 @@ namespace Assignment.Web.Controllers.V1
                 new UserLoginInfo(externalData.LoginProvider, externalData.ProviderKey));
 
             if (!result.Succeeded)
-                return GetErrorResult(result);
+                GetErrorResult(result);
 
             return Ok();
         }
@@ -246,8 +248,8 @@ namespace Assignment.Web.Controllers.V1
                     new UserLoginInfo(model.LoginProvider, model.ProviderKey));
             }
 
-            if (!result.Succeeded)
-                return GetErrorResult(result);
+            if (result == null || !result.Succeeded)
+                GetErrorResult(result);
   
             return Ok();
         }
@@ -375,7 +377,7 @@ namespace Assignment.Web.Controllers.V1
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
-                return GetErrorResult(result);
+                GetErrorResult(result);
 
             return Ok();
         }
@@ -405,13 +407,13 @@ namespace Assignment.Web.Controllers.V1
 
             IdentityResult result = await UserManager.CreateAsync(user);
 
-            if (!result.Succeeded)
-                return GetErrorResult(result);
+            if (result == null || !result.Succeeded)
+                GetErrorResult(result);
 
             result = await UserManager.AddLoginAsync(user.Id, info.Login);
 
-            if (!result.Succeeded)
-                return GetErrorResult(result);
+            if (result == null || !result.Succeeded)
+                GetErrorResult(result);
 
             return Ok();
         }
@@ -440,29 +442,14 @@ namespace Assignment.Web.Controllers.V1
             }
         }
 
-        private IHttpActionResult GetErrorResult(IdentityResult result)
+        private void GetErrorResult(IdentityResult result)
         {
-            if (result == null)
-                throw new HttpException((int)HttpStatusCode.InternalServerError, string.Empty);
+            string aggregatedErrorMsg = string.Empty;
 
-            if (!result.Succeeded)
-            {
-                if (result.Errors != null)
-                {
-                    foreach (string error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error);
-                    }
-                }
+            if (result.Errors != null)
+                aggregatedErrorMsg = string.Join(Environment.NewLine, result.Errors);
 
-                if (ModelState.IsValid)
-                {
-                    // No ModelState errors are available to send, so just return an empty BadRequest.
-                    throw new HttpException((int)HttpStatusCode.BadRequest, string.Empty);
-                }
-            }
-
-            return null;
+            throw new IdentityException(aggregatedErrorMsg);
         }
 
         private class ExternalLoginData

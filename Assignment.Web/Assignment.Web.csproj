@@ -253,6 +253,7 @@
     <Compile Include="Infrastructure\ExceptionHandling\BindingModelValidationException.cs" />
     <Compile Include="Infrastructure\ExceptionHandling\ErrorResult.cs" />
     <Compile Include="Infrastructure\ExceptionHandling\GlobalExceptionHandler.cs" />
+    <Compile Include="Infrastructure\ExceptionHandling\IdentityException.cs" />
     <Compile Include="Infrastructure\Mappings\BindingModelToDomainModel.cs" />
     <Compile Include="Infrastructure\Mappings\DomainModelToDTO.cs" />
     <Compile Include="Infrastructure\Swagger\AddAuthorizationHeaderParameterOperationFilter.cs" />
