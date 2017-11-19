@@ -7,6 +7,7 @@ using Autofac.Integration.WebApi;
 using System.Data.Entity;
 using System.Reflection;
 using System.Web.Http;
+using AutoMapper;
 
 #pragma warning disable 1591
 
@@ -29,6 +30,10 @@ namespace Store.Web
         private static IContainer RegisterServices(ContainerBuilder builder)
         {
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
+
+            var mapper = Mapper.Instance;
+
+            builder.RegisterInstance<IMapper>(mapper);
 
             builder.RegisterType<ApplicationDbContext>()
                 .As<DbContext>()

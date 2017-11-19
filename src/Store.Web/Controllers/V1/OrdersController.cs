@@ -23,6 +23,7 @@ namespace Store.Web.Controllers.V1
     {
         #region Fields
         private IOrderService _orderService;
+        private IMapper _mapper;
         #endregion
 
         #region Constructors
@@ -30,9 +31,11 @@ namespace Store.Web.Controllers.V1
         /// Constructor
         /// </summary>
         /// <param name="orderService"></param>
-        public OrdersController(IOrderService orderService)
+        /// <param name="mapper"></param>
+        public OrdersController(IOrderService orderService, IMapper mapper)
         {
             _orderService = orderService;
+            _mapper = mapper;
         }
         #endregion
 
@@ -51,10 +54,10 @@ namespace Store.Web.Controllers.V1
         public async Task<IHttpActionResult> GetOrdersByCustomer(int customerId, [FromUri]BM.OrderFilter filter)
         {
             int ordersFound = 0;
-            IFiltration filtration = Mapper.Map<BM.OrderFilter, Filtration>(filter);
+            IFiltration filtration = _mapper.Map<BM.OrderFilter, Filtration>(filter);
             IEnumerable<Entities.Order> orders =
                 await Task.Run(() => _orderService.GetOrdersByCustomerId(customerId, filtration, out ordersFound));
-            IEnumerable<DTO.Order> orderDtos = Mapper.Map<IEnumerable<Entities.Order>, IEnumerable<DTO.Order>>(orders);
+            IEnumerable<DTO.Order> orderDtos = _mapper.Map<IEnumerable<Entities.Order>, IEnumerable<DTO.Order>>(orders);
 
             var paginatedData = new DTO.PaginatedData<DTO.Order>
             {
@@ -86,7 +89,7 @@ namespace Store.Web.Controllers.V1
             if (order == null)
                 throw new BindingModelValidationException("The order does not exist.");
 
-            DTO.Order orderDto = Mapper.Map<Entities.Order, DTO.Order>(order);
+            DTO.Order orderDto = _mapper.Map<Entities.Order, DTO.Order>(order);
 
             return Ok(orderDto);
         }
@@ -102,7 +105,7 @@ namespace Store.Web.Controllers.V1
         [ModelStateValidation]
         public async Task<IHttpActionResult> Update([FromBody]BM.Order order)
         {
-            Entities.Order orderEntity = Mapper.Map<BM.Order, Entities.Order>(order);
+            Entities.Order orderEntity = _mapper.Map<BM.Order, Entities.Order>(order);
 
             _orderService.UpdateOrder(orderEntity);
             await _orderService.CommitAsync();
@@ -121,7 +124,7 @@ namespace Store.Web.Controllers.V1
         [ModelStateValidation]
         public async Task<IHttpActionResult> Add([FromBody]BM.Order order)
         {
-            Entities.Order orderEntity = Mapper.Map<BM.Order, Entities.Order>(order);
+            Entities.Order orderEntity = _mapper.Map<BM.Order, Entities.Order>(order);
 
             _orderService.AddOrder(orderEntity);
             await _orderService.CommitAsync();

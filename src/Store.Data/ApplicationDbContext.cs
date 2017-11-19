@@ -19,7 +19,6 @@ namespace Store.Data
 
         public virtual IDbSet<JuridicalPerson> JuridicalPersons { get; set; }
 
-
         public virtual IDbSet<NaturalPerson> NaturalPersons { get; set; }
 
         public virtual IDbSet<OrderDetails> OrderDetails { get; set; }

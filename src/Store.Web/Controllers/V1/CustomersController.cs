@@ -23,6 +23,7 @@ namespace Store.Web.Controllers.V1
     {
         #region Fields
         private ICustomerService _customerService;
+        private IMapper _mapper;
         #endregion
 
         #region Constructors
@@ -30,9 +31,11 @@ namespace Store.Web.Controllers.V1
         /// Constractor
         /// </summary>
         /// <param name="customerService"></param>
-        public CustomersController(ICustomerService customerService)
+        /// <param name="mapper"></param>
+        public CustomersController(ICustomerService customerService, IMapper mapper)
         {
             _customerService = customerService;
+            _mapper = mapper;
         }
         #endregion
 
@@ -50,11 +53,11 @@ namespace Store.Web.Controllers.V1
         public async Task<IHttpActionResult> GetJuridicalPersons([FromUri]BM.JuridicalPersonFilter filter)
         {
             int personsFound = 0;
-            IFiltration filtration = Mapper.Map<BM.JuridicalPersonFilter, Filtration>(filter);
+            IFiltration filtration = _mapper.Map<BM.JuridicalPersonFilter, Filtration>(filter);
             IEnumerable<Entities.JuridicalPerson> juridcalPersons =
                 await Task.Run(() => _customerService.GetJuridicalPersons(filtration, out personsFound));
             IEnumerable<DTO.JuridicalPerson> juridicalPersonDtos =
-                Mapper.Map<IEnumerable<Entities.JuridicalPerson>, IEnumerable<DTO.JuridicalPerson>>(juridcalPersons);
+                _mapper.Map<IEnumerable<Entities.JuridicalPerson>, IEnumerable<DTO.JuridicalPerson>>(juridcalPersons);
 
             var paginatedData = new DTO.PaginatedData<DTO.JuridicalPerson>
             {
@@ -83,11 +86,11 @@ namespace Store.Web.Controllers.V1
         public async Task<IHttpActionResult> GetNaturalPersons([FromUri]BM.NaturalPersonFilter filter)
         {
             int personsFound = 0;
-            IFiltration filtration = Mapper.Map<BM.NaturalPersonFilter, Filtration>(filter);
+            IFiltration filtration = _mapper.Map<BM.NaturalPersonFilter, Filtration>(filter);
             IEnumerable<Entities.NaturalPerson> naturalPersons =
                 await Task.Run(() => _customerService.GetNaturalPersons(filtration, out personsFound));
             IEnumerable<DTO.NaturalPerson> naturalPersonDtos =
-                Mapper.Map<IEnumerable<Entities.NaturalPerson>, IEnumerable<DTO.NaturalPerson>>(naturalPersons);
+                _mapper.Map<IEnumerable<Entities.NaturalPerson>, IEnumerable<DTO.NaturalPerson>>(naturalPersons);
 
             var paginatedData = new DTO.PaginatedData<DTO.NaturalPerson>
             {
@@ -119,7 +122,7 @@ namespace Store.Web.Controllers.V1
             if (juridicalPerson == null)
                 throw new BindingModelValidationException("Invalid juridical person id.");
 
-            DTO.JuridicalPerson juridicalPersonDto = Mapper.Map<Entities.JuridicalPerson, DTO.JuridicalPerson>(juridicalPerson);
+            DTO.JuridicalPerson juridicalPersonDto = _mapper.Map<Entities.JuridicalPerson, DTO.JuridicalPerson>(juridicalPerson);
 
             return Ok(juridicalPersonDto);
         }
@@ -140,7 +143,7 @@ namespace Store.Web.Controllers.V1
             if (naturalPerson == null)
                 throw new BindingModelValidationException("Invalid natural person id.");
 
-            DTO.NaturalPerson naturalPersonDto = Mapper.Map<Entities.NaturalPerson, DTO.NaturalPerson>(naturalPerson);
+            DTO.NaturalPerson naturalPersonDto = _mapper.Map<Entities.NaturalPerson, DTO.NaturalPerson>(naturalPerson);
 
             return Ok(naturalPersonDto);
         }
@@ -156,7 +159,7 @@ namespace Store.Web.Controllers.V1
         [ModelStateValidation]
         public async Task<IHttpActionResult> UpdateJuridicalPerson([FromBody]BM.JuridicalPerson juridicalPerson)
         {
-            Entities.JuridicalPerson juridicalPersonEntity = Mapper.Map<BM.JuridicalPerson, Entities.JuridicalPerson>(juridicalPerson);
+            Entities.JuridicalPerson juridicalPersonEntity = _mapper.Map<BM.JuridicalPerson, Entities.JuridicalPerson>(juridicalPerson);
 
             _customerService.UpdateJuridicalPerson(juridicalPersonEntity);
             await _customerService.CommitAsync();
@@ -164,7 +167,7 @@ namespace Store.Web.Controllers.V1
             return Ok();
         }
 
-        // POST: api/customers/juridical-person/update
+        // POST: api/customers/natural-person/update
         /// <summary>
         /// Update natural person
         /// </summary>
@@ -175,7 +178,7 @@ namespace Store.Web.Controllers.V1
         [ModelStateValidation]
         public async Task<IHttpActionResult> UpdateNaturalPerson([FromBody]BM.NaturalPerson naturalPerson)
         {
-            Entities.NaturalPerson naturalPersonEntity = Mapper.Map<BM.NaturalPerson, Entities.NaturalPerson>(naturalPerson);
+            Entities.NaturalPerson naturalPersonEntity = _mapper.Map<BM.NaturalPerson, Entities.NaturalPerson>(naturalPerson);
 
             _customerService.UpdateNaturalPerson(naturalPersonEntity);
             await _customerService.CommitAsync();
@@ -194,7 +197,7 @@ namespace Store.Web.Controllers.V1
         [ModelStateValidation]
         public async Task<IHttpActionResult> AddJuridicalPerson([FromBody]BM.JuridicalPerson juridicalPerson)
         {
-            Entities.JuridicalPerson juridicalPersonEntity = Mapper.Map<BM.JuridicalPerson, Entities.JuridicalPerson>(juridicalPerson);
+            Entities.JuridicalPerson juridicalPersonEntity = _mapper.Map<BM.JuridicalPerson, Entities.JuridicalPerson>(juridicalPerson);
 
             _customerService.AddJuridicalPerson(juridicalPersonEntity);
             await _customerService.CommitAsync();
@@ -213,7 +216,7 @@ namespace Store.Web.Controllers.V1
         [ModelStateValidation]
         public async Task<IHttpActionResult> AddNaturalPerson([FromBody]BM.NaturalPerson naturalPerson)
         {
-            Entities.NaturalPerson naturalPersonEntity = Mapper.Map<BM.NaturalPerson, Entities.NaturalPerson>(naturalPerson);
+            Entities.NaturalPerson naturalPersonEntity = _mapper.Map<BM.NaturalPerson, Entities.NaturalPerson>(naturalPerson);
 
             _customerService.AddNaturalPerson(naturalPersonEntity);
             await _customerService.CommitAsync();

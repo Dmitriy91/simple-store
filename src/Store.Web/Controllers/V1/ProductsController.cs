@@ -23,6 +23,7 @@ namespace Store.Web.Controllers.V1
     {
         #region Fields
         private IProductService _productService;
+        private IMapper _mapper;
         #endregion
 
         #region Constructors
@@ -30,9 +31,11 @@ namespace Store.Web.Controllers.V1
         /// Constructor
         /// </summary>
         /// <param name="productService"></param>
-        public ProductsController(IProductService productService)
+        /// <param name="mapper"></param>
+        public ProductsController(IProductService productService, IMapper mapper)
         {
             _productService = productService;
+            _mapper = mapper;
         }
         #endregion
 
@@ -50,10 +53,10 @@ namespace Store.Web.Controllers.V1
         public async Task<IHttpActionResult> Get([FromUri]BM.ProductFilter filter)
         {
             int productsFound = 0;
-            IFiltration filtration = Mapper.Map<BM.ProductFilter, Filtration>(filter);
+            IFiltration filtration = _mapper.Map<BM.ProductFilter, Filtration>(filter);
             IEnumerable<Entities.Product> products =
                 await Task.Run(() => _productService.GetProducts(filtration, out productsFound));
-            IEnumerable<DTO.Product> productDtos = Mapper.Map<IEnumerable<Entities.Product>, IEnumerable<DTO.Product>>(products);
+            IEnumerable<DTO.Product> productDtos = _mapper.Map<IEnumerable<Entities.Product>, IEnumerable<DTO.Product>>(products);
 
             var paginatedData = new DTO.PaginatedData<DTO.Product>
             {
@@ -86,7 +89,7 @@ namespace Store.Web.Controllers.V1
             if (product == null)
                 throw new BindingModelValidationException("Invalid product id.");
 
-            DTO.Product productDto = Mapper.Map<Entities.Product, DTO.Product>(product);
+            DTO.Product productDto = _mapper.Map<Entities.Product, DTO.Product>(product);
 
             return Ok(productDto);
         }
@@ -102,7 +105,7 @@ namespace Store.Web.Controllers.V1
         [ModelStateValidation]
         public async Task<IHttpActionResult> Update([FromBody]BM.Product product)
         {
-            Entities.Product productEntity = Mapper.Map<BM.Product, Entities.Product>(product);
+            Entities.Product productEntity = _mapper.Map<BM.Product, Entities.Product>(product);
 
             _productService.UpdateProduct(productEntity);
             await _productService.CommitAsync();
@@ -121,7 +124,7 @@ namespace Store.Web.Controllers.V1
         [ModelStateValidation]
         public async Task<IHttpActionResult> Add([FromBody]BM.Product product)
         {
-            Entities.Product productEntity = Mapper.Map<BM.Product, Entities.Product>(product);
+            Entities.Product productEntity = _mapper.Map<BM.Product, Entities.Product>(product);
 
             _productService.AddProduct(productEntity);
             await _productService.CommitAsync();
