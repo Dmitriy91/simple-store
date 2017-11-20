@@ -24,7 +24,7 @@ namespace Store.Web.Models.BM
         /// OrderDetails
         /// </summary>
         [Required]
-        public IEnumerable<Details> OrderDetails { get; set; }
+        public List<Details> OrderDetails { get; set; }
 
         /// <summary>
         /// Details

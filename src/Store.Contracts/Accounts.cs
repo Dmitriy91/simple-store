@@ -21,9 +21,9 @@ namespace Store.Contracts
 
         public string Email { get; set; }
 
-        public IEnumerable<UserLoginInfo> Logins { get; set; }
+        public List<UserLoginInfo> Logins { get; set; }
 
-        public IEnumerable<ExternalLogin> ExternalLoginProviders { get; set; }
+        public List<ExternalLogin> ExternalLoginProviders { get; set; }
     }
 
     public class UserInfo

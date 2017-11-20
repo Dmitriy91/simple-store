@@ -55,9 +55,9 @@ namespace Store.Web.Controllers.V1
         {
             int ordersFound = 0;
             IFiltration filtration = _mapper.Map<BM.OrderFilter, Filtration>(filter);
-            IEnumerable<Entities.Order> orders =
+            List<Entities.Order> orders =
                 await Task.Run(() => _orderService.GetOrdersByCustomerId(customerId, filtration, out ordersFound));
-            IEnumerable<DTO.Order> orderDtos = _mapper.Map<IEnumerable<Entities.Order>, IEnumerable<DTO.Order>>(orders);
+            List<DTO.Order> orderDtos = _mapper.Map<List<Entities.Order>, List<DTO.Order>>(orders);
 
             var paginatedData = new DTO.PaginatedData<DTO.Order>
             {

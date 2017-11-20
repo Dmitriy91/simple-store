@@ -54,9 +54,9 @@ namespace Store.Web.Controllers.V1
         {
             int productsFound = 0;
             IFiltration filtration = _mapper.Map<BM.ProductFilter, Filtration>(filter);
-            IEnumerable<Entities.Product> products =
+            List<Entities.Product> products =
                 await Task.Run(() => _productService.GetProducts(filtration, out productsFound));
-            IEnumerable<DTO.Product> productDtos = _mapper.Map<IEnumerable<Entities.Product>, IEnumerable<DTO.Product>>(products);
+            List<DTO.Product> productDtos = _mapper.Map<List<Entities.Product>, List<DTO.Product>>(products);
 
             var paginatedData = new DTO.PaginatedData<DTO.Product>
             {

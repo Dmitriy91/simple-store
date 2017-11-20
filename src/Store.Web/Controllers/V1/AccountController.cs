@@ -19,7 +19,6 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Swashbuckle.Swagger.Annotations;
 using Store.Web.Infrastructure.ValidationAttributes;
-using System.Linq;
 using Store.Web.Infrastructure.ExceptionHandling;
 
 namespace Store.Web.Controllers.V1
@@ -322,7 +321,7 @@ namespace Store.Web.Controllers.V1
         /// <returns></returns>
         [AllowAnonymous]
         [Route("external-logins")]
-        public IEnumerable<DTO.ExternalLogin> GetExternalLogins(string returnUrl, bool generateState = false)
+        public List<DTO.ExternalLogin> GetExternalLogins(string returnUrl, bool generateState = false)
         {
             IEnumerable<AuthenticationDescription> descriptions = Authentication.GetExternalAuthenticationTypes();
             List<DTO.ExternalLogin> logins = new List<DTO.ExternalLogin>();

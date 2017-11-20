@@ -162,7 +162,14 @@
         }
 
         function loadNaturalPersonsSucceeded(response) {
+            if (response.data.naturalPersons !== null) {
+                response.data.naturalPersons.forEach(function (person) {
+                    person.birthdate = person.birthdate !== null ? person.birthdate.split('T')[0] : '';
+                });
+            }
+
             $scope.naturalPersons = response.data.naturalPersons;
+
             var currentPage = response.data.pagingInfo.currentPage;
             var pageSize = response.data.pagingInfo.pageSize;
             var totalItems = response.data.pagingInfo.totalItems;

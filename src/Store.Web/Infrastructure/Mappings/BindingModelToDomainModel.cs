@@ -3,7 +3,6 @@ using Store.Entities;
 using Store.Services;
 using BM = Store.Web.Models.BM;
 using AutoMapper;
-using System;
 
 #pragma warning disable 1591
 
@@ -13,15 +12,12 @@ namespace Store.Web.Infrastructure.Mappings
     {
         public BindingModelToDomainModel()
             : base("BindingModelToDomainModel")
-        { }
-
-        [Obsolete]
-        protected override void Configure()
         {
             // Product
             CreateMap<BM.Product, Product>();
             CreateMap<BM.ProductFilter, Filtration>()
-                .ForMember(dest => dest.Filters, opts => opts.ResolveUsing(pf => {
+                .ForMember(dest => dest.Filters, opts => opts.ResolveUsing(pf =>
+                {
                     IDictionary<string, string> filters = null;
 
                     if (!string.IsNullOrEmpty(pf.ProductName))
@@ -44,7 +40,8 @@ namespace Store.Web.Infrastructure.Mappings
                     opts.MapFrom(src => Mapper.Map<BM.JuridicalPerson, Customer>(src));
                 });
             CreateMap<BM.JuridicalPersonFilter, Filtration>()
-                .ForMember(dest => dest.Filters, opts => opts.ResolveUsing(jpf => {
+                .ForMember(dest => dest.Filters, opts => opts.ResolveUsing(jpf =>
+                {
                     IDictionary<string, string> filters = null;
 
                     if (!string.IsNullOrWhiteSpace(jpf.LegalName))
@@ -208,10 +205,11 @@ namespace Store.Web.Infrastructure.Mappings
             CreateMap<BM.Order, Order>()
                 .ForMember(dest => dest.OrderDetails, opts =>
                 {
-                    opts.MapFrom(src => Mapper.Map<IEnumerable<BM.Order.Details>, IEnumerable<OrderDetails>>(src.OrderDetails));
+                    opts.MapFrom(src => Mapper.Map<List<BM.Order.Details>, List<OrderDetails>>(src.OrderDetails));
                 });
             CreateMap<BM.OrderFilter, Filtration>()
-                .ForMember(dest => dest.Filters, opts => opts.ResolveUsing(of => {
+                .ForMember(dest => dest.Filters, opts => opts.ResolveUsing(of =>
+                {
                     IDictionary<string, string> filters = null;
 
                     if (!string.IsNullOrWhiteSpace(of.OrderDate))

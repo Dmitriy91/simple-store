@@ -2,7 +2,6 @@
 using DTO = Store.Contracts;
 using AutoMapper;
 using System.Collections.Generic;
-using System;
 
 #pragma warning disable 1591
 
@@ -12,10 +11,6 @@ namespace Store.Web.Infrastructure.Mappings
     {
         public DomainModelToDTO()
             : base("DomainModelToDTO")
-        { }
-
-        [Obsolete]
-        protected override void Configure()
         {
             // Juridical Person
             CreateMap<JuridicalPerson, DTO.JuridicalPerson>()
@@ -31,7 +26,7 @@ namespace Store.Web.Infrastructure.Mappings
             // Natural Person
             CreateMap<NaturalPerson, DTO.NaturalPerson>()
                 .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.CustomerId))
-                .ForMember(dest => dest.Birthdate, opts => opts.MapFrom(src => (src.Birthdate != null) ? src.Birthdate.Value.ToString("yyyy-MM-dd") : string.Empty))
+                .ForMember(dest => dest.Birthdate, opts => opts.MapFrom(src => src.Birthdate))
                 .ForMember(dest => dest.Country, opts => opts.MapFrom(src => src.Customer.Country))
                 .ForMember(dest => dest.Region, opts => opts.MapFrom(src => src.Customer.Region))
                 .ForMember(dest => dest.City, opts => opts.MapFrom(src => src.Customer.City))
@@ -43,12 +38,11 @@ namespace Store.Web.Infrastructure.Mappings
 
             // Order
             CreateMap<OrderDetails, DTO.Order.Details>()
-                .ForMember(dest => dest.ProductName, opts => opts.MapFrom(src => (src.Product == null) ? "Product has been removed." : src.Product.ProductName));
+                .ForMember(dest => dest.ProductName, opts => opts.MapFrom(src => src.Product == null ? null : src.Product.ProductName));
             CreateMap<Order, DTO.Order>()
-                .ForMember(dest => dest.OrderDate, opts => opts.MapFrom(src => (src.OrderDate.ToString("yyyy-MM-dd"))))
                 .ForMember(dest => dest.OrderDetails, opts =>
                 {
-                    opts.MapFrom(src => Mapper.Map<IEnumerable<OrderDetails>, IEnumerable<DTO.Order.Details>>(src.OrderDetails));
+                    opts.MapFrom(src => Mapper.Map<IList<OrderDetails>, List<DTO.Order.Details>>(src.OrderDetails));
                 });
         }
     }

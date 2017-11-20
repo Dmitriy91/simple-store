@@ -15,7 +15,7 @@ namespace Store.Contracts
             }
         }
 
-        public IEnumerable<TItem> Collection
+        public List<TItem> Collection
         {
             set
             {

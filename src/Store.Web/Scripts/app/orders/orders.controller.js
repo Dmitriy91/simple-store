@@ -179,7 +179,14 @@
         }
 
         function loadOrdersByCustomerSucceeded(response) {
+            if (response.data.orders !== null) {
+                response.data.orders.forEach(function (order) {
+                    order.orderDate = order.orderDate !== null ? order.orderDate.split('T')[0] : '';
+                });
+            }
+
             $scope.orders = response.data.orders;
+
             var currentPage = response.data.pagingInfo.currentPage;
             var pageSize = response.data.pagingInfo.pageSize;
             var totalItems = response.data.pagingInfo.totalItems;

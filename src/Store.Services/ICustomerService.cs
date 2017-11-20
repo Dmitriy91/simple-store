@@ -11,9 +11,9 @@ namespace Store.Services
 
         NaturalPerson GetNaturalPersonById(int customerId);
 
-        IEnumerable<JuridicalPerson> GetJuridicalPersons(IFiltration filtration, out int personsFound);
+        List<JuridicalPerson> GetJuridicalPersons(IFiltration filtration, out int personsFound);
 
-        IEnumerable<NaturalPerson> GetNaturalPersons(IFiltration filtration, out int personsFound);
+        List<NaturalPerson> GetNaturalPersons(IFiltration filtration, out int personsFound);
 
         void RemovePersonById(int customerId);
 

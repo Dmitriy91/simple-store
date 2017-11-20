@@ -9,7 +9,7 @@ namespace Store.Services
     {
         Order GetOrderById(int orderId);
 
-        IEnumerable<Order> GetOrdersByCustomerId(int customerId, IFiltration filtration, out int ordersFound);
+        List<Order> GetOrdersByCustomerId(int customerId, IFiltration filtration, out int ordersFound);
 
         void RemoveOrderById(int orderId);
 

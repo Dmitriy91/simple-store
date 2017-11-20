@@ -1,5 +1,7 @@
 ﻿#pragma warning disable 1591
 
+using System;
+
 namespace Store.Contracts
 {
     public class NaturalPerson
@@ -14,7 +16,7 @@ namespace Store.Contracts
 
         public string SSN { get; set; }
 
-        public string Birthdate { get; set; }
+        public DateTime? Birthdate { get; set; }
 
         public string Country { get; set; }
 

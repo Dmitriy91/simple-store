@@ -57,7 +57,7 @@
             $scope.naturalPerson.middleName = response.data.middleName;
             $scope.naturalPerson.lastName = response.data.lastName;
             $scope.naturalPerson.ssn = response.data.ssn;
-            $scope.naturalPerson.birthdate = response.data.birthdate;
+            $scope.naturalPerson.birthdate = response.data.birthdate !== null ? response.data.birthdate.split('T')[0] : '';
             $scope.naturalPerson.country = response.data.country;
             $scope.naturalPerson.region = response.data.region;
             $scope.naturalPerson.city = response.data.city;

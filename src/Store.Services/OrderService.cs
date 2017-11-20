@@ -43,7 +43,7 @@ namespace Store.Services
                 .FirstOrDefault(o => o.Id == orderId);
         }
 
-        public IEnumerable<Order> GetOrdersByCustomerId(int customerId, IFiltration filtration, out int ordersFound)
+        public List<Order> GetOrdersByCustomerId(int customerId, IFiltration filtration, out int ordersFound)
         {
             IQueryable<Order> orders = null;
             string orderDate = filtration["OrderDate"];

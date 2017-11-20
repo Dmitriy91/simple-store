@@ -48,18 +48,18 @@ namespace Store.Services
                 .FirstOrDefault(np => np.CustomerId == customerId);
         }
 
-        public IEnumerable<JuridicalPerson> GetJuridicalPersons(IFiltration filtration, out int personsFound)
+        public List<JuridicalPerson> GetJuridicalPersons(IFiltration filtration, out int personsFound)
         {
             IQueryable<JuridicalPerson> juridicalPersons = null;
             StringBuilder whereClause = new StringBuilder();
-            IList<object> filterVales = new List<object>();
+            IList<object> filterValues = new List<object>();
             int filterValueInx = 0;
 
             if (filtration.Filters != null)
             {
                 foreach (var kvp in filtration.Filters)
                 {
-                    filterVales.Add(kvp.Value);
+                    filterValues.Add(kvp.Value);
                     whereClause.AppendFormat("{0}.Contains(@{1}) AND ", kvp.Key, filterValueInx);
                     filterValueInx++;
                 }
@@ -70,7 +70,7 @@ namespace Store.Services
                 whereClause.Remove(whereClause.Length - 5, 5); // Remove last ' AND '
                 juridicalPersons = _juridicalPersonRepo.GetAll().
                 Include(jp => jp.Customer).
-                Where(whereClause.ToString(), filterVales.ToArray());
+                Where(whereClause.ToString(), filterValues.ToArray());
             }
             else
             {
@@ -87,7 +87,7 @@ namespace Store.Services
             return juridicalPersons.Paginate(filtration.PageNumber, filtration.PageSize);
         }
 
-        public IEnumerable<NaturalPerson> GetNaturalPersons(IFiltration filtration, out int personsFound)
+        public List<NaturalPerson> GetNaturalPersons(IFiltration filtration, out int personsFound)
         {
             IQueryable<NaturalPerson> naturalPersons = null;
             StringBuilder whereClause = new StringBuilder();

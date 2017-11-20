@@ -12,6 +12,11 @@ namespace Store.Web
     {
         public static void Register(HttpConfiguration config)
         {
+            // Use UTC.
+            var json = config.Formatters.JsonFormatter;
+
+            json.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
+
             // Use camel case for JSON data.
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 

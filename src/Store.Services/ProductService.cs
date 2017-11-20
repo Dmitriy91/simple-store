@@ -34,7 +34,7 @@ namespace Store.Services
             return _productRepo.GetById(productId);
         }
 
-        public IEnumerable<Product> GetProducts(IFiltration filtration, out int productsFound)
+        public List<Product> GetProducts(IFiltration filtration, out int productsFound)
         {
             IQueryable<Product> products = null;
             string productName = filtration["ProductName"];

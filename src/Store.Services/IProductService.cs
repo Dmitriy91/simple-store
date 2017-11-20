@@ -9,7 +9,7 @@ namespace Store.Services
     {
         Product GetProductById(int customerId);
 
-        IEnumerable<Product> GetProducts(IFiltration filtration, out int productsFound);
+        List<Product> GetProducts(IFiltration filtration, out int productsFound);
 
         void RemoveProductById(int productId);
 

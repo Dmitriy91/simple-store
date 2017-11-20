@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 #pragma warning disable 1591
 
@@ -10,9 +11,9 @@ namespace Store.Contracts
 
         public int CustomerId { get; set; }
 
-        public string OrderDate { get; set; }
+        public DateTime OrderDate { get; set; }
 
-        public IEnumerable<Details> OrderDetails { get; set; }
+        public List<Details> OrderDetails { get; set; }
 
         public class Details
         {

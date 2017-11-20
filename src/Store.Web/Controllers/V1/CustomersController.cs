@@ -54,10 +54,10 @@ namespace Store.Web.Controllers.V1
         {
             int personsFound = 0;
             IFiltration filtration = _mapper.Map<BM.JuridicalPersonFilter, Filtration>(filter);
-            IEnumerable<Entities.JuridicalPerson> juridcalPersons =
+            List<Entities.JuridicalPerson> juridcalPersons =
                 await Task.Run(() => _customerService.GetJuridicalPersons(filtration, out personsFound));
-            IEnumerable<DTO.JuridicalPerson> juridicalPersonDtos =
-                _mapper.Map<IEnumerable<Entities.JuridicalPerson>, IEnumerable<DTO.JuridicalPerson>>(juridcalPersons);
+            List<DTO.JuridicalPerson> juridicalPersonDtos =
+                _mapper.Map<List<Entities.JuridicalPerson>, List<DTO.JuridicalPerson>>(juridcalPersons);
 
             var paginatedData = new DTO.PaginatedData<DTO.JuridicalPerson>
             {
@@ -87,10 +87,10 @@ namespace Store.Web.Controllers.V1
         {
             int personsFound = 0;
             IFiltration filtration = _mapper.Map<BM.NaturalPersonFilter, Filtration>(filter);
-            IEnumerable<Entities.NaturalPerson> naturalPersons =
+            List<Entities.NaturalPerson> naturalPersons =
                 await Task.Run(() => _customerService.GetNaturalPersons(filtration, out personsFound));
-            IEnumerable<DTO.NaturalPerson> naturalPersonDtos =
-                _mapper.Map<IEnumerable<Entities.NaturalPerson>, IEnumerable<DTO.NaturalPerson>>(naturalPersons);
+            List<DTO.NaturalPerson> naturalPersonDtos =
+                _mapper.Map<List<Entities.NaturalPerson>, List<DTO.NaturalPerson>>(naturalPersons);
 
             var paginatedData = new DTO.PaginatedData<DTO.NaturalPerson>
             {
