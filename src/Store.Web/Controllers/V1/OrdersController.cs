@@ -3,13 +3,12 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Store.Services;
 using Store.Web.Infrastructure.ExceptionHandling;
-using BM = Store.Web.Models.BM;
-using DTO = Store.Contracts;
+using BM = Store.Contracts.Requests;
+using DTO = Store.Contracts.Responses;
 using AutoMapper;
 using WebApi.OutputCache.V2;
 using Swashbuckle.Swagger.Annotations;
 using System.Net;
-using Store.Web.Infrastructure.ValidationAttributes;
 
 namespace Store.Web.Controllers.V1
 {

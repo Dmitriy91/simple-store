@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace Store.Web.Models.BM
+#pragma warning disable 1591
+
+namespace Store.Contracts.Requests
 {
     // Models used as parameters to AccountController actions.
 
@@ -135,3 +137,5 @@ namespace Store.Web.Models.BM
         public string ConfirmPassword { get; set; }
     }
 }
+
+#pragma warning restore 1591

@@ -116,7 +116,8 @@ namespace Store.Web
                         // those comments into the generated docs and UI. You can enable this by providing the path to one or
                         // more Xml comment files.
                         //
-                        c.IncludeXmlComments(GetXmlCommentsPath());
+                        c.IncludeXmlComments(GetWebXmlCommentsPath());
+                        c.IncludeXmlComments(GetContractsXmlCommentsPath());
 
                         // Swashbuckle makes a best attempt at generating Swagger compliant JSON schemas for the various types
                         // exposed in your API. However, there may be occasions when more control of the output is needed.
@@ -264,9 +265,14 @@ namespace Store.Web
                     });
         }
 
-        protected static string GetXmlCommentsPath()
+        protected static string GetWebXmlCommentsPath()
         {
             return string.Format(@"{0}\bin\Store.Web.XML", System.AppDomain.CurrentDomain.BaseDirectory);
+        }
+
+        protected static string GetContractsXmlCommentsPath()
+        {
+            return string.Format(@"{0}\bin\Store.Contracts.XML", System.AppDomain.CurrentDomain.BaseDirectory);
         }
     }
 }

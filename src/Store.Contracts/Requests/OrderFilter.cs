@@ -1,6 +1,8 @@
-﻿using Store.Web.Infrastructure.ValidationAttributes;
+﻿using Store.Contracts.ValidationAttributes;
 
-namespace Store.Web.Models.BM
+#pragma warning disable 1591
+
+namespace Store.Contracts.Requests
 {
     /// <summary>
     /// OrderFilter
@@ -19,3 +21,5 @@ namespace Store.Web.Models.BM
         public string SortBy { get; set; }
     }
 }
+
+#pragma warning restore 1591

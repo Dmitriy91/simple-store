@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Store.Web.Models.BM
+#pragma warning disable 1591
+
+namespace Store.Contracts.Requests
 {
     /// <summary>
     /// Order
@@ -43,3 +45,5 @@ namespace Store.Web.Models.BM
         }
     }
 }
+
+#pragma warning restore 1591

@@ -1,5 +1,5 @@
 ﻿using Store.Entities;
-using DTO = Store.Contracts;
+using DTO = Store.Contracts.Responses;
 using AutoMapper;
 using System.Collections.Generic;
 

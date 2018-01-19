@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Store.Contracts.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,9 +29,15 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Store.Contracts.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,14 +47,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Accounts.cs" />
-    <Compile Include="JuridicalPerson.cs" />
-    <Compile Include="NaturalPerson.cs" />
-    <Compile Include="Order.cs" />
-    <Compile Include="PaginatedData.cs" />
-    <Compile Include="PagingInfo.cs" />
-    <Compile Include="Product.cs" />
+    <Compile Include="Requests\Accounts.cs" />
+    <Compile Include="Requests\CustomerFilter.cs" />
+    <Compile Include="Requests\JuridicalPerson.cs" />
+    <Compile Include="Requests\JuridicalPersonFilter.cs" />
+    <Compile Include="Requests\NaturalPerson.cs" />
+    <Compile Include="Requests\NaturalPersonFilter.cs" />
+    <Compile Include="Requests\Order.cs" />
+    <Compile Include="Requests\OrderFilter.cs" />
+    <Compile Include="Requests\Pagination.cs" />
+    <Compile Include="Requests\Product.cs" />
+    <Compile Include="Requests\ProductFilter.cs" />
+    <Compile Include="Responses\Accounts.cs" />
+    <Compile Include="Responses\JuridicalPerson.cs" />
+    <Compile Include="Responses\NaturalPerson.cs" />
+    <Compile Include="Responses\Order.cs" />
+    <Compile Include="Responses\PaginatedData.cs" />
+    <Compile Include="Responses\PagingInfo.cs" />
+    <Compile Include="Responses\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValidationAttributes\JuridicalPersonSortByValidation.cs" />
+    <Compile Include="ValidationAttributes\NaturalPersonSortByValidation.cs" />
+    <Compile Include="ValidationAttributes\OrderSortByValidation.cs" />
+    <Compile Include="ValidationAttributes\ProductSortByValidation.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

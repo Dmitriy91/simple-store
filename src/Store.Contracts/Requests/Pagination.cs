@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Store.Web.Models.BM
+#pragma warning disable 1591
+
+namespace Store.Contracts.Requests
 {
     /// <summary>
     /// Pagination
@@ -20,3 +22,5 @@ namespace Store.Web.Models.BM
         public int PageSize { get; set; } = int.MaxValue;
     }
 }
+
+#pragma warning restore 1591

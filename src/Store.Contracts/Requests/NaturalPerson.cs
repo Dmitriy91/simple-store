@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Store.Web.Models.BM
+#pragma warning disable 1591
+
+namespace Store.Contracts.Requests
 {
     /// <summary>
     /// NaturalPerson
@@ -74,3 +76,5 @@ namespace Store.Web.Models.BM
         public string PostalCode { get; set; }
     }
 }
+
+#pragma warning restore 1591

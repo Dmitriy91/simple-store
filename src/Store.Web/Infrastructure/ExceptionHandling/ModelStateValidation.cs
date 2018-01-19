@@ -1,12 +1,11 @@
-﻿using Store.Web.Infrastructure.ExceptionHandling;
-using System;
+﻿using System;
 using System.Linq;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
 #pragma warning disable 1591
 
-namespace Store.Web.Infrastructure.ValidationAttributes
+namespace Store.Web.Infrastructure.ExceptionHandling
 {
     public class ModelStateValidation : ActionFilterAttribute
     {

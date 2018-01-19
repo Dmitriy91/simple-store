@@ -36,7 +36,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Store.Web.xml</DocumentationFile>
+    <DocumentationFile>bin\Store.Web.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -45,6 +45,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Store.Web.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
@@ -229,27 +230,12 @@
     <Compile Include="Infrastructure\ExceptionHandling\ErrorResult.cs" />
     <Compile Include="Infrastructure\ExceptionHandling\GlobalExceptionHandler.cs" />
     <Compile Include="Infrastructure\ExceptionHandling\IdentityException.cs" />
+    <Compile Include="Infrastructure\ExceptionHandling\ModelStateValidation.cs" />
     <Compile Include="Infrastructure\Mappings\BindingModelToDomainModel.cs" />
     <Compile Include="Infrastructure\Mappings\DomainModelToDTO.cs" />
     <Compile Include="Infrastructure\Swagger\AddAuthorizationHeaderParameterOperationFilter.cs" />
     <Compile Include="Infrastructure\Swagger\AssignOAuth2SecurityRequirements.cs" />
     <Compile Include="Infrastructure\Swagger\ShortenNameOperationFilter.cs" />
-    <Compile Include="Infrastructure\ValidationAttributes\JuridicalPersonSortByValidation.cs" />
-    <Compile Include="Infrastructure\ValidationAttributes\ModelStateValidation.cs" />
-    <Compile Include="Infrastructure\ValidationAttributes\NaturalPersonSortByValidation.cs" />
-    <Compile Include="Infrastructure\ValidationAttributes\OrderSortByValidation.cs" />
-    <Compile Include="Infrastructure\ValidationAttributes\ProductSortByValidation.cs" />
-    <Compile Include="Models\BM\Accounts.cs" />
-    <Compile Include="Models\BM\OrderFilter.cs" />
-    <Compile Include="Models\BM\CustomerFilter.cs" />
-    <Compile Include="Models\BM\JuridicalPersonFilter.cs" />
-    <Compile Include="Models\BM\NaturalPersonFilter.cs" />
-    <Compile Include="Models\BM\ProductFilter.cs" />
-    <Compile Include="Models\BM\JuridicalPerson.cs" />
-    <Compile Include="Models\BM\NaturalPerson.cs" />
-    <Compile Include="Models\BM\Order.cs" />
-    <Compile Include="Models\BM\Pagination.cs" />
-    <Compile Include="Models\BM\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Infrastructure\AuthProviders\ApplicationOAuthProvider.cs" />
     <Compile Include="Infrastructure\ActionResults\ChallengeResult.cs" />

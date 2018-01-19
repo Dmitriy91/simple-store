@@ -2,9 +2,9 @@
 
 #pragma warning disable 1591
 
-namespace Store.Web.Infrastructure.ValidationAttributes
+namespace Store.Contracts.ValidationAttributes
 {
-    public class JuridicalPersonSortByValidation : ValidationAttribute
+    public class NaturalPersonSortByValidation : ValidationAttribute
     {
         public override bool IsValid(object value)
         {
@@ -17,10 +17,16 @@ namespace Store.Web.Infrastructure.ValidationAttributes
 
                 switch (sortBy)
                 {
-                    case "legalNameAsc":
-                    case "legalNameDesc":
-                    case "tinAsc":
-                    case "tinDesc":
+                    case "firstNameAsc":
+                    case "firstNameDesc":
+                    case "middleNameAsc":
+                    case "middleNameDesc":
+                    case "lastNameAsc":
+                    case "lastNameDesc":
+                    case "ssnAsc":
+                    case "ssnDesc":
+                    case "birthdateAsc":
+                    case "birthdateDesc":
                     case "countryAsc":
                     case "countryDesc":
                     case "regionAsc":
@@ -35,7 +41,7 @@ namespace Store.Web.Infrastructure.ValidationAttributes
                 }
             }
 
-            ErrorMessage = "SortBy parameter has an invalid value.";
+            ErrorMessage = "{0} parameter has an invalid value.";
 
             return false;
         }

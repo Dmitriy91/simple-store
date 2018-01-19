@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Store.Entities;
 using Store.Services;
-using BM = Store.Web.Models.BM;
+using BM = Store.Contracts.Requests;
 using AutoMapper;
 
 #pragma warning disable 1591

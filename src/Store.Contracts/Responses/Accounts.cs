@@ -2,7 +2,7 @@
 
 #pragma warning disable 1591
 
-namespace Store.Contracts
+namespace Store.Contracts.Responses
 {
     // Models returned by AccountController actions.
 

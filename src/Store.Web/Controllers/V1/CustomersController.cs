@@ -4,12 +4,11 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Store.Services;
 using Store.Web.Infrastructure.ExceptionHandling;
-using DTO = Store.Contracts;
-using BM = Store.Web.Models.BM;
+using DTO = Store.Contracts.Responses;
+using BM = Store.Contracts.Requests;
 using AutoMapper;
 using Swashbuckle.Swagger.Annotations;
 using WebApi.OutputCache.V2;
-using Store.Web.Infrastructure.ValidationAttributes;
 
 namespace Store.Web.Controllers.V1
 {

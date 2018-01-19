@@ -2,7 +2,7 @@
 
 #pragma warning disable 1591
 
-namespace Store.Web.Infrastructure.ValidationAttributes
+namespace Store.Contracts.ValidationAttributes
 {
     public class OrderSortByValidationAttribute : ValidationAttribute
     {
@@ -25,7 +25,7 @@ namespace Store.Web.Infrastructure.ValidationAttributes
                 }
             }
 
-            ErrorMessage = "SortBy parameter has an invalid value.";
+            ErrorMessage = "{0} parameter has an invalid value.";
 
             return false;
         }

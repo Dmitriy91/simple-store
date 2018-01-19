@@ -9,8 +9,8 @@ using System.Web;
 using System.Web.Http;
 using Store.Web.Infrastructure.ActionResults;
 using Store.Web.Infrastructure.AuthProviders;
-using DTO = Store.Contracts;
-using BM = Store.Web.Models.BM;
+using DTO = Store.Contracts.Responses;
+using BM = Store.Contracts.Requests;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -18,7 +18,6 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Swashbuckle.Swagger.Annotations;
-using Store.Web.Infrastructure.ValidationAttributes;
 using Store.Web.Infrastructure.ExceptionHandling;
 
 namespace Store.Web.Controllers.V1
